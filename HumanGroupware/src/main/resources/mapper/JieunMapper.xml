@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-/mybatis.org/DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.human.springboot.dao.JieunDAO">
+
+<!-- 부서, 직급, 고용형태 옵션 불러오기 ( select )  -->
+	<select id="department_select0" resultType="com.human.springboot.dto.DepartmentDTO">
+		select dep_name from department
+	</select>
+	
+	<select id="position_select0" resultType="com.human.springboot.dto.PositionDTO">
+		select distinct position_name from position
+	</select>
+	
+	<select id="form_select0" resultType="com.human.springboot.dto.PositionDTO">
+		select distinct job_type from position
+	</select>
+
+</mapper>

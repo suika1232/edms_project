@@ -1,0 +1,18 @@
+@charset "UTF-8";
+
+#employeeMain{
+	border: 4px solid black;
+	width : 100px;
+  	height: 100px;
+}
+
+#employee_import{
+	background-color:black;
+	border: 1px solid black;
+	width : 100px;
+	height: 100px;
+}
+.div{
+	border: 1px solid black;
+}
+  

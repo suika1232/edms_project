@@ -2,21 +2,24 @@ package com.human.springboot;
 
 import java.util.ArrayList;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.human.springboot.dao.DAO;
-
-import jakarta.servlet.http.HttpServletRequest;
+import com.human.springboot.dao.JieunDAO;
+import com.human.springboot.dto.DepartmentDTO;
+import com.human.springboot.dto.PositionDTO;
 
 @Controller
 public class JeController {
 
-//	@Autowired
-//	private DAO EmpDao;
+	@Autowired
+	private JieunDAO JiDao;
+	
 // 페이지 접속 (풀네임)
 	
 	// 사원 조회 ( 페이지 접속 )
@@ -40,7 +43,7 @@ public class JeController {
 		return "employee/employee_organization";
 	}
 	
-	// 사원 등록 ( DB 정보 등록 )
+	// 사원 정보 추가 ( DB 정보 등록 )
 //	@PostMapping("/emloyee_insert")
 //	@ResponseBody
 //	public String do_emloyee_insert(HttpServletRequest req) {
@@ -74,20 +77,47 @@ public class JeController {
 //	return ja.toString();
 //	}
 	
-	// 사원 등록 ( 부서명 불러오기, select )
-//	@PostMapping("/employee_team0")
-//	@ResponseBody
-//	public String doCart() {			
-//		ArrayList<CartDTO> employee_team0 = mdao.cart_select();
-//		JSONArray ja = new JSONArray();
-//		for(int i=0; i<employee_team0.size(); i++) {
-//			JSONObject jo = new JSONObject();
-//			jo.put("cart_id", employee_team0.get(i).getCart_id());
-//			
-//			ja.put(jo);
-//		}
-//		return ja.toString();
-//	}
+// select option 설정
+	// 사원 정보 추가 ( 부서명 불러오기, select )
+	@PostMapping("/department_select0")
+	@ResponseBody
+	public String doDepSelect() {			
+		ArrayList<DepartmentDTO> department_select0 = JiDao.department_select0();
+		JSONArray ja = new JSONArray();
+		for(int i=0; i<department_select0.size(); i++) {
+			JSONObject jo = new JSONObject();
+			jo.put("dep_name", department_select0.get(i).getDep_name());
+			
+			ja.put(jo);
+		}
+		return ja.toString();
+	}
+	// 사원 정보 추가 ( 직급명 불러오기, select )
+	@PostMapping("/position_select0")
+	@ResponseBody
+	public String doPosSelect() {
+		ArrayList<PositionDTO> position_select0 = JiDao.position_select0();
+		JSONArray ja = new JSONArray();
+		for(int i=0; i<position_select0.size(); i++) {
+			JSONObject jo = new JSONObject();
+			jo.put("position_name",position_select0.get(i).getPosition_name());
+			ja.put(jo);
+		}
+		return ja.toString();
+	}
+	// 사원 정보 추가 ( 고용형태 불러오기, select )
+	@PostMapping("/form_select0")
+	@ResponseBody
+	public String doFormSelect() {
+		ArrayList<PositionDTO> form_select0 = JiDao.form_select0();
+		JSONArray ja = new JSONArray();
+		for(int i=0; i<form_select0.size(); i++) {
+			JSONObject jo = new JSONObject();
+			jo.put("job_type",form_select0.get(i).getJob_type());
+			ja.put(jo);
+		}
+		return ja.toString();
+	}
 
 }
 
