@@ -49,5 +49,6 @@ $(document)
     else $("#boardCategory").val("free");
     console.log("카테고리:"+$("#boardCategory").val());
 })
+
 </script>
 </html>

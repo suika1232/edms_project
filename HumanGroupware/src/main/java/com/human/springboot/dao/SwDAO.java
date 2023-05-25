@@ -8,6 +8,6 @@ import org.apache.ibatis.annotations.Mapper;
 public interface SwDAO {
     
     ArrayList<SwFreeBoardDTO> freeBoardList();
-    void freeBoardInsert(String title, String content, int writer);
+    void freeBoardInsert(int writer, String title, String content);
  
 }

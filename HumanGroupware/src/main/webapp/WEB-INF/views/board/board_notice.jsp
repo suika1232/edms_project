@@ -34,7 +34,7 @@ $(document)
 .on("click", "#btnNewPost", function(){
     let userAuth = sessionStorage.getItem("userAuth");
     console.log(userAuth)
-    // document.location="/hw/board/newpost/notice";
+    document.location="/board/newpost/notice";
 })
 </script>
 </html>

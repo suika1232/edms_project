@@ -30,10 +30,29 @@
 <script src="https://code.jquery.com/jquery-latest.js"></script>
 <script>
 $(document)
-.on("click", "#btnNewPost", function(){
+.ready( () => {
+    getBoardList();
+})
+.on("click", "#btnNewPost", () => {
     let userAuth = '<%=(String)session.getAttribute("userAuth")%>'
     console.log(userAuth)
-    // document.location="/hw/board/newpost/free";
+    document.location="/board/newpost/free";
 })
+function getBoardList(){
+    $.ajax({
+        url: "/boardlist/free",
+        type: "post",
+        dataType: "JSON",
+        success: (data) => {
+            $("#freeTable tr:gt(0)").empty();
+            for(let i=0; i<data.length; i++){
+                let post = "<tr><td>"+data[i]["boardId"]+"</td><td>"+
+                    data[i]["boardtitle"]+"</td><td>"+data[i]["boardWriter"]+"</td><td>"
+                    data[i]["boardCreated"]+"</td><td>"+data[i]["boardHit"]+"</td></tr>"
+                $("#freeTable").append(post);
+            }
+        }
+    })
+}
 </script>
 </html>

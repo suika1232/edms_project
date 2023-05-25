@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.human.springboot.dao.SwDAO">
+    <select id="freeBoardList" resultType="com.human.springboot.dto.SwFreeBoardDTO">
+      select * 
+      from board
+      where board_category = 2
+    </select>
+    <insert id="freeBoardInsert" resultType="com.human.springboot.dto.SwFreeBoardDTO">
+      insert into board(board_id, board_category, board_writer, board_title, 
+                        board_content, board_created, board_updated)
+      values(free_board_seq.nextval, 2, #{param1}, #{param2}, #{param3}
+              to_char(sysdate, 'YYYY-MM-DD'), to_char(sysdate, 'YYYY-MM-DD'))
+    </insert>
+</mapper>
