@@ -31,17 +31,9 @@
 <script>
 $(document)
 .on("click", "#btnNewPost", function(){
-    $.ajax({
-        url: "/hw/board/newpost",
-        type: "post",
-        data: {"category":category},
-        success: function(){
-            console.log("글쓰기성공");
-        },
-        error: function(error){
-            console.log(error);
-        }
-    })
+    let userAuth = '<%=(String)session.getAttribute("userAuth")%>'
+    console.log(userAuth)
+    // document.location="/hw/board/newpost/free";
 })
 </script>
 </html>

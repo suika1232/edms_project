@@ -31,6 +31,10 @@
 <script src="https://code.jquery.com/jquery-latest.js"></script>
 <script>
 $(document)
-.on("click", "#noticeTable")
+.on("click", "#btnNewPost", function(){
+    let userAuth = sessionStorage.getItem("userAuth");
+    console.log(userAuth)
+    // document.location="/hw/board/newpost/notice";
+})
 </script>
 </html>
