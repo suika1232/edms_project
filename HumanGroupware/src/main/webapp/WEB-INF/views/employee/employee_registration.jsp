@@ -34,20 +34,17 @@
 	<!-- 공통 -->
 	<div id=employeeMain>
 		<div id=employeeOption>사원 관리</div>
-		
+		<div id=attendance_menagement><a href=</div>
 		<div id=organization><a href="/hw/employee/organization">조직도</a></div>
 		<div id=inquiry><a href="/hw/employee/inquiry">사원 조회</a></div>
 		<div id=registration><a href="/hw/employee/registration">사원 등록</a></div>
 	</div>
-	
-	<!-- 상세 -->
 	<div>
 		<div>
 			사원등록
 		</div>
 		<div id=employee_import>
 			사원 정보 입력
-			<!-- 입사일자 <<이런거 변경 예정 -->
 			<div>
 				<input type="file" id="imageInput" onchange="changeButtonText(this)">
 				<div id="imageContainer">
@@ -99,6 +96,9 @@
 						<option value="paran.com">paran.com</option>
 					</select>
 			</div>
+			<div>
+				히든<input type=text id=ExHidden>
+			</div>
             <div>주소
             <input type="text" id="postcode" name=postcode class="address" style="width:150px;" placeholder="우편번호" readonly>
 			<input type="button" onclick="execDaumPostcode()" class=btnadd value="우편번호 찾기"><br>
@@ -127,6 +127,7 @@ $(document).ready(function(){
 	loadDep_name();
 	loadPos_name();
 	loadJob_type();
+	loadExemployee();
 })
 // select 직접입력 
 	// 이메일
@@ -177,7 +178,41 @@ $(document).ready(function(){
 					 $("#employee_team2").attr("disabled",true);
 				}});
 	});
-
+	// 사원 정보 업데이트 ( update )
+	/*$('#employee_update').click(function(){
+		let kname = $('#employee_kname').val()
+		let mobile = $('#employee_mobile').val()
+		let email = $('#employee_email').val()
+		let address = $('#employee_address').val()
+		$.ajax({
+			url:'/employee_update0',
+			data:{},
+			type:'post',
+			dataType:'text',
+			beforeSend:function(){
+             // 미기입일 경우
+             let team = $.trim($('#employee_team2').val());
+                if(team==''||team==null){
+                   alert('부서를 선택해주십시오.');
+                   return false;
+             }
+            let team = $.trim($('#employee_team2').val());
+            if(team==''||team==null){
+               alert('부서를 선택해주십시오.');
+               return false;
+            }
+			},
+			success:function(data){
+				if(data=="ok"){
+					alert('정보가 수정되었습니다')
+				}else{
+					alert('오류')
+				}
+			}
+		})
+	})
+	})	 */
+	
 // 한글, 영어만 입력가능
 	function employee_kor(e)  {
 		e.value = e.value.replace(/[^가-힣]/ig, '')
@@ -222,5 +257,20 @@ $(document).ready(function(){
 						 $('#select_form').append(option);
 					 }},
 	})}
+	
+	// 걍 해보는거
+	function loadExemployee(){
+		$.ajax({url:'/ExEmploye555',
+			 type:'post',
+			 dataType:'json',
+			 data:{position_name:{$('#employee_position2')}, job_type:{$('#employee_form2')}}
+			 success:function(data){
+				 for(let i=0; i<data.length; i++){
+					 ex0 = data[i];
+					 let ex= data['position_id']
+					 $('#ExHidden').append(ex);
+				 }},
+})}
+
 </script>
 </html>
