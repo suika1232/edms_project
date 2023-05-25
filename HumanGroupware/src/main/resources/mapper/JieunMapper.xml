@@ -16,5 +16,20 @@
 	<select id="form_select0" resultType="com.human.springboot.dto.PositionDTO">
 		select distinct job_type from position
 	</select>
+	
+	<select id="attendance_employee0" resultType="com.human.springboot.dto.EmployeeDTO">
+		select emp_name, emp_email from employee
+	</select>
+	
+	<select id="ExEmployee555" resultType="com.human.springboot.dto.PositionDTO">
+		select position_id from position where position_name={param1}, job_type={param2} 
+	</select>
+<!-- 사원 정보 업데이트 ( update ) -->
+<!-- 	<update id="employee_update0">
+		update employee
+		set 입사일자=#{param1}, emp_position=#{param2}, emp_email={param3}, emp_address={param4}, emp_mobile={param5}, emp_depart={param6}
+		where emp_mobile=#{param1}
+		and emp_name=#{param6}
+	</update> -->
 
 </mapper>
