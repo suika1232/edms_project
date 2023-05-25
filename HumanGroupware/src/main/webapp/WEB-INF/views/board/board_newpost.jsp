@@ -36,19 +36,21 @@
         <input type="text" id="boardTitle" name="boardTitle" required><br>
         내용
         <textarea name="boardContent" required></textarea><br>
-        <button type="reset">취소</button>
-        <button type="submit">저장</button>
+        <button type="reset" id="btnReset">취소</button>
+        <button type="submit" id="btnSubmit">저장</button>
     </form>
 </body>
 <script src="https://code.jquery.com/jquery-latest.js"></script>
 <script>
 $(document)
-.ready(function(){
+.ready(()=>{
     console.log("세션정보:"+$("#userAuth").val());
     if($("#userAuth").val() == "admin") $("#boardCategory").val("notice");
     else $("#boardCategory").val("free");
     console.log("카테고리:"+$("#boardCategory").val());
 })
-
+.on("click" ,"#btnReset", ()=>{
+    document.location="/board/free";
+})
 </script>
 </html>

@@ -7,10 +7,11 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Board - Notice</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <title>공지사항</title>
 </head>
 <style>
-    #noticeTable{
+    /* #noticeTable{
         border-collapse: collapse;
     }
     #noticeTable td{
@@ -18,23 +19,71 @@
         width: 100px;
         height: 30px;
         text-align: center;
-    }
+    } */
 </style>
 <body>
-    공지사항
-    <table id="noticeTable">
-        <tr><td>번호</td><td>제목</td><td>작성자</td><td>작성일</td><td>조회</td></tr>
+    <h3>공지사항</h3>
+    <table id="noticeTable" class="table">
+        <thead>
+            <tr>
+                <th>번호</th><th>제목</th><th>작성자</th><th>작성일</th><th>조회</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
     </table>
-    <button id="btnNewPost">글쓰기</button>
-
+    <nav aria-label="Page navigation">
+      <ul class="pagination justify-content-center">
+        <li class="page-item disabled">
+          <a class="page-link" href="#" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+        <li class="page-item active" aria-current="page"><a class="page-link" href="#">1</a></li>
+        <li class="page-item"><a class="page-link" href="#">2</a></li>
+        <li class="page-item"><a class="page-link" href="#">3</a></li>
+        <li class="page-item">
+          <a class="page-link" href="#" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+    <button type="button" class="btn btn-primary" id="btnNewPost">글쓰기</button>
 </body>
 <script src="https://code.jquery.com/jquery-latest.js"></script>
+<script src="/js/bootstrap.bundle.min.js"></script>
 <script>
 $(document)
+.ready(()=>{
+    getBoardList();
+})
 .on("click", "#btnNewPost", function(){
-    let userAuth = sessionStorage.getItem("userAuth");
+    let userAuth = '<%=(String)session.getAttribute("userAuth")%>'
     console.log(userAuth)
+    if(userAuth != "admin"){
+        alert("작성 권한이 없습니다.");
+        return;
+    }
     document.location="/board/newpost/notice";
 })
+function getBoardList(){
+    $.ajax({
+        url: "/boardlist/notice",
+        type: "post",
+        dataType: "JSON",
+        success: (data) => {
+            $("#noticeTable tbody").empty();
+            for(let i=0; i<data.length; i++){
+                let post = "<tr><td>"+data[i]["boardId"]+"</td><td>"+
+                    "<a href=/board/view/"+data[i]["boardId"]+">"+
+                    data[i]["boardTitle"]+"</td><td>"+
+                    data[i]["empName"]+"</td><td>"+
+                    data[i]["boardCreated"]+"</td><td>"+
+                    data[i]["boardHit"]+"</td></tr>"
+                $("#noticeTable tbody").append(post);
+            }
+        }
+    })
+}
 </script>
 </html>

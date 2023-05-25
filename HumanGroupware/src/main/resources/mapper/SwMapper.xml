@@ -1,17 +1,31 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper
-  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	PUBLIC "-/mybatis.org/DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.human.springboot.dao.SwDAO">
-    <select id="freeBoardList" resultType="com.human.springboot.dto.SwFreeBoardDTO">
-      select * 
-      from board
-      where board_category = 2
+    <select id="boardList" resultType="com.human.springboot.dto.SwBoardDTO">
+      select a.board_id, b.emp_name, a.board_title, a.board_content, 
+              a.board_created, a.board_updated, a.board_hit
+      from board a, employee b
+      where board_category = #{param1} and a.board_writer = b.emp_no
     </select>
-    <insert id="freeBoardInsert" resultType="com.human.springboot.dto.SwFreeBoardDTO">
+    <insert id="boardInsert">
       insert into board(board_id, board_category, board_writer, board_title, 
                         board_content, board_created, board_updated)
-      values(free_board_seq.nextval, 2, #{param1}, #{param2}, #{param3}
+      values(free_board_seq.nextval, #{param1}, #{param2}, #{param3}, #{param4}
               to_char(sysdate, 'YYYY-MM-DD'), to_char(sysdate, 'YYYY-MM-DD'))
     </insert>
+    <select id="boardView" resultType="com.human.springboot.dto.SwBoardDTO">
+      select a.board_id, b.emp_name, a.board_title, a.board_content, 
+              a.board_created, a.board_updated, a.board_hit, a.board_category, 
+              c.category_name
+      from board a, employee b, board_category c
+      where a.board_id = #{param1} and a.board_writer = b.emp_no 
+            and a.board_category = c.category_id
+    </select>
+    <update id="boardHit">
+      update board
+      set board_hit = board_hit + 1
+      where board_id = #{param1}
+    </update>
 </mapper>
