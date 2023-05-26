@@ -11,6 +11,6 @@
 	</insert>
 	<!-- 회원가입 중복 ID 체크 -->
 	<select id="emp_idc" resultType="int">
-		select count(emp_id) from employee where emp_id = #{param1}
+    	select count(*) from employee where emp_id = #{param1}
 	</select>
 </mapper>
