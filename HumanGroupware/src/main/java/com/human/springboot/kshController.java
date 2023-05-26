@@ -71,14 +71,13 @@ public class kshController {
 		String IDretval = "ok";
 		int idCount = 0;
 		String emp_id = req.getParameter("emp_id");
-		System.out.println(emp_id);
 		idCount = edao.emp_idc(emp_id);
 		try {
 			if(idCount == 0) {
-				System.out.println("ok!");
+				IDretval = "ok";
 			}else {
 				IDretval = "fail";
-				System.out.println("no");
+				
 			}
 		} catch (Exception e) {
 			throw new RuntimeException(e);
