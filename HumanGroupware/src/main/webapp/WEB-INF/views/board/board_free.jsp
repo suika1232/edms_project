@@ -7,19 +7,13 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap-css/bootstrap.min.css">
     <title>자유게시판</title>
 </head>
 <style>
-    /* #freeTable{
-        border-collapse: collapse;
-    }
-    #freeTable td{
-        border: 1px solid black;
-        width: 100px;
-        height: 30px;
+    h3{
         text-align: center;
-    } */
+    }
 </style>
 <body>
     <h3>자유게시판</h3>
@@ -48,10 +42,12 @@
         </li>
       </ul>
     </nav>
-    <button type="button" class="btn btn-primary" id="btnNewPost">글쓰기</button>
+    <div class="d-flex justify-content-end">
+        <button type="button" class="btn btn-primary" id="btnNewPost">글쓰기</button>
+    </div>
 </body>
 <script src="https://code.jquery.com/jquery-latest.js"></script>
-<script src="/js/bootstrap.bundle.min.js"></script>
+<script src="/js/bootstrap-js/bootstrap.bundle.min.js"></script>
 <script>
 $(document)
 .ready( () => {

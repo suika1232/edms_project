@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.kafka.KafkaProperties.Jaas;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -96,17 +95,21 @@ public class SwController {
         model.addAttribute("category", category);
         return "board/board_newpost";
     }
-    @PostMapping("/board_insert")
+    //게시판 글 저장
+    @PostMapping("/boardInsert")
     public String boardInsert(HttpServletRequest req){
+        int writer = 3; // 임시로 넣음
         String category = req.getParameter("boardCategory");
         String title = req.getParameter("boardTitle");
         String content = req.getParameter("boardContent");
         System.out.println("제목: "+title);
         System.out.println("내용: "+content);
         if(category.equals("notice")){
-            return "redirect:/hw/board/notice";
+            sdao.boardInsert(1, writer, title, content);
+            return "redirect:/board/notice";
         }
-        return "redirect:/hw/board/free";
+        sdao.boardInsert(2, writer, title, content);
+        return "redirect:/board/free";
     }
 
 

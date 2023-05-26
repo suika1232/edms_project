@@ -7,18 +7,18 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
+    <link rel="stylesheet" href="/css/bootstrap-css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/summernote-css/summernote-lite.css">
     <title>글쓰기</title>
 </head>
 <style>
-    #boardTitle{
-        width: 250px;
-        height: 30px;
-        margin-bottom: 5px;
+    h3{
+        text-align: center;
     }
-    textarea{
-        resize: none;
-        width: 250px;
-        height: 200px;
+    button{
+        margin-top: 5px;
+        margin-left: 10px;
     }
 </style>
 <body>
@@ -30,27 +30,65 @@
         <h3>게시물작성</h3>
         <input type="hidden" id="userAuth" value="user">
     <% } %>
-    <form method="post" action="/board_insert">
-        <input type="hidden" id="boardCategory" name="boardCategory" readonly>
-        제목
-        <input type="text" id="boardTitle" name="boardTitle" required><br>
-        내용
-        <textarea name="boardContent" required></textarea><br>
-        <button type="reset" id="btnReset">취소</button>
-        <button type="submit" id="btnSubmit">저장</button>
-    </form>
+    <div class="d-flex justify-content-center">
+        <form method="post" action="/boardInsert" id="postForm">
+            <input type="hidden" id="boardCategory" name="boardCategory" readonly>
+            <table>
+                <tr>
+                    <td>제목</td>
+                    <td>
+                        <input class="form-control" type="text" id="boardTitle" 
+                            name="boardTitle" required autofocus>
+                    </td>
+                </tr>
+                <tr>
+                    <td>내용</td>
+                    <td>
+                        <textarea id="boardContent" name="boardContent" hidden></textarea>
+                        <div id="boardEditor"></div>
+                    </td>
+                </tr>
+            </table>
+            <div class="d-flex justify-content-end">
+                <button class="btn btn-primary" type="reset" id="btnReset">취소</button>
+                <button class="btn btn-primary" type="submit" id="btnSubmit">저장</button>
+            </div> 
+        </form>
+    </div>
+    
 </body>
 <script src="https://code.jquery.com/jquery-latest.js"></script>
+<script src="/js/bootstrap-js/bootstrap.bundle.min.js"></script>
+<script src="/js/summernote-js/summernote-lite.js"></script>
+<script src="/js/summernote-js/lang/summernote-ko-KR.js"></script>
 <script>
 $(document)
-.ready(()=>{
+.ready( ()=>{
     console.log("세션정보:"+$("#userAuth").val());
     if($("#userAuth").val() == "admin") $("#boardCategory").val("notice");
     else $("#boardCategory").val("free");
     console.log("카테고리:"+$("#boardCategory").val());
+
+    $("#boardEditor").summernote({
+        height: 400,
+        toolbar: [
+            ['style', ['bold', 'italic', 'underline', 'clear']],
+            ['font', ['strikethrough', 'superscript', 'subscript']],
+            ['fontsize', ['fontsize']],
+            ['color', ['color']],
+            ['para', ['ul', 'ol', 'paragraph']],
+            ['height', ['height']]
+        ],
+        lang: "ko-KR",
+        placeholder: "내용을 입력하세요"
+    })
+})
+.on("submit", "#postForm", ()=>{
+    let content = $("#boardEditor").summernote("code");
+    $("#boardContent").val(content);
 })
 .on("click" ,"#btnReset", ()=>{
-    document.location="/board/free";
+    document.location="/board/"+$("#boardCategory").val();
 })
 </script>
 </html>
