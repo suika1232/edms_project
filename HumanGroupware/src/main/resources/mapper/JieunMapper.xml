@@ -21,15 +21,17 @@
 		select emp_name, emp_email from employee
 	</select>
 	
-	<select id="ExEmployee555" resultType="com.human.springboot.dto.PositionDTO">
-		select position_id from position where position_name={param1}, job_type={param2} 
+	<select id="exemploye_select1" resultType="com.human.springboot.dto.PositionDTO">
+		select position_id from position where position_name=#{param1} and job_type=#{param2} 
 	</select>
-<!-- 사원 정보 업데이트 ( update ) -->
-<!-- 	<update id="employee_update0">
+	
+	<select id="exemployee_select2" resultType="com.human.springboot.dto.DepartmentDTO">
+		select dep_id from department where dep_name = #{param1}
+	</select>
+	<update id="employee_update0">
 		update employee
-		set 입사일자=#{param1}, emp_position=#{param2}, emp_email={param3}, emp_address={param4}, emp_mobile={param5}, emp_depart={param6}
-		where emp_mobile=#{param1}
-		and emp_name=#{param6}
-	</update> -->
+			 set emp_position = #{param1}, emp_depart = #{param2}, emp_mobile = #{param3}
+		 where emp_id = #{param5}
+	</update>
 
 </mapper>

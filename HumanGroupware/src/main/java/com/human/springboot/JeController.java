@@ -47,7 +47,7 @@ public class JeController {
 	}
 	// 근태 관리 ( 페이지 접속 )
 	@GetMapping("/hw/attendance/management")
-	public String attendanceManagement() {
+	public String attendanceManagement() { 
 		return "attendance/attendance_management";
 	}
 	// 사원별 근태 현황
@@ -63,15 +63,12 @@ public class JeController {
 		
 	    String retval = "ok";
 	    try {
-	    	String 입사일자=req.getParameter("입사일자");
-			String emp_depart=req.getParameter("emp_depart");
-			String emp_name=req.getParameter("emp_name");
+	    	int emp_position=Integer.parseInt(req.getParameter("emp_position"));
+	    	int emp_depart=Integer.parseInt(req.getParameter("emp_depart"));
 			int emp_mobile=Integer.parseInt(req.getParameter("emp_mobile"));
-			String emp_address=req.getParameter("emp_address");
-			String emp_email=req.getParameter("emp_email");
-			int emp_position=Integer.parseInt(req.getParameter("emp_position"));
+			String emp_id=req.getParameter("emp_id");
 			
-			JiDao.employee_update0(입사일자, emp_depart, emp_name ,emp_mobile);
+			JiDao.employee_update0(emp_position,emp_depart, emp_mobile ,emp_id);
 	    } catch (Exception e) {
 	        retval = "fail";
 	    }
@@ -122,6 +119,7 @@ public class JeController {
 		}
 		return ja.toString();
 	}
+	
 	// 사원 정보 추가 ( 고용형태 불러오기, select )
 	@PostMapping("/form_select0")
 	@ResponseBody
@@ -150,18 +148,35 @@ public class JeController {
 		return ja.toString();
 	}
 
-	// 걍 해보는거
-	@PostMapping("/ExEmployee555")
+	// 고용형태 직급 id 뽑기
+	@PostMapping("/exemploye_select1")
 	@ResponseBody
-	public String doExEmployee() {
-			ArrayList<PositionDTO> ExEmployee555 = JiDao.ExEmployee555();
+	public String doExEmployee(HttpServletRequest req) {
+		String position_name = req.getParameter("position_name");
+		String job_type = req.getParameter("job_type");
+			ArrayList<PositionDTO> exemploye_select1 = JiDao.exemploye_select1(position_name, job_type);
 			JSONArray ja = new JSONArray();
-			for(int i=0; i<ExEmployee555.size(); i++) {
+			for(int i=0; i<exemploye_select1.size(); i++) {
 				JSONObject jo = new JSONObject();
-				jo.put("position_id", ExEmployee555.get(i).getPosition_id());
+				jo.put("position_id", exemploye_select1.get(i).getPosition_id());
 				ja.put(jo);
 			}
 			return ja.toString();
 }
+	// 부서 id 뽑기
+		@PostMapping("/exemployee_select2")
+		@ResponseBody
+		public String doExEmployeeDep(HttpServletRequest req) {
+			String dep_name = req.getParameter("dep_name");
+				ArrayList<DepartmentDTO> exemployee_select2 = JiDao.exemployee_select2(dep_name);
+				JSONArray ja = new JSONArray();
+				for(int i=0; i<exemployee_select2.size(); i++) {
+					JSONObject jo = new JSONObject();
+					jo.put("dep_id", exemployee_select2.get(i).getDep_id());
+					ja.put(jo);
+				}
+				return ja.toString();
+	}	
+	
 }
 

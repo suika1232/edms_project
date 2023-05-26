@@ -34,10 +34,10 @@
 	<!-- 공통 -->
 	<div id=employeeMain>
 		<div id=employeeOption>사원 관리</div>
-		<div id=attendance_menagement><a href=</div>
+		<div id=attendance_menagement></div>
 		<div id=organization><a href="/hw/employee/organization">조직도</a></div>
 		<div id=inquiry><a href="/hw/employee/inquiry">사원 조회</a></div>
-		<div id=registration><a href="/hw/employee/registration">사원 등록</a></div>
+		<div id=registration><a href="/hw/employee/registration">사원 정보 변경</a></div>
 	</div>
 	<div>
 		<div>
@@ -55,27 +55,25 @@
 			<div><a id=employee_team1>부서</a>
 					<input type="text" id="employee_team2" style="width:80px;" value="">
 					<select style="width:80px;" id="select_team" name="select_team">
-						<option value=1 selected>직접입력</option>
 					</select>
+					<input type="button" value="추가" id=department_insert0>
 
 			</div>
 			<!-- db 연동하면 안적어도됨 -->
 			<div><a id=employee_position1>직급</a>
 					<input type="text" id="employee_position2" style="width:80px;"value="">
 					<select style="width:80px;"id="select_position" name="select_position">
-						<option value="1">직접입력</option>
 					</select>
 			</div>
 			
 			<div><a id=employee_form>고용형태</a>
 					<input type="text" id="employee_form2" style="width:80px;" value="">
 					<select style="width:80px;" id="select_form" name="select_form">
-						<option value="1">직접입력</option>
 					</select>
 						
 					</div><br>
-			<div><a id=employee_insert>사원명</a><input type=text id="employee_kname" style="width:100px;" oninput="employee_kor(this)" /></div><br>
-			<div><a id=employee_insert>생년월일</a><input type=date readonly></div><br>
+			<div><a id=employee_insert>사원명</a><input type=text id="employee_kname" style="width:100px;"></div><br>
+			<div><a id=employee_insert>보유 아이디</a><input type=text id="employee_id" style="width:100px;"></div><br>
 			<div><a id=employee_insert>핸드폰</a><input type=text id="employee_phone" style="width:100px;"></div><br>			
 			<div><a id=employee_email1>이메일</a><input type=text style="width:125px;" id=employee_email2>@
 					<input type="text"  id="employee_email3" style="width:125px;" disabled value="naver.com">
@@ -97,7 +95,8 @@
 					</select>
 			</div>
 			<div>
-				히든<input type=text id=ExHidden>
+				직급, 고용 히든<input type=text id=emp_position1>
+				부서히든<input type=text id=emp_depart1>
 			</div>
             <div>주소
             <input type="text" id="postcode" name=postcode class="address" style="width:150px;" placeholder="우편번호" readonly>
@@ -107,7 +106,7 @@
 			<input type="text" id="detailAddress" name=detailAddress style="width:300px;" class="address" placeholder="상세주소">
 			</div>
 		</div>
-		<button id=employee_insert name=employee_insert>등록</button>
+		<input type="button" value="등록" id=employee_insert3>
 	</div>
 
 </div>
@@ -118,16 +117,17 @@
 
 </body>
 <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
-<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-<script src="/js/addressapi.js"></script>
+<!-- <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script src="/js/addressapi.js"></script> -->
 
 
 <script>
 $(document).ready(function(){
+	loadExemployee();
 	loadDep_name();
 	loadPos_name();
 	loadJob_type();
-	loadExemployee();
+	
 })
 // select 직접입력 
 	// 이메일
@@ -154,6 +154,7 @@ $(document).ready(function(){
 				}else{ 
 					 $("#employee_position2").val($(this).text());
 					 $("#employee_position2").attr("disabled",true);
+					 loadExemployee();
 				}});
 	});
 	// 고용형태
@@ -165,6 +166,7 @@ $(document).ready(function(){
 				}else{ 
 					 $("#employee_form2").val($(this).text());
 					 $("#employee_form2").attr("disabled",true);
+					 loadExemployee();
 				}});
 	});
 	// 부서
@@ -176,32 +178,25 @@ $(document).ready(function(){
 				}else{ 
 					 $("#employee_team2").val($(this).text());
 					 $("#employee_team2").attr("disabled",true);
+					 loadExemployeeDep();					 
 				}});
 	});
-	// 사원 정보 업데이트 ( update )
-	/*$('#employee_update').click(function(){
-		let kname = $('#employee_kname').val()
-		let mobile = $('#employee_mobile').val()
-		let email = $('#employee_email').val()
-		let address = $('#employee_address').val()
-		$.ajax({
+	
+	
+	// 사원 정보 업데이트 ( update ) department_insert0  employee_insert
+	$('#employee_insert3').on("click",function(){
+		console.log($('#emp_position1').val());
+		console.log($('#emp_depart1').val());
+		console.log($('#employee_phone').val());
+		console.log($('#employee_id').val());
+ 		$.ajax({
 			url:'/employee_update0',
-			data:{},
+			data:{emp_position:$('#emp_position1').val(),
+				   emp_depart:$('#emp_depart1').val(),
+				   emp_mobile:$('#employee_phone').val(),
+				   emp_id:$('#employee_id').val()},
 			type:'post',
 			dataType:'text',
-			beforeSend:function(){
-             // 미기입일 경우
-             let team = $.trim($('#employee_team2').val());
-                if(team==''||team==null){
-                   alert('부서를 선택해주십시오.');
-                   return false;
-             }
-            let team = $.trim($('#employee_team2').val());
-            if(team==''||team==null){
-               alert('부서를 선택해주십시오.');
-               return false;
-            }
-			},
 			success:function(data){
 				if(data=="ok"){
 					alert('정보가 수정되었습니다')
@@ -209,9 +204,8 @@ $(document).ready(function(){
 					alert('오류')
 				}
 			}
-		})
+		}) 
 	})
-	})	 */
 	
 // 한글, 영어만 입력가능
 	function employee_kor(e)  {
@@ -258,19 +252,33 @@ $(document).ready(function(){
 					 }},
 	})}
 	
-	// 걍 해보는거
+	// 직급, 고용형태 position_id 확인 ( hidden ) emp_depart1
 	function loadExemployee(){
-		$.ajax({url:'/ExEmploye555',
+		$.ajax({url:'/exemploye_select1',
 			 type:'post',
 			 dataType:'json',
-			 data:{position_name:{$('#employee_position2')}, job_type:{$('#employee_form2')}}
+			 data:{position_name:$('#employee_position2').val(), job_type:$('#employee_form2').val()},
 			 success:function(data){
 				 for(let i=0; i<data.length; i++){
 					 ex0 = data[i];
-					 let ex= data['position_id']
-					 $('#ExHidden').append(ex);
+					 let ex= ex0['position_id']
+					 $('#emp_position1').val(ex);
 				 }},
 })}
+	function loadExemployeeDep(){
+		$.ajax({url:'/exemployee_select2',
+			 type:'post',
+			 dataType:'json',
+			 data:{dep_name:$('#employee_team2').val()},
+			 success:function(data){
+				 for(let i=0; i<data.length; i++){
+					 ex0 = data[i];
+					 let ex= ex0['dep_id']
+					 $('#emp_depart1').val(ex);
+				 }},
+})}
+	
+	
 
 </script>
 </html>

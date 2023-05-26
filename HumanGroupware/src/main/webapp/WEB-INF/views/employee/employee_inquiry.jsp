@@ -30,12 +30,15 @@
 		</div>
 		<div>
 			<select id="select_team"  name="select_team" style="width:80px; " value="부서명">
+				<option value="전체">전체</option>
 			</select>
-			
+				
 			<select id="select_position"  name="select_position" style="width:80px;" value="직급">
+				<option value="전체">전체</option>
 			</select>
 			
 			<select id="select_form"  name="select_form" style="width:80px;" value="고용형태">
+				<option value="전체">전체</option>
 			</select>
 			
 			<input type=text style="width:80px;" placeholder="이름">

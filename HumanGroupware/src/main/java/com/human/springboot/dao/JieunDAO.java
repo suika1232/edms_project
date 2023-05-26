@@ -18,8 +18,10 @@ public interface JieunDAO {
 	ArrayList<EmployeeDTO> attendance_employee0();		// 수신인 불러오기 ( 이름+이메일 )
 	
 	// 입사일자, position(부서, 직급), 고용형태, 핸드폰, 이메일, 주소
-	void employee_update0(String m_id, String rev_title, String rev_cont, int a);	// 직원 정보 업데이트
+	void employee_update0(int emp_position, int emp_depart, int mobile, String emp_id);	// 직원 정보 업데이트
 	
-	// 걍
-	ArrayList<PositionDTO> ExEmployee555(String a, String b);
+	// 부서, 직급, 고용형태 id 노출
+	ArrayList<PositionDTO> exemploye_select1(String a, String b);
+	ArrayList<DepartmentDTO> exemployee_select2(String a);
+
 }
