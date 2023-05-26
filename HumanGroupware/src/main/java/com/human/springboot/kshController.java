@@ -65,33 +65,25 @@ public class kshController {
 	 * 작성자 : 김상호
 	 * 기능 : 회원가입에서 ID중복체크를 하는기능이다.
 	 * */
-	@PostMapping("/idCheck")
+	@PostMapping("/Emp_idc")
 	@ResponseBody
-	public String doIdCheck(HttpServletRequest req) {
-		
-		String idCheckVal="ok";
-		int idCount=0;
-		String a=req.getParameter("idCheck");
-		System.out.println(a);
-		idCount=edao.emp_idc(a);
-		System.out.println(idCount);
+	public String doEmp_idc(HttpServletRequest req) {
+		String IDretval = "ok";
+		int idCount = 0;
+		String emp_id = req.getParameter("emp_id");
+		System.out.println(emp_id);
+		idCount = edao.emp_idc(emp_id);
 		try {
-		if(idCount==0) {
-			System.out.println("사용가능한 아이디");
-		} else {
-			idCheckVal="fail";
-			System.out.println("이미 사용중인 아이디");
+			if(idCount == 0) {
+				System.out.println("ok!");
+			}else {
+				IDretval = "fail";
+				System.out.println("no");
+			}
+		} catch (Exception e) {
+			throw new RuntimeException(e);
 		}
-		} catch(Exception ex) {
-			 printExceptionMsg("doCheck", ex.getMessage());
-			
-		}
-		System.out.println("개수 확인="+idCount);
-		return idCheckVal;
-	}
-	private void printExceptionMsg(String string, String message) {
-		// TODO Auto-generated method stub
-		
+		return IDretval;
 	}
 	
 }
