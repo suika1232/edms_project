@@ -1,33 +1,82 @@
+/*전체 부분*/
 body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    font-family: 휴먼편지체, sans-serif; 
-  }
+  background-image: url("/resources/img/space.jpg");
+  background-size: 100% 100%;
+  font-family: Arial, sans-serif;
+  color: #fff;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+/*가운데 div 부분*/
+.body {
+  width: 40%;
+  margin: 5% auto;
+  padding: 3%;
+  background-color: rgba(0, 0, 0, 0.8);
+  border-radius: 10%;
+  box-shadow: 0 0 10% rgba(0, 0, 0, 0.5);
+  text-align: center;
+}
+/*제목 부분*/
+.title {
+  font-size: 30px;
+  font-weight: bold;
+  margin-bottom: 10%;
+  color: #fff;
+}
+/*input*/
+input[type="text"],
+input[type="password"],
+input[type="date"] {
+  width: 100%;
+  padding: 2%;
+  margin-bottom:1.3%;
+  border-radius: 5px;
+  border: none;
+  background-color: #333;
+  color: #fff;
+}
 
-  .body {
-    width: 400px;
-    background-color: #f1f1f1;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  }
+input[type="radio"] {
+  margin: 0 2%;
+}
+/*버튼 부분*/
+.btn {
+  margin-top: 2%;
+}
 
-  .title {
-    text-align: center;
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 20px;
-  }
+button {
+  padding: 2% 6%;
+  border: none;
+  border-radius: 5px;
+  background-color: #13275A;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+}
 
-  .Name,
-  .ID,
-  .PW,
-  .RE-PW,
-  .Mobile,
-  .Email,
-  .Gender,
-  .Date {
-    margin-bottom: 15px;
-  }
+button:hover {
+  background-color: #ff6600;
+}
+/*별똥별 부분*/
+.star {
+	position: absolute;
+	width: 4px;
+	height: 4px;
+	border-radius: 50%;
+	background-color: #fff;
+	opacity: 0;
+	animation: shootingStar 5s linear infinite;
+}
+
+@keyframes shootingStar {
+	0% {
+		opacity: 1;
+		transform: translate(-10%, -10%);
+	}
+	100% {
+		opacity: 0;
+		transform: translate(100vw, 100vh);
+	}
+}

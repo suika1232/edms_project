@@ -6,40 +6,48 @@
 <meta charset="UTF-8">
 <link type="text/css" rel="stylesheet" href="/resources/css/hwSignin.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css">
-<title>회원가입</title>
+<title>HWSignin</title>
 </head>
 <body>
 <div class="body">
 	<div class="title">Welcome! <br> HumanGroupware!</div>
 	<div class="Name">
-		UserNAME : <input type=text id=name placeholder="UserName..." size=20>
+		UserNAME
+		<input type=text id=name placeholder="UserName..." size=20>
 	</div>
 	<div class="ID">
-		ID : <input type=text id=emp_id  placeholder="User ID..." size=20>
-			 <div id=hiddenID></div>
+		ID
+		<input type=text id=emp_id  placeholder="User ID..." size=20>
+		<div id=hiddenID></div>
 	</div>
 	<div class="PW">
-		PW : <input type=password id=passcode1 placeholder="비밀번호 입력" size=20>
-			 <div id=hiddenPW></div>
+		PW
+		<input type=password id=passcode1 placeholder="비밀번호 입력" size=20>
+		<div id=hiddenPW></div>
 	</div>
 	<div class="RE-PW">
-		RE-PW : <input type=password id=passcode2 placeholder="비밀번호 재입력" size=20>
-			    <div id=hiddenRE-PW></div> 
+		RE-PW 
+		<input type=password id=passcode2 placeholder="비밀번호 재입력" size=20>
+		<div id=hiddenRE-PW></div> 
 	</div>
 	<div class="Mobile">
-		Mobile : <input type=text id=mobile placeholder="모바일 번호 11글자 입력해주세요!" size=25>
-				 <div id=hiddenMobile></div>
+		Mobile 
+		<input type=text id=mobile placeholder="ex) 010xxxxxxxx" size=25>
+		<div id=hiddenMobile></div>
 	</div>
 	<div class="Email">
-		Email : <input type=text id=email placeholder="이메일 양식에 맞게 입력해주세요!" size=30>
+		Email <input type=text id=email placeholder="ex) admin@a.com" size=30>
 				<div id=hiddenEmail></div>
 	</div>
 	<div class="Gender">
-		Gender : <input type=radio value=men name=gender>남성
-				 <input type=radio value=woman name=gender>여성
+		Gender <br>
+		<input type=radio value=men name=gender>남성
+		<input type=radio value=woman name=gender>여성
 	</div>
+	<br>
 	<div class="Date">
-		Birth Date : <input type=date id=date>
+		Birth Date <br><br> 
+		<input type=date id=date>
 	</div>
 	<div class="btn">
 		<button id=ok>완료</button>
@@ -48,9 +56,25 @@
 </div>
 </body>
 <script src='https://code.jquery.com/jquery-latest.js'></script>
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script>
 $(document)
+/*별똥별 내려가게 하는 코드입니다*/
+.ready(function() {
+	function createStar() {
+		var star = $('<div class="star"></div>');
+		star.css({
+			left: Math.random() * 100 + '%',
+			top: Math.random() * 100 + '%',
+			animationDelay: Math.random() * 5 + 's'
+		});
+		$('body').append(star);
+		setTimeout(function() {
+			star.remove();
+		}, 5000);
+	}
+	setInterval(createStar, 500);
+})
+/*취소버튼을 누르면 메인으로 돌아가는 코드입니다.*/
 .on('click','#x',function(){
 	alert("회원가입이 취소되었습니다");
 	window.location.href = '/main';
@@ -59,6 +83,12 @@ $(document)
 .on('click', '#ok', function () {
 	gender = $("input[type=radio]:checked").val();
 	console.log(gender);
+	if ($('#name').val() == '' || $('#emp_id').val() == '' || $('#passcode1').val() == '' ||
+	        $('#email').val() == '' || $('#mobile').val() == '' || $('#date').val() == '') {
+	        alert("빈 공간 없이 입력해주세요!");
+	        return false;
+	}
+	
     $.ajax({
         url: 'InsertEmp',
         type: 'post',
@@ -72,16 +102,6 @@ $(document)
             gender: gender
         },
         dataType: 'text',
-        beforeSend:function(){
-        	if($('#hiddenID').val() == 'ok' && $('#hiddenPW').val() == 'ok' && 
-        	   $('#hiddenRE-PW').val() == 'ok'&& $('#hiddenID').val() == 'ok' &&
-        	   $('#hiddenModile').val()== 'ok'&& $('#hiddenEmail').val() == 'ok'){
-        		
-        	}else {
-        		alert("빈공간 없이 입력해주세요!");
-        		return false;
-        	}
-        },
         success: function (data) {
             if (data == "ok") {
                 alert("회원가입 성공하셨습니다! 로그인 후 이용해주세요");
@@ -206,5 +226,6 @@ $('#mobile').keyup(function(){
 /*Date에서 오늘 날짜 이후로 선택 못하게 하는 코드입니다*/
 let today = new Date().toISOString().split('T')[0];
 document.getElementById('date').setAttribute('max', today);
+
 </script>
 </html>
