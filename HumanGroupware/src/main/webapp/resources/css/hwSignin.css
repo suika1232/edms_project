@@ -8,11 +8,11 @@ body {
   padding: 0;
   overflow: hidden;
 }
-/*가운데 div 부분*/
+/*중간 컨테이너 부분*/
 .body {
   width: 40%;
   margin: 5% auto;
-  padding: 3%;
+  padding: 4%;
   background-color: rgba(0, 0, 0, 0.8);
   border-radius: 10%;
   box-shadow: 0 0 10% rgba(0, 0, 0, 0.5);

@@ -56,15 +56,15 @@
 </div>
 <div class="board_category">
 	<div class="SimpleNote1">
-	공지사항
+		아직 기능 구현중입니다!
 		<div class="SimpleNote2">
-		공지사항 내용
+		
 		</div>
 	</div>
 	<div class="SimpleBoard1">
-	게시판
+	
 		<div class="SimpleBoard2">
-		게시판 내용
+		
 		</div>
 	</div>
 </div>

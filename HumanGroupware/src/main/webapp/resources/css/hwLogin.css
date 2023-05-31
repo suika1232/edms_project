@@ -1,0 +1,141 @@
+/* 전체 부분 */
+body {
+  font-family: Arial, sans-serif;
+  background-image: url("/resources/img/space.jpg");
+  background-size: 100% 100%;
+  color: #fff;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+/* 중간 컨테이너 스타일 */
+.body {
+  max-width: 25%;
+  margin: 10% auto;
+  padding: 10%;
+  border-radius: 5%;
+  box-shadow: 0 0 10% rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+/* 제목 스타일 */
+.title {
+  font-size: 30px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 15%;
+}
+
+/* input 스타일 */
+input[type="text"],
+input[type="password"] {
+  width: 100%;
+  padding: 3%;
+  margin-bottom: 5%;
+  border: 1px solid #ccc;
+  border-radius: 3%;
+}
+
+/* 회원가입 링크 스타일 */
+.Signin {
+  text-align: right;
+  margin-bottom: 5%;
+}
+
+.Signin a {
+  text-decoration: none;
+  color: #007bff;
+}
+
+/* Find ID/PW dialog로 가는 스타일 */
+.find {
+  text-align: center;
+  margin-bottom: 10%;
+}
+
+.find span {
+  margin-right: 2%;
+  cursor: pointer;
+}
+
+/* 버튼 스타일 */
+.btn {
+  text-align: center;
+}
+
+.btn button {
+  padding: 4% 8%;
+  margin-right: 3%;
+  border: none;
+  border-radius: 5%;
+  background-color: #13275A;
+  color: #fff;
+  cursor: pointer;
+}
+
+/* ID/PW dialog 스타일 */
+.IDdialog,
+.PWdialog {
+  max-width: 500%;
+  margin: 0 auto;
+  padding: 20%;
+  background-image: url("/resources/img/space.jpg");
+  background-size: 100% 100%;
+  border-radius: 5%;
+  box-shadow: 0 0 10% rgba(0, 0, 0, 0.1);
+  margin-top: 5%;
+  color: #fff;
+}
+/* ID/PW dialog 버튼 스타일 */
+.IDdialog input[type="text"],
+.PWdialog input[type="text"] {
+  width: 100%;
+  padding: 3%;
+  margin-bottom: 2%;
+  border: 1px solid #ccc;
+  border-radius: 3%;
+}
+
+.IDdialog .btn_idia,
+.PWdialog .btn_pdia {
+  text-align: center;
+}
+
+.IDdialog .btn_idia button,
+.PWdialog .btn_pdia button {		
+  padding: 3% 5%;
+  margin-right: 5%;
+  border: none;
+  border-radius: 3%;
+  background-color: #13275A;
+  color: #fff;
+  cursor: pointer;
+}
+
+/* 밑 dialog 부분 */
+.IDdialog,
+.PWdialog {
+  display: none;
+}
+/*별똥별 부분*/
+.star {
+	position: absolute;
+	width: 4px;
+	height: 4px;
+	border-radius: 50%;
+	background-color: #fff;
+	opacity: 0;
+	animation: shootingStar 5s linear infinite;
+}
+
+@keyframes shootingStar {
+	0% {
+		opacity: 1;
+		transform: translate(-10%, -10%);
+	}
+	100% {
+		opacity: 0;
+		transform: translate(100vw, 100vh);
+	}
+}
