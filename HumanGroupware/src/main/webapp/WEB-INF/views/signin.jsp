@@ -184,7 +184,7 @@ $('#passcode2').keyup(function(){
 		$('#hiddenRE-PW').html('<a style="color:red;">비밀번호가 일치하지 않습니다!</a>');
 	}
 })
-/* Mobile 번호가 11개만 들어가고 -없이 전화번호만 입력하게 하는 코드입니다.
+/* Mobile 번호가 11개만 들어가게하는 코드입니다.
  * mdc == Mobile duplicate check
  */
 $('#mobile').keyup(function(){
@@ -204,6 +204,11 @@ $('#mobile').keyup(function(){
 		$('#hiddenMobile').val('fail');
 		$('#hiddenMobile').html('<a style="color:red;">유효하지 않은 번호입니다 ㅜㅜ</a>');
 	}
+})
+/* Mobile 번호만 들어가게 하는 코드입니다.
+ */
+$('#mobile').keyup(function(){
+	this.value = this.value.replace(/[^0-9]/g, '');
 })
 /* Email 양식에 맞는지 확인하는 코드입니다.
  * edc == Email duplicate check

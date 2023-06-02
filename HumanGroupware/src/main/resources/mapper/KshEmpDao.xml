@@ -13,4 +13,25 @@
 	<select id="emp_idc" resultType="int">
     	select count(*) from employee where emp_id = #{param1}
 	</select>
+	<!-- 로그인 구현 -->
+	<select id="emp_login" resultType="String">
+		select emp_id from employee where emp_id=#{param1} and emp_password=#{param2}
+	</select>
+	<select id="emp_login_session" resultType="com.human.springboot.dto.KshEmpDto">
+		select emp_id,emp_name from employee where emp_id=#{param1} and emp_password=#{param2}
+	</select>
+	<!-- 로그인 아이디 찾기 -->
+	<select id="FindID" resultType="com.human.springboot.dto.KshEmpDto">
+		select emp_id from employee 
+		where emp_name=#{param1} and emp_mobile=#{param2} and emp_email=#{param3} 
+	</select>
+	<!-- 로그인 비밀번호 찾기 -->
+	<select id="FindPW" resultType="int">
+		select count(emp_id) from employee 
+		where emp_name= #{param1} and emp_id= #{param2} and emp_mobile = #{param3} 
+	</select>
+	<!-- 로그인 비밀번호 변경 -->
+	<update id="PwChange">
+		update employee set emp_password=#{param1} where emp_id=#{param2}
+	</update>
 </mapper>
