@@ -15,6 +15,8 @@ public class SwBoardDTO {
     private String board_file_name;
     private String board_file_path;
     private int board_comment;
+    private int notice_no;
+    private int free_no;
 
     private int board_category;
     private String category_name;

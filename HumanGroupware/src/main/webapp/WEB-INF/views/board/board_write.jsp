@@ -22,17 +22,13 @@
     }
 </style>
 <body>
-    <%  String userAuth = (String) request.getAttribute("userAuth");
-        if(userAuth.equals("admin")){ %>
-        <h3>공지작성</h3>
-        <input type="hidden" id="userAuth" value="admin">
-    <% } else { %>
-        <h3>게시물작성</h3>
-        <input type="hidden" id="userAuth" value="user">
-    <% } %>
+    
+    <h3 id="pageTitle"></h3>
     <div class="d-flex justify-content-center">
         <form method="post" action="/boardInsert" id="postForm">
-            <input type="hidden" id="boardCategory" name="boardCategory" readonly>
+            <input type="hidden" id="flag" name="flag" value="n">
+            <input type="hidden" id="boardID" name="boardId" value="${boardId}">
+            <input type="hidden" id="boardCategory" name="boardCategory">
             <table>
                 <tr>
                     <td>제목</td>
@@ -64,9 +60,15 @@
 <script>
 $(document)
 .ready( ()=>{
-    console.log("세션정보:"+$("#userAuth").val());
-    if($("#userAuth").val() == "admin") $("#boardCategory").val("notice");
-    else $("#boardCategory").val("free");
+    let category = "${category}";
+    if(category == "notice") {
+        $("#boardCategory").val("notice");
+        $("#pageTitle").text("공지작성");
+    }
+    else {
+        $("#boardCategory").val("free");
+        $("#pageTitle").text("게시글작성")
+    }
     console.log("카테고리:"+$("#boardCategory").val());
 
     $("#boardEditor").summernote({
@@ -82,6 +84,14 @@ $(document)
         lang: "ko-KR",
         placeholder: "내용을 입력하세요"
     })
+    let flag = '<%=(String)request.getAttribute("flag")%>';
+    console.log("flag:"+flag);
+    if(flag == "y"){
+        $("#boardTitle").val('<%=(String)request.getAttribute("boardTitle")%>');
+        $("#boardEditor").summernote("code", '<%=(String)request.getAttribute("boardContent")%>');
+        $("#flag").val("y");
+    }
+
 })
 .on("submit", "#postForm", ()=>{
     let content = $("#boardEditor").summernote("code");

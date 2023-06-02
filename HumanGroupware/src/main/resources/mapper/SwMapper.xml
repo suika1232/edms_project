@@ -3,17 +3,50 @@
 	PUBLIC "-/mybatis.org/DTD Mapper 3.0//EN"
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.human.springboot.dao.SwDAO">
-    <select id="boardList" resultType="com.human.springboot.dto.SwBoardDTO">
+    <!-- <select id="boardList" resultType="com.human.springboot.dto.SwBoardDTO">
       select a.board_id, b.emp_name, a.board_title, a.board_content, 
               a.board_created, a.board_updated, a.board_hit
       from board a, employee b
       where board_category = #{param1} and a.board_writer = b.emp_no
+      order by a.board_id
+    </select> -->
+    <select id="boardList" resultType="com.human.springboot.dto.SwBoardDTO">
+    <![CDATA[
+      select *
+      from
+          (
+          select rownum as row_num, sub.*
+          from
+              (
+              select a.*, c.emp_name
+              from board a, board_category b, employee c
+              where a.board_category = b.category_id 
+                    and a.board_writer = c.emp_no
+                    and b.category_name = #{param1}
+              order by board_id desc
+              ) sub
+          where rownum <= #{param2} * #{param3}
+          )
+      where row_num > (#{param2} - 1) * #{param3}
+      ]]>
     </select>
     <insert id="boardInsert">
-      insert into board(board_id, board_category, board_writer, board_title, 
-                        board_content, board_created, board_updated)
-      values(free_board_seq.nextval, #{param1}, #{param2}, #{param3}, #{param4},
-              to_char(sysdate, 'YYYY-MM-DD'), to_char(sysdate, 'YYYY-MM-DD'))
+      <choose>
+        <when test='param1 == 1'>
+          insert into board(board_id, board_category, board_writer, board_title, 
+                        board_content, board_created, board_updated, notice_no)
+          values(board_seq.nextval, #{param1}, #{param2}, #{param3}, #{param4},
+                to_char(sysdate, 'YYYY-MM-DD'), to_char(sysdate, 'YYYY-MM-DD'), 
+                board_notice_seq.nextval)
+        </when>
+        <otherwise>
+          insert into board(board_id, board_category, board_writer, board_title, 
+                        board_content, board_created, board_updated, free_no)
+          values(board_seq.nextval, #{param1}, #{param2}, #{param3}, #{param4},
+                to_char(sysdate, 'YYYY-MM-DD'), to_char(sysdate, 'YYYY-MM-DD'), 
+                board_free_seq.nextval)
+        </otherwise>                   
+      </choose>
     </insert>
     <select id="boardView" resultType="com.human.springboot.dto.SwBoardDTO">
       select a.board_id, b.emp_name, a.board_title, a.board_content, 
@@ -28,4 +61,20 @@
       set board_hit = board_hit + 1
       where board_id = #{param1}
     </update>
+    <select id="boardCount" resultType="int">
+      select count(a.board_id)
+      from board a, board_category b
+      where a.board_category = b.category_id and b.category_name = #{param1}
+    </select>
+    <delete id="boardDelete">
+      delete board
+      where board_id = #{param1}
+    </delete>
+    <update id="boardUpdate">
+      update board
+      set board_title = #{param2}, board_content = #{param3}, 
+          board_updated = to_char(sysdate, 'YYYY-MM-DD')  
+      where board_id = #{param1}
+    </update>
+
 </mapper>

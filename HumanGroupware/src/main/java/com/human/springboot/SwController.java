@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.human.springboot.dao.SwDAO;
@@ -41,30 +42,46 @@ public class SwController {
     public String boardFreePage(){
         return "board/board_free";
     }
-    // 게시판 글 목록 불러오기
-    @PostMapping("/boardlist/{category}")
+    // 게시판 글 목록
+    @PostMapping("/boardlist/{category}/{page}")
     @ResponseBody
-    public String boardList(@PathVariable("category")String category){
-        JSONArray jArray = new JSONArray();
-        ArrayList<SwBoardDTO> boardList = null;
-        if(category.equals("notice")){
-            boardList = sdao.boardList(1);
-        }else if(category.equals("free")){
-            boardList = sdao.boardList(2);
-        } 
+    public String boardList(@PathVariable("category")String category,
+                            @PathVariable("page")int page,
+                            HttpServletRequest req){
+        
+        HttpSession session = req.getSession();
+        session.setAttribute("userAuth", "admin");
+
+        int amount = 10; // 한 페이지 표시 갯수
+        int total = sdao.boardCount(category); // notice or free
+        int totalPage = (int)Math.ceil(total*1.0/amount);
+        System.out.println("currentPage:"+page);
+        System.out.println("totalPage:"+totalPage);
+
+        ArrayList<SwBoardDTO> boardList = sdao.boardList(category, page, amount);
+        JSONArray jArray = new JSONArray(); 
+
         for (SwBoardDTO items : boardList) {
             JSONObject jObject = new JSONObject();
             jObject.put("boardId", items.getBoard_id());
+            if(category.equals("notice")){
+                jObject.put("boardNo", items.getNotice_no());
+            }else{
+                jObject.put("boardNo", items.getFree_no());
+            }
             jObject.put("empName", items.getEmp_name());
             jObject.put("boardTitle", items.getBoard_title());
             jObject.put("boardContent", items.getBoard_content());
             jObject.put("boardCreated", items.getBoard_created());
             jObject.put("boardUpdated", items.getBoard_updated());
             jObject.put("boardHit", items.getBoard_hit());
+            jObject.put("totalPage", totalPage);
             jArray.put(jObject);
         }
         return jArray.toString();
     }
+
+
     // 게시판 글 보기
     @GetMapping("/board/view/{boardId}")
     public String boardView(@PathVariable("boardId")int boardId, Model model){
@@ -81,36 +98,73 @@ public class SwController {
         return "board/board_view";
     }
 
-    // 게시판 글 작성 페이지
-    @GetMapping("/board/newpost/{category}")
+    // 게시판 글 작성
+    @GetMapping("/board/write/{category}")
     public String boardInsertPage(@PathVariable("category")String category, 
-                                    HttpServletRequest req, 
-                                    Model model){
+                                  HttpServletRequest req, 
+                                  Model model){
+
         HttpSession session = req.getSession();
         String userAuth = (String) session.getAttribute("userAuth");
         if(userAuth == null || userAuth.equals("")){
             userAuth = "user";
         }
-        model.addAttribute("userAuth", userAuth);
+        
         model.addAttribute("category", category);
-        return "board/board_newpost";
+        return "board/board_write";
     }
     //게시판 글 저장
     @PostMapping("/boardInsert")
     public String boardInsert(HttpServletRequest req){
         int writer = 3; // 임시로 넣음
-        String category = req.getParameter("boardCategory");
+        String categoryName = req.getParameter("boardCategory");
         String title = req.getParameter("boardTitle");
         String content = req.getParameter("boardContent");
+        String flag = req.getParameter("flag");
+
         System.out.println("제목: "+title);
         System.out.println("내용: "+content);
-        if(category.equals("notice")){
-            sdao.boardInsert(1, writer, title, content);
-            return "redirect:/board/notice";
+
+        int category = categoryName.equals("notice") ? 1 : 2;
+
+        if(flag.equals("y")){
+            int boardId = Integer.parseInt(req.getParameter("boardId"));
+            sdao.boardUpdate(boardId, title, content);
+            System.out.println("수정됨");
+            return "redirect:/board/"+categoryName;
         }
-        sdao.boardInsert(2, writer, title, content);
-        return "redirect:/board/free";
+        sdao.boardInsert(category, writer, title, content);
+        System.out.println("작성됨");
+        return "redirect:/board/"+categoryName;
     }
+    //게시판 글 수정
+    @GetMapping("/boardUpdate/{boardId}")
+    public String boardUpdate(@PathVariable("boardId")int boardId, Model model){
+        SwBoardDTO board = sdao.boardView(boardId);
+    
+        model.addAttribute("boardId", board.getBoard_id());
+        model.addAttribute("category", board.getCategory_name());
+        model.addAttribute("boardTitle", board.getBoard_title());
+        model.addAttribute("boardContent", board.getBoard_content());
+        model.addAttribute("flag", "y");
+
+        return "board/board_write";
+    }
+    //게시판 글 삭제
+    @PostMapping("/boardDelete")
+    @ResponseBody
+    public String boardDelete(@RequestParam(value="boardId")String boardId){
+        try {
+            sdao.boardDelete(Integer.parseInt(boardId));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "fail";
+        }
+        return "complete";
+    }
+
+
+    
 
 
     
