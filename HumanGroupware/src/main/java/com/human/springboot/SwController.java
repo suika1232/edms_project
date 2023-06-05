@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.human.springboot.dao.SwDAO;
+import com.human.springboot.dto.EmployeeDTO;
 import com.human.springboot.dto.SwBoardDTO;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -33,24 +34,24 @@ public class SwController {
 
     // 공지사항
     @GetMapping("/board/notice")
-    public String boardNoticePage(){
+    public String boardNoticePage(HttpServletRequest req){
         return "board/board_notice";
     }
 
     // 사내게시판
     @GetMapping("/board/free")
-    public String boardFreePage(){
+    public String boardFreePage(HttpServletRequest req){
+        HttpSession userSession = req.getSession();
+        if(userSession.getAttribute("loginUser") == null){
+            userSession.setAttribute("userNO", 0);
+        }
         return "board/board_free";
     }
     // 게시판 글 목록
     @PostMapping("/boardlist/{category}/{page}")
     @ResponseBody
     public String boardList(@PathVariable("category")String category,
-                            @PathVariable("page")int page,
-                            HttpServletRequest req){
-        
-        HttpSession session = req.getSession();
-        session.setAttribute("userAuth", "admin");
+                            @PathVariable("page")int page){
 
         int amount = 10; // 한 페이지 표시 갯수
         int total = sdao.boardCount(category); // notice or free
@@ -87,9 +88,11 @@ public class SwController {
     public String boardView(@PathVariable("boardId")int boardId, Model model){
         sdao.boardHit(boardId);
         SwBoardDTO board = sdao.boardView(boardId);
+
         model.addAttribute("boardId", board.getBoard_id());
         model.addAttribute("boardTitle", board.getBoard_title());
         model.addAttribute("boardContent", board.getBoard_content());
+        model.addAttribute("boardWriter", board.getBoard_writer());
         model.addAttribute("empName", board.getEmp_name());
         model.addAttribute("boardCreated", board.getBoard_created());
         model.addAttribute("boardUpdated", board.getBoard_updated());
@@ -101,22 +104,17 @@ public class SwController {
     // 게시판 글 작성
     @GetMapping("/board/write/{category}")
     public String boardInsertPage(@PathVariable("category")String category, 
-                                  HttpServletRequest req, 
                                   Model model){
 
-        HttpSession session = req.getSession();
-        String userAuth = (String) session.getAttribute("userAuth");
-        if(userAuth == null || userAuth.equals("")){
-            userAuth = "user";
-        }
-        
         model.addAttribute("category", category);
         return "board/board_write";
     }
     //게시판 글 저장
     @PostMapping("/boardInsert")
     public String boardInsert(HttpServletRequest req){
-        int writer = 3; // 임시로 넣음
+        HttpSession userSession = req.getSession();
+        int writer = (int)userSession.getAttribute("userNo");
+
         String categoryName = req.getParameter("boardCategory");
         String title = req.getParameter("boardTitle");
         String content = req.getParameter("boardContent");
@@ -163,7 +161,46 @@ public class SwController {
         return "complete";
     }
 
+    // 임시 로그인 화면
+    @GetMapping("/temp/login")
+    public String tempLoginPage(){
+        return "temp/temp_login";
+    } 
+    // 임시 로그인
+    @PostMapping("/testlogin")
+    public String testLogin(HttpServletRequest req){
+        
+        String userId = req.getParameter("loginId");
+        String userPw = req.getParameter("loginPw");
 
+        System.out.printf("loginID: %s loginPW: %s \n", userId, userPw);
+
+        HttpSession userSession = req.getSession();
+
+        if(sdao.userCheck(userId, userPw)){
+            System.out.printf("유저 확인됨 %s \n", userId);
+            EmployeeDTO userInfo = sdao.getUserInfo(userId);
+            System.out.println(userInfo);
+            userSession.setAttribute("loginUser", userId);
+            userSession.setAttribute("userNo", userInfo.getEmp_no());
+            userSession.setAttribute("userName", userInfo.getEmp_name());
+            userSession.setAttribute("authority", userInfo.getBoard_authority());
+        }
+        return "redirect:/temp/home";
+    }
+    // 임시 로그아웃
+    @PostMapping("/testlogout")
+    public String testLogout(HttpServletRequest req){
+        HttpSession userSession = req.getSession();
+        userSession.invalidate();
+        return "redirect:/temp/home";
+    }
+    // 임시 메인
+    @GetMapping("/temp/home")
+    public String tempHome(){
+        return "temp/temp_layout";
+    }
+    
     
 
 

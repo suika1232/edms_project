@@ -32,9 +32,12 @@
       <ul class="pagination justify-content-center">
       </ul>
     </nav>
-    <div class="d-flex justify-content-end">
-        <button type="button" class="btn btn-primary" id="btnNewPost">글쓰기</button>
-    </div>
+    <% String userId = (String)session.getAttribute("loginUser");%>
+    <% if(userId != null){ %>
+        <div class="d-flex justify-content-end">
+            <button type="button" class="btn btn-primary" id="btnNewPost">글쓰기</button>
+        </div>
+    <% } %>
 </body>
 <script src="https://code.jquery.com/jquery-latest.js"></script>
 <script src="/js/bootstrap-js/bootstrap.bundle.min.js"></script>
@@ -43,6 +46,9 @@ $(document)
 .ready( () => {
     $("#curPage").val("1");
     getBoardList(1);
+
+    let userId = '<%=(String)session.getAttribute("loginUser")%>';
+    console.log("로그인 유저:"+userId);
 })
 .on("click", "#btnNewPost", () => {
     document.location="/board/write/free";

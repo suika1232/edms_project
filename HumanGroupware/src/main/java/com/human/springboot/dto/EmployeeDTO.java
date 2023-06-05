@@ -12,6 +12,10 @@ public class EmployeeDTO {
 	String emp_gender;
 	int emp_depart;
 	String emp_img;
+	int emp_birth;
+	String emp_address;
+	String emp_join;
+	String board_authority;
 	
 	
 	// Get, Set
@@ -74,5 +78,29 @@ public class EmployeeDTO {
 	}
 	public void setEmp_img(String emp_img) {
 		this.emp_img = emp_img;
+	}
+	public int getEmp_birth() {
+		return emp_birth;
+	}
+	public void setEmp_birth(int emp_birth) {
+		this.emp_birth = emp_birth;
+	}
+	public String getEmp_address() {
+		return emp_address;
+	}
+	public void setEmp_address(String emp_address) {
+		this.emp_address = emp_address;
+	}
+	public String getEmp_join() {
+		return emp_join;
+	}
+	public void setEmp_join(String emp_join) {
+		this.emp_join = emp_join;
+	}
+	public String getBoard_authority() {
+		return board_authority;
+	}
+	public void setBoard_authority(String board_authority) {
+		this.board_authority = board_authority;
 	}
 }
