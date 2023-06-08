@@ -180,7 +180,6 @@ public class SwController {
         if(sdao.userCheck(userId, userPw)){
             System.out.printf("유저 확인됨 %s \n", userId);
             EmployeeDTO userInfo = sdao.getUserInfo(userId);
-            System.out.println(userInfo);
             userSession.setAttribute("loginUser", userId);
             userSession.setAttribute("userNo", userInfo.getEmp_no());
             userSession.setAttribute("userName", userInfo.getEmp_name());

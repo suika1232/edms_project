@@ -12,20 +12,37 @@
     <title>Test Home</title>
 </head>
 <style>
+    .sidebar{
+        height: 100vh;
+        box-shadow: 5px 5px 5px lightgray;
+    }
+    .login-btn{
+        border: 1px solid #0d6efd; 
+        border-radius: 8px; 
+        text-align: center; 
+        background-color: #0d6efd;
+    }
 </style>
 <body>
-<nav class="nav justify-content-start bg-primary">
+<!-- <nav class="nav justify-content-start bg-primary">
     <% String userId = (String)session.getAttribute("loginUser");%>
     <% if(userId == null){ %>
     <a class="nav-link text-white" href="/temp/login">Login</a>
     <% } %>
     <% if(userId != null){ %>
+    <div style="display: flex; align-items: center; font-weight: bold; color: white;">
+        환영합니다&nbsp;
+        <%=session.getAttribute("userName")%>
+        &nbsp;님
+    </div>    
     <a class="nav-link text-white" href="#" onclick="logout()">Logout</a>
     <% } %>
     
     
-</nav>
-<div class="flex-column col-md-2 bg-white float-md-start" id="navbar">
+</nav> -->
+
+
+<!-- <div class="flex-column col-md-2 bg-white float-md-start" id="navbar">
     <div class="panel panel-info">
         <ul class="list-group">
             <li class="list-group-item">
@@ -38,10 +55,49 @@
             </li>
         </ul>
     </div>
+</div> -->
+
+<div class="container-fluid">
+    <div class="row flex-nowrap">
+        <div class="col-md-2 sidebar bg-light float-md-start">
+            <div class="d-flex flex-column align-items-center">
+                <a href="#" class="navbar-brand text-center d-block">HumanGroupWare</a>
+            </div>
+            <div class="card">
+              <div class="card-body text-center">
+                <% String id = (String)session.getAttribute("loginUser");%>
+                <% if(id == null){ %>
+                <a class="nav-link text-white login-btn" href="/temp/login">Login</a>
+                <% } %>
+                <% if(id != null){ %>
+                    환영합니다<br>
+                    <%=session.getAttribute("userName")%>
+                    &nbsp;님
+                <a class="nav-link text-white login-btn" href="#" 
+                    onclick="logout()">Logout</a>
+                <% } %>
+              </div>
+            </div>
+            <div>
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <a href="#" onclick="changeView('notice')">
+                            <i class="bi bi-info-circle"></i>공지사항</a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="#" onclick="changeView('free')">
+                            <i class="bi bi-people"></i>자유게시판</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="col float-md-end">
+            <iframe id="sectionView" src="/board/notice" style="width: 850px; height: 800px;"></iframe>
+        </div>
+    </div>
 </div>
-<section class="float-md-none">
-    <iframe id="sectionView" src="/board/notice" style="width: 850px; height: 800px;"></iframe>
-</section>
+
+
 
 </body>
 <script src="https://code.jquery.com/jquery-latest.js"></script>
@@ -58,12 +114,10 @@ function logout(){
         type: "post",
         success: ()=>{
             alert("로그아웃 되었습니다.");
+            window.location.reload();
         },
         error: (err)=>{
             console.log(err);
-        },
-        complete: ()=>{
-            window.location.reload();
         }
     })
 }
