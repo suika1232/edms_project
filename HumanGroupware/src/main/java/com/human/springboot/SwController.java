@@ -1,10 +1,14 @@
 package com.human.springboot;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.UUID;
 import java.net.URLEncoder;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -127,7 +131,7 @@ public class SwController {
     //게시판 글 저장
     @PostMapping("/boardInsert")
     public String boardInsert(HttpServletRequest req,
-                            @RequestParam(value="boardFile")MultipartFile multi){
+                            @RequestParam(value="boardFile", required = false)MultipartFile multi){
 
         HttpSession userSession = req.getSession();
         int writer = (int)userSession.getAttribute("userNo");
@@ -140,11 +144,25 @@ public class SwController {
         System.out.println("제목: "+title);
         System.out.println("내용: "+content);
 
-        String fileName = multi.getOriginalFilename();
-        System.out.println(fileName);
-        String filePath = "D:/testimg/";
-        File file = new File(filePath+fileName);
+        String originalFileName = null;
+        String filePath = null;
+        String fileName = null;
 
+        if(!multi.isEmpty()){
+            try {
+            originalFileName = multi.getOriginalFilename();
+            String fileExt = FilenameUtils.getExtension(originalFileName);
+            System.out.println("업로드 파일명:"+originalFileName);
+            System.out.println("확장자: "+fileExt);
+            fileName = UUID.randomUUID().toString()+"."+fileExt;
+            filePath = "D:/testimg/"+fileName;
+            
+            File file = new File(filePath+filePath);
+            multi.transferTo(file);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 
         int category = categoryName.equals("notice") ? 1 : 2;
 
@@ -154,7 +172,7 @@ public class SwController {
             System.out.println("수정됨");
             return "redirect:/board/"+categoryName;
         }
-        sdao.boardInsert(category, writer, title, content);
+        sdao.boardInsert(category, writer, title, content, originalFileName, filePath);
         System.out.println("작성됨");
         return "redirect:/board/"+categoryName;
     }
@@ -269,7 +287,6 @@ public class SwController {
         } catch (Exception e) {
            e.printStackTrace();
         }
-        
         return "redirect:/test/download";
     }
     // 테스트 다운로드
@@ -278,7 +295,7 @@ public class SwController {
         try{
             byte[] fileByte = 
             FileUtils.readFileToByteArray(new File("D:/testimg/\uC5D0\uC5B4\uD504\uB77C\uC774\uC5B4.jpg"));
-            
+
             res.setContentType("application/octet-stream");
             res.setHeader("Content-Disposition", "attachment; fileName=\""+
                             URLEncoder.encode("air.jpg", "UTF-8")+"\";");

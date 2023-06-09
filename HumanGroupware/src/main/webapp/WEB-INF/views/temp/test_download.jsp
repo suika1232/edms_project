@@ -16,13 +16,13 @@
         method="post" action="/testupload" enctype="multipart/form-data">
         <div class="row">
             <div class="col mb-3 justify-content-center">
-                <input type="file" class="form-control" name="fileUpload" id="fileUpload" aria-describedby="fileHelpId">
+                <input type="file" class="form-control form-control-sm" name="fileUpload" id="fileUpload" aria-describedby="fileHelpId">
                 <div id="fileHelpId" class="form-text">테스트용 업로드</div>
             </div>
         </div>
         <div class="row">
             <div class="col mb-3 justify-content-end">
-                <button type="submit" class="btn btn-primary" id="btnSubmit">전송</button>
+                <button type="submit" class="btn btn-primary btn-sm" id="btnSubmit">전송</button>
             </div>
         </div> 
     </form>

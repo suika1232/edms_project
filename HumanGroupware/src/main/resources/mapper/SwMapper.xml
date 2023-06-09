@@ -34,17 +34,20 @@
       <choose>
         <when test='param1 == 1'>
           insert into board(board_id, board_category, board_writer, board_title, 
-                        board_content, board_created, board_updated, notice_no)
+                        board_content, board_created, board_updated, notice_no, 
+                        board_file_name, board_file_path)
           values(board_seq.nextval, #{param1}, #{param2}, #{param3}, #{param4},
                 to_char(sysdate, 'YYYY-MM-DD'), to_char(sysdate, 'YYYY-MM-DD'), 
-                board_notice_seq.nextval)
+                board_notice_seq.nextval, #{param5, jdbcType=VARCHAR}, #{param6, jdbcType=VARCHAR})
+
         </when>
         <otherwise>
           insert into board(board_id, board_category, board_writer, board_title, 
-                        board_content, board_created, board_updated, free_no)
+                        board_content, board_created, board_updated, free_no,
+                        board_file_name, board_file_path)
           values(board_seq.nextval, #{param1}, #{param2}, #{param3}, #{param4},
                 to_char(sysdate, 'YYYY-MM-DD'), to_char(sysdate, 'YYYY-MM-DD'), 
-                board_free_seq.nextval)
+                board_free_seq.nextval, #{param5, jdbcType=VARCHAR}, #{param6, jdbcType=VARCHAR})
         </otherwise>                   
       </choose>
     </insert>
