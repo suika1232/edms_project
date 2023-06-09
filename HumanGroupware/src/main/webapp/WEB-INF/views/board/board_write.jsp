@@ -22,10 +22,10 @@
     }
 </style>
 <body>
-    
     <h3 id="pageTitle"></h3>
     <div class="d-flex justify-content-center">
-        <form method="post" action="/boardInsert" id="postForm">
+        <form method="post" action="/boardInsert" id="postForm"
+                enctype="multipart/form-data">
             <input type="hidden" id="flag" name="flag" value="n">
             <input type="hidden" id="boardID" name="boardId" value="${boardId}">
             <input type="hidden" id="boardCategory" name="boardCategory">
@@ -35,6 +35,13 @@
                     <td>
                         <input class="form-control" type="text" id="boardTitle" 
                             name="boardTitle" required autofocus>
+                    </td>
+                </tr>
+                <tr>
+                    <td>파일첨부</td>
+                    <td>
+                        <input class="form-control" type="file" id="boardFile" 
+                            name="boardFile">
                     </td>
                 </tr>
                 <tr>

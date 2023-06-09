@@ -58,7 +58,7 @@
 </div> -->
 
 <div class="container-fluid">
-    <div class="row flex-nowrap">
+    <div class="row flex-nowrap fixed-top">
         <div class="col-md-2 sidebar bg-light float-md-start">
             <div class="d-flex flex-column align-items-center">
                 <a href="#" class="navbar-brand text-center d-block">HumanGroupWare</a>
@@ -91,8 +91,8 @@
                 </ul>
             </div>
         </div>
-        <div class="col float-md-end">
-            <iframe id="sectionView" src="/board/notice" style="width: 850px; height: 800px;"></iframe>
+        <div class="col float-md-end video-warp">
+            <iframe id="sectionView" src="/board/notice" style="width: 100%; height: 100%;"></iframe>
         </div>
     </div>
 </div>

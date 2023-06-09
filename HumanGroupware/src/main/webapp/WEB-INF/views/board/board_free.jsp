@@ -23,7 +23,8 @@
         <thead>
             <tr>
                 <th>번호</th><th>제목</th><th>작성자</th>
-                <th>작성</th><th>수정</th><th>조회</th>
+                <th>작성</th><th>수정</th><th>댓글</th>
+                <th>조회</th>
             </tr>
         </thead>
         <tbody></tbody>
@@ -87,6 +88,7 @@ function getBoardList(curPage){
                     data[i]["empName"]+"</td><td>"+
                     data[i]["boardCreated"]+"</td><td>"+
                     data[i]["boardUpdated"]+"</td><td>"+
+                    data[i]["commentCount"]+"</td><td>"+
                     data[i]["boardHit"]+"</td></tr>"
                 $("#freeTable tbody").append(post);
                 total = data[i]["totalPage"];

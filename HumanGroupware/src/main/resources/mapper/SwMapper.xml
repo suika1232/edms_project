@@ -76,6 +76,26 @@
           board_updated = to_char(sysdate, 'YYYY-MM-DD')  
       where board_id = #{param1}
     </update>
+    <select id="boardCommentCount" resultType="int">
+      select count(*)
+      from board_comment
+      where board_id = #{param1}
+    </select>
+    <insert id="addComment">
+      insert into board_comment
+      values(comment_seq.nextval, #{param1}, #{param2}, #{param3}, 
+              to_char(sysdate, 'YYYY-MM-DD'))
+    </insert>
+    <delete id="deleteComment">
+      delete board_comment
+      where comment_no = #{param1}
+    </delete>
+    <select id="commentList" resultType="com.human.springboot.dto.SwCommentDTO">
+      select a.*, b.emp_name
+      from board_comment a, employee b
+      where a.writer = b.emp_no and board_id = #{param1}
+      order by a.comment_no
+    </select>
     <select id="userCheck" resultType="boolean">
       select decode(count(emp_id), 1, 1, 0, 0)
       from employee

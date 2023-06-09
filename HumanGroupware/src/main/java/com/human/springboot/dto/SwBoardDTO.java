@@ -5,6 +5,7 @@ import lombok.Data;
 @Data
 public class SwBoardDTO {
     
+    // board 
     private int board_id;
     private String board_title;
     private String board_content;
@@ -18,9 +19,9 @@ public class SwBoardDTO {
     private int notice_no;
     private int free_no;
 
+    // board_category
     private int board_category;
     private String category_name;
 
-    private String emp_name;
-    
+    private String emp_name;  
 }

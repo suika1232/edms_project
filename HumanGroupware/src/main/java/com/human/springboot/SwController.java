@@ -1,5 +1,6 @@
 package com.human.springboot;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import org.json.JSONArray;
@@ -12,10 +13,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.human.springboot.dao.SwDAO;
 import com.human.springboot.dto.EmployeeDTO;
 import com.human.springboot.dto.SwBoardDTO;
+import com.human.springboot.dto.SwCommentDTO;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -64,11 +67,14 @@ public class SwController {
 
         for (SwBoardDTO items : boardList) {
             JSONObject jObject = new JSONObject();
+            int commentCount = 0;
             jObject.put("boardId", items.getBoard_id());
             if(category.equals("notice")){
                 jObject.put("boardNo", items.getNotice_no());
             }else{
                 jObject.put("boardNo", items.getFree_no());
+                commentCount = sdao.boardCommentCount(items.getBoard_id());
+                jObject.put("commentCount",commentCount);
             }
             jObject.put("empName", items.getEmp_name());
             jObject.put("boardTitle", items.getBoard_title());
@@ -77,6 +83,7 @@ public class SwController {
             jObject.put("boardUpdated", items.getBoard_updated());
             jObject.put("boardHit", items.getBoard_hit());
             jObject.put("totalPage", totalPage);
+
             jArray.put(jObject);
         }
         return jArray.toString();
@@ -98,6 +105,11 @@ public class SwController {
         model.addAttribute("boardUpdated", board.getBoard_updated());
         model.addAttribute("boardHit", board.getBoard_hit());
         model.addAttribute("categoryName", board.getCategory_name());
+
+        ArrayList<SwCommentDTO> commentList = sdao.commentList(boardId);
+        System.out.println(commentList.toString());
+        model.addAttribute("commentList", commentList);
+
         return "board/board_view";
     }
 
@@ -111,7 +123,9 @@ public class SwController {
     }
     //게시판 글 저장
     @PostMapping("/boardInsert")
-    public String boardInsert(HttpServletRequest req){
+    public String boardInsert(HttpServletRequest req,
+                            @RequestParam(value="boardFile")MultipartFile multi){
+
         HttpSession userSession = req.getSession();
         int writer = (int)userSession.getAttribute("userNo");
 
@@ -122,6 +136,12 @@ public class SwController {
 
         System.out.println("제목: "+title);
         System.out.println("내용: "+content);
+
+        String fileName = multi.getOriginalFilename();
+        System.out.println(fileName);
+        String filePath = "D:/testimg/";
+        File file = new File(filePath+fileName);
+
 
         int category = categoryName.equals("notice") ? 1 : 2;
 
@@ -157,6 +177,37 @@ public class SwController {
         } catch (Exception e) {
             e.printStackTrace();
             return "fail";
+        }
+        return "complete";
+    }
+    // 게시판 댓글작성
+    @PostMapping("/addComment")
+    @ResponseBody
+    public String addComment(HttpServletRequest req){
+        try{
+            int boardId = Integer.parseInt(req.getParameter("boardId"));
+            int writer = Integer.parseInt(req.getParameter("writer"));
+            String content = req.getParameter("content");
+
+            System.out.println("글번호: "+boardId+" 댓글작성자: "+writer+" 내용: "+content);
+
+            sdao.addComment(boardId, writer, content);
+        }catch(Exception e){
+            e.printStackTrace();
+            return "fail";
+        }
+        return "complete";
+    }
+    // 게시판 댓글삭제
+    @PostMapping("/deleteComment")
+    @ResponseBody
+    public String deleteComment(HttpServletRequest req){
+        try {
+            int commentNo = Integer.parseInt(req.getParameter("commentId"));
+            sdao.deleteComment(commentNo);
+        } catch (Exception e) {
+           e.printStackTrace();
+           return "fail";
         }
         return "complete";
     }
