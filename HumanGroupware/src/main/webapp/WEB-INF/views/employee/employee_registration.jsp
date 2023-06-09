@@ -5,122 +5,101 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
-<title>사원 등록 페이지</title>
+<title>직원 부서 변경</title>
+<link type="text/css" rel="stylesheet" href="/resources/css/employee_registration.css">
 </head>
-<style>
-  #imageContainer {
-    width: 150px;
-    height: 200px;
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    border:1px solid #000;
-  }
-</style>
-
-
-
 <body>
-
-
-
-<header>
-
-</header>
-<!-- 사원관리 / 상세 -->
-<div id=employee_box>
-
-	<!-- 공통 -->
-	<div id=employeeMain>
-		<div id=employeeOption>사원 관리</div>
-		<div id=attendance_menagement></div>
-		<div id=organization><a href="/hw/employee/organization">조직도</a></div>
-		<div id=inquiry><a href="/hw/employee/inquiry">사원 조회</a></div>
-		<div id=registration><a href="/hw/employee/registration">사원 정보 변경</a></div>
-	</div>
+<!-- 임시 링크용 -->
+<div class="option" style="border:0.1px solid black; width:150px;text-align:center;">
+	<a>[임시 링크용 div]</a>
 	<div>
-		<div>
-			사원등록
-		</div>
-		<div id=employee_import>
-			사원 정보 입력
-			<div>
-				<input type="file" id="imageInput" onchange="changeButtonText(this)">
-				<div id="imageContainer">
-			</div>
-			</div>
-			<div><a id=employee_insert>입사일자</a><input type=date id=entering_date></div>
-			
-			<div><a id=employee_team1>부서</a>
-					<input type="text" id="employee_team2" style="width:80px;" value="">
-					<select style="width:80px;" id="select_team" name="select_team">
-					</select>
-					<input type="button" value="추가" id=department_insert0>
-
-			</div>
-			<!-- db 연동하면 안적어도됨 -->
-			<div><a id=employee_position1>직급</a>
-					<input type="text" id="employee_position2" style="width:80px;"value="">
-					<select style="width:80px;"id="select_position" name="select_position">
-					</select>
-			</div>
-			
-			<div><a id=employee_form>고용형태</a>
-					<input type="text" id="employee_form2" style="width:80px;" value="">
-					<select style="width:80px;" id="select_form" name="select_form">
-					</select>
-						
-					</div><br>
-			<div><a id=employee_insert>사원명</a><input type=text id="employee_kname" style="width:100px;"></div><br>
-			<div><a id=employee_insert>보유 아이디</a><input type=text id="employee_id" style="width:100px;"></div><br>
-			<div><a id=employee_insert>핸드폰</a><input type=text id="employee_phone" style="width:100px;"></div><br>			
-			<div><a id=employee_email1>이메일</a><input type=text style="width:125px;" id=employee_email2>@
-					<input type="text"  id="employee_email3" style="width:125px;" disabled value="naver.com">
-					<select style="width:125px;margin-right:10px" name="selectEmail" id="selectEmail">
-					 	<option value="1">직접입력</option>
-					 	<option value="naver.com" selected>naver.com</option>
-					 	<option value="hanmail.net">hanmail.net</option>
-						<option value="hotmail.com">hotmail.com</option>
-						<option value="nate.com">nate.com</option>
-						<option value="yahoo.co.kr">yahoo.co.kr</option>
-						<option value="empas.com">empas.com</option>
-						<option value="dreamwiz.com">dreamwiz.com</option>
-						<option value="freechal.com">freechal.com</option>
-						<option value="lycos.co.kr">lycos.co.kr</option>
-						<option value="korea.com">korea.com</option>
-						<option value="gmail.com">gmail.com</option>
-						<option value="hanmir.com">hanmir.com</option>
-						<option value="paran.com">paran.com</option>
-					</select>
-			</div>
-			<div>
-				직급, 고용 히든<input type=text id=emp_position1>
-				부서히든<input type=text id=emp_depart1>
-			</div>
-            <div>주소
-            <input type="text" id="postcode" name=postcode class="address" style="width:150px;" placeholder="우편번호" readonly>
-			<input type="button" onclick="execDaumPostcode()" class=btnadd value="우편번호 찾기"><br>
-			<input type="text" id="roadAddress" name=roadAddress style="width:300px;" class="address" readonly placeholder="도로명주소" readonly><br>
-			<span id="guide" style="color:#999;display:none"></span>
-			<input type="text" id="detailAddress" name=detailAddress style="width:300px;" class="address" placeholder="상세주소">
-			</div>
-		</div>
-		<input type="button" value="등록" id=employee_insert3>
+		<a href="/employee/organization">조직도</a><br>
+		<a href="/employee/inquiry">직원조회</a><br>
+		<a href="/employee/registration">부서/직급변경</a><br>
+		<a href="/attendance/current">근태현황</a><br>
+		<a href="/attendance/management">근태관리</a><br>
+		<a href="/attendance/byEmployee">직원별 근태현황</a>
 	</div>
+</div>
+<!-- 임시 링크용 -->
 
+<!-- 사원관리 / 상세 -->
+<div class="inquiry_main">
+		<a>부서/직급 변경</a>
+	</div>
+<div>
+	
+	<div class="employee_all">
+		<div>
+			<div class="employee_people">
+				<div class="image">
+					<img src="/resources/img/people.png">
+					
+				</div>				
+				<div class="test">
+					<div class="input_box_name">
+						<a class="a_box_name">사 원 명</a>
+						<input type=text id="employee_kname" class="input_type">
+					</div>
+					<div class="input_box_name">
+						<a class="a_box_name">연 락 처</a>
+						<input type=text id="employee_phone" class="input_type">
+					</div>
+					<div class="input_box_name">
+						<a class="a_box_name">이 메 일</a>
+						<input type=text id="employee_email" class="input_type">
+					</div>
+					<div class="input_box_name">
+						<a class="a_box_name">아 이 디</a>
+						<input type=text id="employee_id" class="input_type">
+					</div>
+					
+				</div>
+			</div>
+			<div class="test2">
+				<div class="emp_depart_box">
+					입 사 일 자<input type=date id=entering_date class="input_box_result">
+				</div>
+				
+				<div class="emp_depart_box">
+					<a id=employee_team1>부 서</a>
+					<input type="text" id="employee_team2"  value="" class="input_box_result" disabled>
+					<select id="select_team" name="select_team" class="input_box_select">
+						<option value="1">선택</option>
+					</select>
+	
+				</div>
+				<div class="emp_depart_box">
+					<a id=employee_position1>직 급</a>
+					<input type="text" id="employee_position2" value=""class="input_box_result" disabled>
+					<select id="select_position" name="select_position" class="input_box_select">
+						<option value="1">선택</option>
+					</select>
+				</div>
+				
+				<div class="emp_depart_box">
+					<a id=employee_form>고 용 형 태</a>
+					<input type="text" id="employee_form2"  value=""class="input_box_result" disabled>
+					<select id="select_form" name="select_form" class="input_box_select">
+						<option value="1">선택</option>
+					</select>
+				</div>
+							
+				<div>
+					<input type=hidden id=emp_position1>
+					<input type=hidden id=emp_depart1>
+				</div>
+			</div>
+			<div>
+				<input type="button" value="등록" id=employee_insert3 class="insert_btn">
+			</div>
+	</div>
+</div>
 </div>
 
-<footer>
-
-</footer>
-
+			
 </body>
 <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
-<!-- <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-<script src="/js/addressapi.js"></script> -->
-
-
 <script>
 $(document).ready(function(){
 	loadExemployee();
@@ -150,7 +129,7 @@ $(document).ready(function(){
 		   $("#select_position option:selected").each(function () {
 				if($(this).val()== '1'){
 					 $("#employee_position2").val('');
-					 $("#employee_position2").attr("disabled",false); 
+					 $("#employee_position2").attr("disabled",true); 
 				}else{ 
 					 $("#employee_position2").val($(this).text());
 					 $("#employee_position2").attr("disabled",true);
@@ -162,7 +141,7 @@ $(document).ready(function(){
 		   $("#select_form option:selected").each(function () {
 				if($(this).val()== '1'){
 					 $("#employee_form2").val('');
-					 $("#employee_form2").attr("disabled",false); 
+					 $("#employee_form2").attr("disabled",true); 
 				}else{ 
 					 $("#employee_form2").val($(this).text());
 					 $("#employee_form2").attr("disabled",true);
@@ -174,7 +153,7 @@ $(document).ready(function(){
 		   $("#select_team option:selected").each(function () {
 				if($(this).val()== '1'){
 					 $("#employee_team2").val('');
-					 $("#employee_team2").attr("disabled",false); 
+					 $("#employee_team2").attr("disabled",true); 
 				}else{ 
 					 $("#employee_team2").val($(this).text());
 					 $("#employee_team2").attr("disabled",true);
@@ -182,29 +161,38 @@ $(document).ready(function(){
 				}});
 	});
 	
-	
 	// 사원 정보 업데이트 ( update ) department_insert0  employee_insert
 	$('#employee_insert3').on("click",function(){
-		console.log($('#emp_position1').val());
-		console.log($('#emp_depart1').val());
-		console.log($('#employee_phone').val());
-		console.log($('#employee_id').val());
  		$.ajax({
 			url:'/employee_update0',
-			data:{emp_position:$('#emp_position1').val(),
+			data:{emp_join:$('#entering_date').val(),
+				   emp_position:$('#emp_position1').val(),
 				   emp_depart:$('#emp_depart1').val(),
-				   emp_mobile:$('#employee_phone').val(),
 				   emp_id:$('#employee_id').val()},
 			type:'post',
 			dataType:'text',
+			beforeSend:function(){
+		        let emp_position = $.trim($('#emp_position1').val());
+		        let employee_team = $.trim($('#employee_team2').val());
+		           if(emp_position==""||emp_position==null){
+		              alert('직급, 고용형태를 잘못 선택하셨습니다.');
+		              return false;
+		           }
+		           if(employee_team==""||employee_team==null){
+			              alert('부서를 미선택 하셨습니다.');
+			              return false;
+			           }
+			},
 			success:function(data){
 				if(data=="ok"){
-					alert('정보가 수정되었습니다')
+					alert('정보 입력이 완료되었습니다.')
+					document.location.href="/employee/registration";
 				}else{
-					alert('오류')
+					alert('알수 없는 오류가 발생하였습니다.')
+					document.location.href="/employee/registration";
 				}
 			}
-		}) 
+		})
 	})
 	
 // 한글, 영어만 입력가능

@@ -5,51 +5,45 @@
 <head>
 <meta charset="UTF-8">
 <title>근태 관리</title>
+<link type="text/css" rel="stylesheet" href="/resources/css/attendance_management.css">
 </head>
 <body>
-
-
-<div>
-<!-- 공통 -->
-	<div id=employeeMain>
-		<div id=employeeOption>나의 근태 관리</div>
-		
-		<div id=organization><a href="/hw/attendance/current">근태 현황</a></div>
-		<div id=inquiry><a href="/hw/attendance/management">근태 관리</a></div>
-		<div id=registration><a href="/hw/attendance/byEmployee">사원별 근태 현황</a></div>
-	</div>
+<!-- 임시 링크용 -->
+<div class="option" style="border:0.1px solid black; width:150px;text-align:center;">
+	<a>[임시 링크용 div]</a>
 	<div>
-		<div>
-			<div>근태 관리</div>
-		</div>
-		<div>
-			서류 양식 다운로드
-		</div>
-		<div>
-			<div>
-				<select style="width:80px;" id="select_team" name="select_team">
-							<option value="야근" selected>야근</option>
-				</select>
-			</div>
-			<div>
-				발신인<input type=text>
-			</div>
-			<div>
-				수신인
-				<select style="width:200px;" id="addressee_select" name="addressee_select">
-				
-				</select>
-			</div>
-			<div>
-				<input type=text style="width:250px; height:250px"placeholder="전달사항">
-			</div>
-			<div>
-				첨부파일<input type=file>
-			</div>
-		</div>
+		<a href="/employee/organization">조직도</a><br>
+		<a href="/employee/inquiry">직원조회</a><br>
+		<a href="/employee/registration">부서변경</a><br>
+		<a href="/attendance/current">근태현황</a><br>
+		<a href="/attendance/management">근태관리</a><br>
+		<a href="/attendance/byEmployee">직원별 근태현황</a>
+	</div>
+</div>
+<!-- 임시 링크용 -->
+	
+<div class="inquiry_main">
+	<a>근태관리</a>
+</div>
+
+<div class="all_dataSend">
+	<div class="data_div">
+	자료
+	</div>
+
+	<div class="send_div">
+	전송
 	</div>
 </div>
 
+<input type="button" value="전송" id=employee_insert3 class="send_btn">
+
+
+
+
+<!-- <select style="width:200px;" id="addressee_select" name="addressee_select">
+				
+</select> -->
 </body>
 <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script>
