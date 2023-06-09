@@ -2,7 +2,9 @@ package com.human.springboot;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.net.URLEncoder;
 
+import org.apache.commons.io.FileUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,7 @@ import com.human.springboot.dto.SwBoardDTO;
 import com.human.springboot.dto.SwCommentDTO;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -249,6 +252,46 @@ public class SwController {
     @GetMapping("/temp/home")
     public String tempHome(){
         return "temp/temp_layout";
+    }
+    // 파일 테스트 페이지
+    @GetMapping("/test/download")
+    public String testDownload(){
+        return "temp/test_download";
+    }
+    // 테스트 업로드
+    @PostMapping("/testupload")
+    public String testUpload(@RequestParam(value="fileUpload")MultipartFile multi){
+        try {
+            String fileName = multi.getOriginalFilename();
+            System.out.println(fileName);
+            File file = new File("D:/testimg/"+fileName);
+            multi.transferTo(file);
+        } catch (Exception e) {
+           e.printStackTrace();
+        }
+        
+        return "redirect:/test/download";
+    }
+    // 테스트 다운로드
+    @GetMapping("/test/filedownload")
+    public void testDownload(HttpServletResponse res){
+        try{
+            byte[] fileByte = 
+            FileUtils.readFileToByteArray(new File("D:/testimg/\uC5D0\uC5B4\uD504\uB77C\uC774\uC5B4.jpg"));
+            
+            res.setContentType("application/octet-stream");
+            res.setHeader("Content-Disposition", "attachment; fileName=\""+
+                            URLEncoder.encode("air.jpg", "UTF-8")+"\";");
+            res.setHeader("Content-Transfer-Encoding", "Binary");
+
+            res.getOutputStream().write(fileByte);
+            res.getOutputStream().flush();
+            res.getOutputStream().close();
+            
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
     }
     
     

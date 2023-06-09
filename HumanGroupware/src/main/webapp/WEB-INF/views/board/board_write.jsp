@@ -20,6 +20,13 @@
         margin-top: 5px;
         margin-left: 10px;
     }
+    /* summernote 크기고정 */
+    .note-editable, .note-code{
+    height: 400px;
+    min-height: 400px;
+    max-height: 400px !important;
+    max-width: 600px;
+    }
 </style>
 <body>
     <h3 id="pageTitle"></h3>
@@ -80,6 +87,9 @@ $(document)
 
     $("#boardEditor").summernote({
         height: 400,
+        maxHeight: 400,
+        disableResizeEditor: true,
+        disableDragAndDrop: true,
         toolbar: [
             ['style', ['bold', 'italic', 'underline', 'clear']],
             ['font', ['strikethrough', 'superscript', 'subscript']],
