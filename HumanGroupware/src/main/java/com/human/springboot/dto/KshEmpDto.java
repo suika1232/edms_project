@@ -11,5 +11,9 @@ public class KshEmpDto {
 	private int emp_mobile;
 	private String emp_email;
 	private String emp_gender;
-	private int emp_birthday;
+	private int emp_birth;
+	private int emp_position;
+	private int emp_depart;
+	private String emp_img;
+	private String emp_address;
 }

@@ -74,7 +74,7 @@ $(document)
 // 취소 버튼을 누르면 메인으로 돌아갑니다.
 .on('click','#x',function(){
 	alert("로그인이 취소되었습니다");
-	window.location.href = '/main';
+	window.location.href = '/employee/main';
 })
 // 로그인 정보를 입력하고 확인을 누르면 맞으면 main 틀리면 다시 입력하게 합니다.
 .on('click','#ok',function(){
@@ -83,14 +83,14 @@ $(document)
 		return false;
 	}
 	$.ajax({
-		url: 'login_session',
+		url: '/employee/login_session',
 		data: {emp_id:$('#emp_id').val(),emp_password:$('#emp_password').val()},
 		type:'post',
 		dataType: 'text',
 		success : function(data){
 			if(data == "ok"){
 				alert("로그인 되셨습니다!");
-				document.location = "/main" 
+				document.location = '/employee/main';
 			}else{
 				alert("로그인 정보가 일치하지 않습니다")
 			}
@@ -112,7 +112,7 @@ $(document)
 		return false;
 	}
 	$.ajax({
-		url:'emp_findID',
+		url:'/emp_findID',
 		data: {FIN: $('#FIN').val(),
 			   FIM: $('#FIM').val(),
 			   FIE: $('#FIE').val()},
@@ -165,7 +165,7 @@ $(document)
 		return false;
 	}
 	$.ajax({
-		url:'emp_findPW',
+		url:'/emp_findPW',
 		data: {FPN : $('#FPN').val(),
 			   FPI : $('#FPI').val(),
 			   FPM : $('#FPM').val()},
@@ -197,7 +197,7 @@ $(document)
 		return false;
 	}
 	$.ajax({
-		url:'Emp_PwChange',
+		url:'/Emp_PwChange',
 		data:{ PWC: $('#PWC').val(),
 			   REPWC: $('#REPWC').val(),
 			   FPI : $('#FPI').val()},

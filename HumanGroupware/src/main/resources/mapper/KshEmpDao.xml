@@ -13,6 +13,7 @@
 	<select id="emp_idc" resultType="int">
     	select count(*) from employee where emp_id = #{param1}
 	</select>
+	
 	<!-- 로그인 구현 -->
 	<select id="emp_login" resultType="String">
 		select emp_id from employee where emp_id=#{param1} and emp_password=#{param2}
@@ -34,4 +35,34 @@
 	<update id="PwChange">
 		update employee set emp_password=#{param1} where emp_id=#{param2}
 	</update>
+	
+	<!-- 마이페이지 구현 -->
+	<select id="emp_list"	resultType="com.human.springboot.dto.KshEmpDto">
+		select * from employee where emp_id= #{param1}
+	</select>
+	
+	<!-- 마이페이지 비밀번호 변경 -->
+	<update id="Mypage_pw">
+		update employee set emp_password=#{param1} where emp_id=#{param2}
+	</update>
+	
+	<!-- 마이페이지 모바일번호 변경 -->
+	<update id="Mypage_mobile">
+		update employee set emp_mobile= #{param1} where emp_id=#{param2}
+	</update>
+	
+	<!-- 마이페이지 이미지 넣기 -->
+	<update id="Mypage_img">
+		update employee set emp_img = #{param1} where emp_id = #{param2}
+	</update>
+	
+	<!-- 마이페이지 주소 넣기 -->
+	<update id="Mypage_address">
+		update employee set emp_address = #{param1} where emp_id = #{param2}
+	</update>
+	
+	<!-- 마이페이지 회원 삭제 -->
+	<delete id = "Mypage_delete">
+		delete employee where emp_id = #{param1}
+	</delete>
 </mapper>

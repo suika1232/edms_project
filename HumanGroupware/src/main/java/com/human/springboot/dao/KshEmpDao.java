@@ -28,4 +28,22 @@ public interface KshEmpDao {
 	
 	//emp_PwChange == 회원비밀번호 변경
 	void PwChange(String pw ,String id);
+	
+	// /employee/mypage == mypage emp_id에 맞는 정보를 갖고온다
+	ArrayList<KshEmpDto> emp_list(String emp_id);
+	
+	// Mypage_pw == 마이페이지 회원 비밀번호 변경
+	void Mypage_pw(String pw , String id);
+	
+	//Mypage_mobile == 마이페이지 전화번호 변경
+	void Mypage_mobile(int mobile, String id);
+	
+	//Mypage_img == 마이페이지에서 이미지 넣기
+	void Mypage_img(String img, String id);
+	
+	//Mypage_address == 마이페이지에서 주소 넣기
+	void Mypage_address(String address , String id);
+	
+	//Mypage_emp_delete == 마이페이지에서 회원 삭제
+	void Mypage_delete(String id);
 }
