@@ -1,5 +1,6 @@
 package com.human.springboot;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +11,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.human.springboot.dao.KshEmpDao;
 import com.human.springboot.dto.KshEmpDto;
@@ -26,23 +29,37 @@ public class kshController {
 	/*페이지 이동*/
 	@GetMapping("/")
 	public String doRoot() {
-		return "redirect:/main";
+		return "redirect:employee/main";
 	}
-	@GetMapping("/main")
+	@GetMapping("/employee/main")
 	public String doMain() {
-		return "main";
+		return "employee/main";
 	}
-	@GetMapping("/signin")
+	@GetMapping("/employee/signin")
 	public String doSignin() {
-		return "signin";
+		return "employee/signin";
 	}
-	@GetMapping("/login")
-	public String doLogin(HttpServletRequest req,Model model) {
-		String emp_id = req.getParameter("emp_id");
-		model.addAttribute("login", emp_id);
-		
-		
-		return "login";
+	@GetMapping("/employee/mypage")
+	public String doMypage() {
+		return "employee/mypage";
+	}
+	/* 메소드명 : /employee/login And /employee/logout
+	 * 작성일 : 2023-05-30
+	 * 작성자 : 김상호
+	 * 기능 : session을 받고 받은 session을 무효화하는 기능이다. 
+	 */
+	@GetMapping("/employee/login")
+	public String doLogin(HttpServletRequest req, Model model) {
+	    String emp_id = req.getParameter("emp_id");
+	    model.addAttribute("login", emp_id);
+
+	    return "employee/login";
+	}
+
+	@GetMapping("/employee/logout")
+	public String doLogout(HttpServletRequest req) {
+	    req.getSession().invalidate();
+	    return "redirect:/employee/main";
 	}
 	/* 메소드명: InsertEmp
 	 * 작성일: 2023-05-24 
@@ -101,7 +118,7 @@ public class kshController {
 	 * 작성자 : 김상호
 	 * 기능 : 로그인하는 기능입니다. 
 	 */
-	@PostMapping("/login_session")
+	@PostMapping("/employee/login_session")
 	@ResponseBody
 	public String doLodin_session(HttpServletRequest req) {
 		String loginVal ="ok";
@@ -118,7 +135,6 @@ public class kshController {
 					login.setAttribute("emp_name", login_session.get(i).getEmp_name());
 				}
 			}else {
-				System.out.println("id or pw = x");
 				loginVal = "fail";
 			}
 		} catch(Exception e) {
@@ -144,7 +160,6 @@ public class kshController {
 	    
 		String email = req.getParameter("FIE");
 		ArrayList<KshEmpDto> id_list = edao.FindID(name, mobile, email);
-		System.out.println(id_list.size());
 		JSONArray ja= new JSONArray();
 		try {
 			for(int i=0; i<id_list.size(); i++) {
@@ -211,5 +226,158 @@ public class kshController {
 		}
 		return changeVal;
 	}
-	
+	/* 메소드명 : /Mypage_list
+	 * 작성일 : 2023-06-01
+	 * 작성자 : 김상호
+	 * 기능 : DB에 있는 정보를 마이페이지에서 보여주는 기능이다.
+	 */
+	@PostMapping("/Mypage_list")
+	@ResponseBody
+	public String doMypage_list(HttpServletRequest req) {
+	    HttpSession login = req.getSession();
+	    login.getAttribute("emp_id");
+
+	    if (login.getAttribute("emp_id") == null) {
+	        return "login";
+	    }
+	    
+	    JSONArray list = new JSONArray();
+	    try {
+	        ArrayList<KshEmpDto> edto = edao.emp_list((String) login.getAttribute("emp_id"));
+
+	        for (int i = 0; i < edto.size(); i++) {
+	            JSONObject jo = new JSONObject();
+	            KshEmpDto ked = edto.get(i);
+	            
+	            jo.put("emp_name", ked.getEmp_name());
+	            jo.put("emp_id", ked.getEmp_id());
+	            jo.put("emp_password", ked.getEmp_password());
+	            jo.put("emp_birth", ked.getEmp_birth());
+	            jo.put("emp_mobile", ked.getEmp_mobile());
+	            jo.put("emp_email", ked.getEmp_email());
+	            jo.put("emp_gender", ked.getEmp_gender());
+	            jo.put("emp_depart", ked.getEmp_depart());
+	            jo.put("emp_position", ked.getEmp_position());
+	            jo.put("emp_img", ked.getEmp_img());
+	            jo.put("emp_address", ked.getEmp_address());
+
+	            list.put(jo);
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+
+	    return list.toString();
+	}
+	/* 메소드명 : Mypage_pw
+	 * 작성일 : 2023-06-05
+	 * 작성자 : 김상호
+	 * 기능 : 마이페이지에서 비밀번호를 변경하는 기능입니다.
+	 */
+	@PostMapping("/Mypage_pw")
+	@ResponseBody
+	public String doMyPage_pw(HttpServletRequest req) {
+		String checkVal = "ok";
+		String id = req.getParameter("id");
+		String pw = req.getParameter("password");
+		String repw = req.getParameter("password2");
+		
+		try {
+			if(pw.equals(repw)) {
+				edao.Mypage_pw(pw, id);
+			} else {
+				checkVal ="checkfalse";
+			}
+		} catch(Exception e) {
+			checkVal ="fail";
+		}
+		return checkVal;
+	}
+	/* 메소드명 : Mypage_mobile
+	 * 작성일 : 2023-06-05
+	 * 작성자 : 김상호
+	 * 기능 : 마이페이지에서 모바일 번호를 변경하는 기능입니다.
+	 */
+	@PostMapping("/Mypage_mobile")
+	@ResponseBody
+	public String doMypage_mobile(HttpServletRequest req) {
+		String checkVal ="ok";
+		String id = req.getParameter("id");
+		int mobile = Integer.parseInt(req.getParameter("mobile"));
+		HttpSession session=req.getSession();
+		
+		try {
+			edao.Mypage_mobile(mobile, id);
+			session.setAttribute("emp_id", id);
+		} catch (Exception e) {
+			checkVal="fail";
+		}
+		return checkVal;
+	}
+	/* 메소드명 : Mypage_img
+	 * 작성일 : 2023-06-07
+	 * 작성자 : 김상호
+	 * 기능 : 마이페이지에서 해당 아이디를 받아와서 이미지를 넣는 기능이고,
+	 * 		 DB에다가 해당 경로를 서버에다가 저장합니다.
+	 */
+	@PostMapping("/Mypage_img")
+	@ResponseBody
+	public String doMypage_img(@RequestParam(value="img")MultipartFile multi, HttpServletRequest req) {
+		String fileName = multi.getOriginalFilename();
+		String id = req.getParameter("id");
+		HttpSession session = req.getSession();	
+		String filePath = "C:/Users/admin/git/HumanGroupware/HumanGroupware/src/main/resources/static/img/";
+		File file = new File(filePath + fileName);
+		try {
+			multi.transferTo(file);
+			edao.Mypage_img(filePath + fileName, id);
+			session.setAttribute("emp_id", id);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "fail";
+		}
+		return "ok";
+		
+	}
+	/* 메소드명 : Mypage_address
+	 * 작성일 : 2023-06-07
+	 * 작성자 : 김상호
+	 * 기능 : 마이페이지에서 해당 아이디를 받아와서 주소를 넣는 기능입니다.
+	 */
+	@PostMapping("/Mypage_address")
+	@ResponseBody
+	public String doMypage_address(HttpServletRequest req) {
+		String checkVal = "ok";
+		String id = req.getParameter("id");
+		String address = req.getParameter("address");
+		HttpSession session = req.getSession();
+		
+		try {
+			edao.Mypage_address(address, id);
+			session.setAttribute("emp_id", id);
+		} catch(Exception e) {
+			checkVal = "fail";
+		}
+		return checkVal;
+	}
+	/* 메소드명 : Mypage_emp_delete
+	 * 작성일 : 2023-06-07
+	 * 작성자 : 김상호
+	 * 기능 : 마이페이지에서 회원을 삭제 하는 기능입니다.
+	 */
+	@PostMapping("/Mypage_emp_delete")
+	@ResponseBody
+	public String doMypage_emp_delete(HttpServletRequest req) {
+		String checkVal = "ok";
+		String id = req.getParameter("emp_id");
+		HttpSession session = req.getSession();
+		System.out.println(id);
+		try {
+			session.invalidate();
+			edao.Mypage_delete(id);
+		} catch(Exception e) {
+			checkVal = "fail";
+		}
+		return checkVal;
+	}
 }

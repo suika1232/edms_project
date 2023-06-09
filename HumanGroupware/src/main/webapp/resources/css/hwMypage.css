@@ -1,0 +1,180 @@
+/* 전체 스타일 */
+body {
+      font-family: Arial, sans-serif;
+      background-image: url("/resources/img/space3.jpg");
+  	  background-size: 100% 110%;
+      padding: 1%;
+      color: #fff;
+    }
+/* 제목 스타일 */
+.title {
+      font-size: 30px;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 1%;
+}
+/* 중간 class=body 스타일*/
+.body {
+      display: flex;
+      justify-content: space-between;
+      max-width: 60%;
+      margin: 0 auto;
+      padding: 2%;
+      border: 1px solid #ccc;
+      box-shadow: 0 0 5% rgba(0, 0, 0, 0.5);
+  	  background-color: rgba(0, 0, 0, 0.5);
+      border-radius: 5%;
+}
+/* 컨테이너 스타일 */
+.container_1,
+.container_2 {
+      flex-basis: 45%;
+}
+
+.label {
+      font-weight: bold;
+      margin-bottom: 1%;
+}
+
+.input {
+      margin-bottom: 2%;
+}
+/* input 스타일 */
+input[type="text"],
+input[type="password"] {
+      width: 100%;
+      padding: 2%;
+      border: 1px solid #ccc;
+      border-radius: 3%;
+}
+input[disabled] {
+  opacity: 1;
+  color: #fff;
+}
+.disabled {
+  opacity: 1;
+  color: #fff;
+}
+/* 버튼 스타일 */
+#Change  {
+	padding: 2% 5%;
+    background-color: #13275A;
+  	color: #fff;
+    border: none;
+    border-radius: 3%;
+    cursor: pointer;	
+}
+
+#Change:hover {
+      background-color: #45a049;
+}
+
+#mobileInput  {
+	padding: 2% 5%;
+    background-color: #13275A;
+  	color: #fff;
+    border: none;
+    border-radius: 3%;
+    cursor: pointer;	
+}
+
+#mobileInput:hover {
+      background-color: #45a049;
+}
+
+#addressBtn  {
+	padding: 2% 5%;
+    background-color: #13275A;
+  	color: #fff;
+    border: none;
+    border-radius: 3%;
+    cursor: pointer;	
+}
+
+#addressBtn:hover {
+      background-color: #45a049;
+}
+
+#save  {
+	padding: 2% 5%;
+    background-color: #13275A;
+  	color: #fff;
+    border: none;
+    border-radius: 3%;
+    cursor: pointer;	
+}
+
+#save:hover {
+      background-color: #45a049;
+}
+
+.btn {
+      text-align: center;
+      margin-top: 1%;
+}
+
+#ok  {
+	padding: 1% 2%;
+    background-color: #13275A;
+  	color: #fff;
+    border: none;
+    border-radius: 3%;
+    cursor: pointer;	
+}
+
+#ok:hover {
+      background-color: #45a049;
+}
+
+#x  {
+	padding: 1% 2%;
+    background-color: #13275A;
+  	color: #fff;
+    border: none;
+    border-radius: 3%;
+    cursor: pointer;	
+}
+
+#x:hover {
+      background-color: #45a049;
+}
+
+#delete  {
+	padding: 1% 2%;
+    background-color: #13275A;
+  	color: #fff;
+    border: none;
+    border-radius: 3%;
+    cursor: pointer;	
+}
+
+#delete:hover {
+      background-color: #45a049;
+}
+
+#showImg {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid #ccc;
+  border-radius: 5%;
+}
+/* 별이 반짝 거리는 효과*/
+@keyframes shimmer {
+  0% { opacity: 1; }
+  50% { opacity: 0.3; }
+  100% { opacity: 1; }
+}
+
+.star {
+  position: fixed;
+  top: 0;
+  left: 0;
+  border-radius: 50%;
+  animation: shimmer 1s infinite;
+  z-index: 9999;
+  background-color: rgb(230, 230, 255);
+}
+
+body {
+  overflow: hidden;
+}

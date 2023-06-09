@@ -16,8 +16,15 @@
   <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
 </svg>
 </button></div>
+
 <div class="head_3">
-<a href="/login">로그인</a>&nbsp;<a href="/signin">회원가입</a>
+	<% if(session.getAttribute("emp_name") != null && session.getAttribute("emp_id")!="") {%>
+		${ emp_name} <a href='/employee/logout'>로그아웃</a>
+		<a href='/employee/mypage'>마이페이지</a>
+	<% } else {%>
+		<a href='/employee/login'>로그인</a> <a href="/employee/signin">회원가입</a><br>
+		로그인 후 이용해주세요..
+	<% } %>
 </div>
 <div class="ikon_category">
 <a href="/note">
@@ -77,7 +84,6 @@
 </body>
 <script src='https://code.jquery.com/jquery-latest.js'></script>
 <script>
-$(document)
 
 </script>
 </html>

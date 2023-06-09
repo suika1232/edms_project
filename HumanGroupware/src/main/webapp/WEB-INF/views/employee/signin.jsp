@@ -77,7 +77,7 @@ $(document)
 /*취소버튼을 누르면 메인으로 돌아가는 코드입니다.*/
 .on('click','#x',function(){
 	alert("회원가입이 취소되었습니다");
-	window.location.href = '/main';
+	window.location.href = '/employee/main';
 })
 /*회원가입 ajax를 이용해 insert 하는 부분*/
 .on('click', '#ok', function () {
@@ -90,7 +90,7 @@ $(document)
 	}
 	
     $.ajax({
-        url: 'InsertEmp',
+        url: '/InsertEmp',
         type: 'post',
         data: {
             name: $('#name').val(),
@@ -105,7 +105,7 @@ $(document)
         success: function (data) {
             if (data == "ok") {
                 alert("회원가입 성공하셨습니다! 로그인 후 이용해주세요");
-                window.location.href = '/login';
+                window.location.href = '/employee/login';
             } else {
                 alert("회원가입을 실패했습니다...");
                 return false;
@@ -121,7 +121,7 @@ $("#emp_id").keyup(function(){
 	let id = $('#emp_id').val();
 	
 	$.ajax({
-		url:'Emp_idc',
+		url:'/Emp_idc',
 		data: { emp_id : $('#emp_id').val()},
 		type: 'post',
 		dataType: 'text',
@@ -196,7 +196,7 @@ $('#mobile').keyup(function(){
 		$('#hiddenMobile').html('<a style="color:blue;">유효한 번호입니다!</a>');
 	} else if(mobile.length <11){
 		$('#hiddenMobile').val('fail');
-		$('#hiddenMobile').html('<a style="color:red;">번호는 - 없이 12글자 이내로 입력하세요!</a>');
+		$('#hiddenMobile').html('<a style="color:red;">번호는 (-) 없이 12글자 이내로 입력하세요!</a>');
 	} else if(/\s/.test(mobile)){
 		$('#hiddenMobile').val('fail');
 		$('#hiddenMobile').html('<a style="color:red;">공백 없이 입력해주세요!</a>');
