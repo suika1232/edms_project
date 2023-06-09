@@ -345,58 +345,56 @@ function execPostCode() {
 }
 //마이페이지에 필요한 입력값을 넣는 코드이며, 변경을 못하게 막는 코드입니다.
 function Mypage_List() {
-	  $.ajax({
-	    url: '/Mypage_list',
-	    type: 'post',
-	    dataType: 'json',
-	    data: { emp_id: $('#emp_id').val() },
-	    success: function(data) {
-	      if (data.length > 0) {
-	        let empData = data[0];
+  $.ajax({
+    url: '/Mypage_list',
+    type: 'POST',
+    dataType: 'json',
+    data: { emp_id: $('#emp_id').val() },
+    success: function(data) {
+      if (data && data.length > 0) {
+        let empData = data[0];
 
-	        // 입력값 못넣게 하는 코드
-	        $('#emp_name').prop('disabled', true).addClass('disabled');
-	        $('#emp_id').prop('disabled', true).addClass('disabled');
-			$('#birth').prop('disabled', true).addClass('disabled');
-			$('#email').prop('disabled', true).addClass('disabled');
-			$('#gender').prop('disabled', true).addClass('disabled');
-			$('#depart').prop('disabled', true).addClass('disabled');
-			$('#position').prop('disabled', true).addClass('disabled');
+        // 입력값 못넣게 하는 코드
+        $('#emp_name').prop('disabled', true).addClass('disabled');
+        $('#emp_id').prop('disabled', true).addClass('disabled');
+        $('#birth').prop('disabled', true).addClass('disabled');
+        $('#email').prop('disabled', true).addClass('disabled');
+        $('#gender').prop('disabled', true).addClass('disabled');
+        $('#depart').prop('disabled', true).addClass('disabled');
+        $('#position').prop('disabled', true).addClass('disabled');
 
-	        $('#emp_name').val(empData["emp_name"]);
-	        $('#emp_id').val(empData["emp_id"]);
-	        $('#emp_password').val(empData["emp_password"]);
-	        $('#birth').val(empData["emp_birth"]);
-	        $('#mobile').val(empData["emp_mobile"]);
-	        $('#email').val(empData["emp_email"]).prop('disabled', true);
-	        $('#gender').val(empData["emp_gender"]).prop('disabled', true);
-	        $('#depart').val(empData["emp_depart"]).prop('disabled', true);
-	        $('#position').val(empData["emp_position"]).prop('disabled', true);
+        $('#emp_name').val(empData.emp_name);
+        $('#emp_id').val(empData.emp_id);
+        $('#emp_password').val(empData.emp_password);
+        $('#birth').val(empData.emp_birth);
+        $('#mobile').val(empData.emp_mobile);
+        $('#email').val(empData.emp_email).prop('disabled', true);
+        $('#gender').val(empData.emp_gender).prop('disabled', true);
+        $('#depart').val(empData.emp_depart).prop('disabled', true);
+        $('#position').val(empData.emp_position).prop('disabled', true);
 
-	        let img = empData["emp_img"].split("/");
-	        let len = img.length;
-	        let imgName = img[len-1];
+        let imgName = empData.emp_img.split('/').pop();
+        $('#getImg').text(imgName);
 
-	        $('#getImg').text(imgName);
+        $('#showImg').attr('src', '/img/' + imgName);
+        $('#getImg img').not('#showImg').remove();
 
-	        $('#showImg').attr('src', '/img/' + imgName);
-	        $('#getImg img').not('#showImg').remove();
+        let address = empData.emp_address;
+        let addrArray = address.match(/(\d{5})(.*)\s+(.*)/); // 우편번호, 도로명주소로 나눔
+        let addr1 = addrArray[1];
+        let addr2 = addrArray[2].trim(); // 도로명주소에서 앞뒤 공백 제거
+        let addr3 = addrArray[3];
 
-	        let address = empData["emp_address"];
-	        let addrArray = address.match(/(\d{5})(.*)\s+(.*)/); // 우편번호, 도로명주소로 나눔
-	        let addr1 = addrArray[1];
-	        let addr2 = addrArray[2].trim(); // 도로명주소에서 앞뒤 공백 제거
-	        let addr3 = addrArray[3];
-
-	        $('#addr1').val(addr1);
-	        $('#addr2').val(addr2);
-	        $('#addr3').val(addr3); 
-	      }
-	    }, 
-	    error: function(jqXHR, textStatus, errorThrown) {
-	      console.log("Error: " + textStatus);
-	    }
-	})
+        $('#addr1').val(addr1);
+        $('#addr2').val(addr2);
+        $('#addr3').val(addr3);
+      }
+    },
+    error: function(jqXHR, textStatus, errorThrown) {
+      console.log('Error: ' + textStatus);
+      console.log('Error Detail:', errorThrown);
+    }
+  });
 }
 // 별이 반짝이게 하는 코드입니다.
 function createStar() {
