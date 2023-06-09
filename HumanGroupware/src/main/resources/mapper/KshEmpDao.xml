@@ -65,4 +65,9 @@
 	<delete id = "Mypage_delete">
 		delete employee where emp_id = #{param1}
 	</delete>
+	
+	<!-- 메인페이지 회원 검색 -->
+	<select id= "Main_Search" resultType="com.human.springboot.dto.KshEmpDto">
+		select * from employee where emp_name = #{param1}
+	</select>
 </mapper>

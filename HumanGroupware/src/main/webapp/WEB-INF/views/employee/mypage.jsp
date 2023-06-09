@@ -343,6 +343,7 @@ function execPostCode() {
 		}
     }).open()
 }
+//마이페이지에 필요한 입력값을 넣는 코드이며, 변경을 못하게 막는 코드입니다.
 function Mypage_List() {
 	  $.ajax({
 	    url: '/Mypage_list',
@@ -397,7 +398,7 @@ function Mypage_List() {
 	    }
 	})
 }
-
+// 별이 반짝이게 하는 코드입니다.
 function createStar() {
 	  const star = $('<div class="star"></div>');
 	  const screenWidth = $(window).width();
