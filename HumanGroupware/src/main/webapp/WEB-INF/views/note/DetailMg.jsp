@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<link rel="stylesheet" href="/css/bootstrap.min.css">
+<link rel="stylesheet" href="/css/bootstrap-css/bootstrap.min.css">
 <link rel="stylesheet" href="/css/note/DetailMg.css">
 <title>Insert title here</title>
 </head>
@@ -100,6 +100,6 @@
 </body>
 <script src="https://code.jquery.com/jquery-latest.js"></script>
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
-<script src="/js/bootstrap.bundle.min.js"></script>
+<script src="/js/bootstrap-js/bootstrap.bundle.min.js"></script>
 <script src="/js/note/DetailMg.js"></script>
 </html>
