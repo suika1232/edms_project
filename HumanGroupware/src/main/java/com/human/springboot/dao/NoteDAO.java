@@ -5,6 +5,13 @@ import java.util.ArrayList;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.human.springboot.dto.note.UserDTO;
+import com.human.springboot.dto.note.carringReMgDTO;
+import com.human.springboot.dto.note.carringSeMgDTO;
+import com.human.springboot.dto.note.getRedelDTO;
+import com.human.springboot.dto.note.getSedelDTO;
+import com.human.springboot.dto.note.selectReceiveMgDTO;
+import com.human.springboot.dto.note.selectSeMgDTO;
+import com.human.springboot.dto.note.serchDTO;
 
 @Mapper
 public interface NoteDAO {

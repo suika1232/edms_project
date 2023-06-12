@@ -21,12 +21,25 @@
 			</button>
 		</div>
 	</div>
+	<!-- 사원찾기 dialog -->
+	<div class="emp_dialog" id="emp_dialog" style="display:none">
+		<div class="emp_info" id="emp_info">
+			<img id="emp_img">
+			<div class="emp_name"><p id="emp_name"></div>
+			<div class="emp_email"><p id="emp_email"></div>
+			<div class="emp_birth"><p id="emp_birth"></div>
+			<div class="emp_mobile"><p id="emp_mobile"></div>
+			<div class="emp_gender"><p id="emp_gender"></div>
+			<div class="emp_depart"><p id="emp_depart"></div>
+			<div class="emp_position"><p id="emp_position"></div>
+		</div>
+	</div>
 	<div class="Mysession_container">
 		<div id="Show-img_box"></div>
 		<div id="MY_box">
 			<% if(session.getAttribute("emp_name") != null && session.getAttribute("emp_id")!="") {%>
 				이름: ${ emp_name} 
-				<div id=emp_depart>부서: </div>
+				<div id=depart>부서: </div>
 				<div id="My_box1">
 				<a href='/employee/mypage'>마이페이지</a>
 				<a href='/employee/logout'>로그아웃</a>
@@ -133,6 +146,58 @@
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 <script>
 $(document)
+.on('click', '#Search_EmpBtn', function(){
+	$('#emp_info').empty();
+  let Search_Emp = $('#Search_Emp').val();
 
+  if(Search_Emp == "" || Search_Emp == null){
+    alert('사원 이름을 입력해주세요!');
+    return false;
+  }
+  
+  $('#emp_dialog').dialog({
+    title: '사원 찾기',
+    modal: true,
+    width: 500
+  });
+  
+  $.ajax({
+	  url: '/Main_Search',
+	  data: {Search_Emp: Search_Emp},
+	  dataType: 'json',
+	  type: 'post',
+	  success: function(data) {
+	    if(data.length == 0){
+	      alert("해당 사원이 없습니다...");
+	      return false;
+	    }
+	    
+	    if(data && data.length > 0) {
+	    	$('#emp_info').empty();
+	      for(let i=0; i<data.length; i++){
+	        let empData = data[i];
+	        let empDiv = $('<div>').addClass('emp_item');
+	        let imgElement = $('<img>').attr('src', '/img/human.png');
+	        let nameElement = $('<p>').text(empData.emp_name);
+	        let birthElement = $('<p>').text(empData.emp_birth);
+	        let mobileElement = $('<p>').text(empData.emp_mobile);
+	        let emailElement = $('<p>').text(empData.emp_email);
+	        let genderElement = $('<p>').text(empData.emp_gender);
+	        let departElement = $('<p>').text(empData.emp_depart);
+	        let positionElement = $('<p>').text(empData.emp_position);
+	          
+	        empDiv.append(imgElement, nameElement, birthElement, mobileElement, emailElement,
+	                      genderElement, departElement, positionElement);
+	        empDiv.appendTo('#emp_info');
+	      }
+	    }
+	  },
+	  error: function(jqXHR, textStatus, errorThrown){
+		alert('로그인 후 이용해주세요!');
+		$('#emp_dialog').dialog('close');
+	    console.log('Error: ' + textStatus);
+	  }
+	})
+})
 </script>
 </html>

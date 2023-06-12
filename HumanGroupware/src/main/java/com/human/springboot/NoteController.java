@@ -12,7 +12,17 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import ch.qos.logback.core.recovery.ResilientSyslogOutputStream;
+import com.human.springboot.dao.NoteDAO;
+import com.human.springboot.dto.note.UserDTO;
+import com.human.springboot.dto.note.carringReMgDTO;
+import com.human.springboot.dto.note.carringSeMgDTO;
+import com.human.springboot.dto.note.getRedelDTO;
+import com.human.springboot.dto.note.getSedelDTO;
+import com.human.springboot.dto.note.jh_pagination;
+import com.human.springboot.dto.note.selectReceiveMgDTO;
+import com.human.springboot.dto.note.selectSeMgDTO;
+import com.human.springboot.dto.note.serchDTO;
+
 import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
@@ -23,7 +33,7 @@ public class NoteController {
 	
 	private NoteDAO ndao;
 	
-//-------------------------------- »õ·Î¿î ¸Þ½ÃÁöÀÛ¼º  ÆäÀÌÁö°ü·Ã ¸ÅÇÎ---------------------------------------//	
+//-------------------------------- ï¿½ï¿½ï¿½Î¿ï¿½ ï¿½Þ½ï¿½ï¿½ï¿½ï¿½Û¼ï¿½  ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½---------------------------------------//	
 	
 	@GetMapping("/New")
 	public String asdd() {		
@@ -55,9 +65,9 @@ public class NoteController {
 			
 			JSONObject jo = new JSONObject();
 			
-			jo.put("no", dto.get(i).emp_no);
-			jo.put("name", dto.get(i).emp_name);
-			jo.put("depart", dto.get(i).dep_name);
+			jo.put("no", dto.get(i).getEmp_no());
+			jo.put("name", dto.get(i).getEmp_name());
+			jo.put("depart", dto.get(i).getEmp_name());
 			
 			ja.put(jo);
 			
@@ -81,7 +91,7 @@ public class NoteController {
 
 		return retval;
 	}
-//--------------------------------º¸³½¸Þ½ÃÁöÇÔ, ¹ÞÀº¸Þ½ÃÁöÇÔ  ÆäÀÌÁö°ü·Ã ¸ÅÇÎ-----------------------------------//
+//--------------------------------ï¿½ï¿½ï¿½ï¿½ï¿½Þ½ï¿½ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½Þ½ï¿½ï¿½ï¿½ï¿½ï¿½  ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½-----------------------------------//
 	
 	@GetMapping("/receive")
 	public String receiveMg() {
@@ -137,7 +147,7 @@ public class NoteController {
 	@ResponseBody
 	public String selectReList(HttpServletRequest req) {
 		int id = Integer.parseInt(req.getParameter("user"));
-		int total = ndao.selectReTotal(id); //·Î±×ÀÎµÈ À¯ÀúÀÇ ¹ÞÀº ¸Þ½ÃÁöÀÇ ÃÑ °¹¼ö °¡Á®¿È 
+		int total = ndao.selectReTotal(id); //ï¿½Î±ï¿½ï¿½Îµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Þ½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 
 		
 		jh_pagination pg = new jh_pagination();
 	
@@ -147,7 +157,7 @@ public class NoteController {
 		int pagenum = pg.getPageNum();
 		int amount = pg.getAmount();
 		
-		int totalPage = (int)Math.ceil(total*1.0/amount); //ÃÑ ÆäÀÌÁö °¹¼ö 
+		int totalPage = (int)Math.ceil(total*1.0/amount); //ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ 
 		
 		
 		ArrayList<selectReceiveMgDTO>dto = ndao.selectReceiveMg(id, pagenum, amount);
@@ -199,7 +209,7 @@ public class NoteController {
 			int note_id=Integer.parseInt(noteids[i]);
 			
 			ndao.delSeMg(note_id);
-			//µÑ´Ù deleteÀÎ°É Ã£¾Æ¼­ ¸ÂÀ¸¸é »èÁ¦
+			//ï¿½Ñ´ï¿½ deleteï¿½Î°ï¿½ Ã£ï¿½Æ¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		}
 	}
 	
@@ -215,11 +225,11 @@ public class NoteController {
 	        int note_id = Integer.parseInt(noteids[i]);
 //	        System.out.println(note_id);
 	        ndao.delReMg(note_id);
-	        //µÑ ´Ù deleteÀÎ °É Ã£¾Æ¼­ ¸ÂÀ¸¸é »èÁ¦
+	        //ï¿½ï¿½ ï¿½ï¿½ deleteï¿½ï¿½ ï¿½ï¿½ Ã£ï¿½Æ¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	    }
 	}
 	
-	//--------------------------------»ó¼¼³»¿ë ÆäÀÌÁö°ü·Ã ¸ÅÇÎ-------------------------------------------//
+	//--------------------------------ï¿½ó¼¼³ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½-------------------------------------------//
 	
 	@GetMapping("/detailMg")
 	public String detailMg() {
@@ -233,8 +243,8 @@ public class NoteController {
 							@PathVariable("value")int value,
 							Model model) {
 		String human ;
-		System.out.println("µé¾î¿À±äÇÔ");
-		if(value==1){ // µé¾î¿Â ¹ë·ù°ªÀÌ 1ÀÌ¸é ¹ÞÀº ¸Þ½ÃÁö »ó¼¼ ³»¿ë Ãâ·Â 
+		System.out.println("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
+		if(value==1){ // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 1ï¿½Ì¸ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Þ½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ 
 					
 			UserDTO dto = ndao.select_User(senderID);
 			
@@ -313,7 +323,7 @@ public class NoteController {
 		
 		int userId=Integer.parseInt(req.getParameter("userId"));
 		int total = ndao.countSedel(userId);
-		System.out.println("À¯Àú¹øÈ£"+userId);
+		System.out.println("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È£"+userId);
 		jh_pagination pg = new jh_pagination();
 		pg.setPageNum(Integer.parseInt(req.getParameter("pageNum")));
 		pg.setAmount(Integer.parseInt(req.getParameter("amount")));
@@ -394,11 +404,11 @@ public class NoteController {
 				ndao.updateSeDel(number);
 				int checkNote= ndao.selectDeleteNote(number);
 				
-				  System.out.println("µÑ´Ù deleteÀÎÁö Ã¼Å©ÇÑ ¼ýÀÚ : "+checkNote);
+				  System.out.println("ï¿½Ñ´ï¿½ deleteï¿½ï¿½ï¿½ï¿½ Ã¼Å©ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ : "+checkNote);
 				  
 				
 				if(checkNote==1) {
-					System.out.println("»èÁ¦ÇÒ ‹š µé¾î¿À´Â ³ëÆ® ¹øÈ£ "+number);
+					System.out.println("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ® ï¿½ï¿½È£ "+number);
 					ndao.deleteNote(number);
 					
 				}
@@ -416,10 +426,10 @@ public class NoteController {
 			  ndao.updateReDel(number);
 			  int checkNote = ndao.selectDeleteNote(number);
 			  
-			  System.out.println("µÑ´Ù deleteÀÎÁö Ã¼Å©ÇÑ ¼ýÀÚ : "+checkNote);
+			  System.out.println("ï¿½Ñ´ï¿½ deleteï¿½ï¿½ï¿½ï¿½ Ã¼Å©ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ : "+checkNote);
 			  
 			  if(checkNote==1) {
-				  System.out.println("»èÁ¦ÇÒ ‹š µé¾î¿À´Â ³ëÆ® ¹øÈ£ "+number);
+				  System.out.println("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ® ï¿½ï¿½È£ "+number);
 				  ndao.deleteNote(number);
 			  }
 		  }

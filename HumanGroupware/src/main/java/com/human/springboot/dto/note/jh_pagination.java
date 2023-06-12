@@ -1,4 +1,4 @@
-package com.human.springboot;
+package com.human.springboot.dto.note;
 
 import lombok.Data;
 
