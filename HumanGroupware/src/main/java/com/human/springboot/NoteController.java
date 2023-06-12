@@ -37,7 +37,7 @@ public class NoteController {
 	
 	@GetMapping("/New")
 	public String asdd() {		
-		return "Mg/NewMg";
+		return "note/NewMg";
 	}
 	
 	@PostMapping("/userName")
@@ -95,12 +95,12 @@ public class NoteController {
 	
 	@GetMapping("/receive")
 	public String receiveMg() {
-		return "Mg/ReceiveMgList";
+		return "note/ReceiveMgList";
 	}
 	
 	@GetMapping("/send")
 	public String sendMg() {
-		return "Mg/SendMgList";
+		return "note/SendMgList";
 	}
 	
 	@PostMapping("/selectSendMessage")
@@ -209,7 +209,6 @@ public class NoteController {
 			int note_id=Integer.parseInt(noteids[i]);
 			
 			ndao.delSeMg(note_id);
-			//�Ѵ� delete�ΰ� ã�Ƽ� ������ ����
 		}
 	}
 	
@@ -223,9 +222,9 @@ public class NoteController {
 	    System.out.println(noteids.length);
 	    for (int i = 0; i<noteids.length; i++) {
 	        int note_id = Integer.parseInt(noteids[i]);
-//	        System.out.println(note_id);
+
 	        ndao.delReMg(note_id);
-	        //�� �� delete�� �� ã�Ƽ� ������ ����
+	       
 	    }
 	}
 	
@@ -244,7 +243,7 @@ public class NoteController {
 							Model model) {
 		String human ;
 		System.out.println("��������");
-		if(value==1){ // ���� ������� 1�̸� ���� �޽��� �� ���� ��� 
+		if(value==1){ 
 					
 			UserDTO dto = ndao.select_User(senderID);
 			
@@ -285,7 +284,7 @@ public class NoteController {
 		}
 		model.addAttribute("value",value);
 		
-		return "Mg/DetailMg";
+		return "note/DetailMg";
 		
 	}
 	
@@ -300,7 +299,7 @@ public class NoteController {
 		
 		model.addAttribute("senderID",senderID);
 		
-		return "Mg/NewMg";
+		return "note/NewMg";
 	}
 	
 	@GetMapping("/returnReceiver")
@@ -314,7 +313,7 @@ public class NoteController {
 	}
 	@GetMapping("/tom")
 	public String tom() {
-		return "Mg/tom";
+		return "note/tom";
 	}
 
 	@PostMapping("/getSedel")
@@ -323,7 +322,7 @@ public class NoteController {
 		
 		int userId=Integer.parseInt(req.getParameter("userId"));
 		int total = ndao.countSedel(userId);
-		System.out.println("������ȣ"+userId);
+		
 		jh_pagination pg = new jh_pagination();
 		pg.setPageNum(Integer.parseInt(req.getParameter("pageNum")));
 		pg.setAmount(Integer.parseInt(req.getParameter("amount")));
@@ -404,13 +403,8 @@ public class NoteController {
 				ndao.updateSeDel(number);
 				int checkNote= ndao.selectDeleteNote(number);
 				
-				  System.out.println("�Ѵ� delete���� üũ�� ���� : "+checkNote);
-				  
-				
 				if(checkNote==1) {
-					System.out.println("������ �� ������ ��Ʈ ��ȣ "+number);
-					ndao.deleteNote(number);
-					
+					ndao.deleteNote(number);					
 				}
 		  }
 		  return "ok";
@@ -426,10 +420,7 @@ public class NoteController {
 			  ndao.updateReDel(number);
 			  int checkNote = ndao.selectDeleteNote(number);
 			  
-			  System.out.println("�Ѵ� delete���� üũ�� ���� : "+checkNote);
-			  
 			  if(checkNote==1) {
-				  System.out.println("������ �� ������ ��Ʈ ��ȣ "+number);
 				  ndao.deleteNote(number);
 			  }
 		  }
