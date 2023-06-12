@@ -351,6 +351,7 @@ function Mypage_List() {
     dataType: 'json',
     data: { emp_id: $('#emp_id').val() },
     success: function(data) {
+    	
       if (data && data.length > 0) {
         let empData = data[0];
 

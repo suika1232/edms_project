@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.human.springboot.dao.NoteDAO">
+
+	<!-- 새로운 메시지 작성시 작성자 이름 전송 -->
+	<select id="select_User" resultType="com.human.springboot.dto.noet.UserDTO">
+  		select emp_name from employee where emp_no=#{param1}
+	</select>
+	
+	<!-- 새로운 메시지 작성시 받는사람 찾기 클릭시 저장되있는 사원들 정보 전송 -->
+	<select id="serch_User" resultType="com.human.springboot.dto.note.serchDTO">
+		select e.emp_no,e.emp_name,d.dep_name from employee e ,department d where e.emp_depart = d.dep_id
+	</select>
+	
+	<!-- 메시지 작성시 작성한 메시지의 정보 전송 -->
+	<insert id="SendMg">
+		insert into note values(nid.nextval,#{param1},#{param2},'no',to_char(sysdate,'YYYY-MM-DD'),#{param3},'on','on')
+	</insert>
+	
+	<!-- 보낸 메시지함, 받은 메시지함 들어갈시 리스트 정보 전송 -->
+	<select id="selectSeMg" resultType="com.human.springboot.dto.note.selectSeMgDTO">
+		<![CDATA[
+		select * from(
+		 	select rownum as row_num, sub.* from(
+				select a.note_id,a.note_recipient,b.emp_name, a.note_content,a.note_senddate
+				from note a,employee b
+				where a.note_recipient = b.emp_no and
+		    	note_writer = #{param1} and note_sedel = 'on' order by a.note_id desc
+		    )sub
+		    where rownum <= #{param2} * #{param3}
+		 )where row_num > (#{param2}-1) * #{param3}
+    ]]>
+	</select>
+	<select id="selectReceiveMg" resultType="com.human.springboot.dto.note.selectReceiveMgDTO">
+		<![CDATA[
+		select * 
+		from(
+   			 select rownum as row_num,sub.*
+   			 from
+    		(
+        	  select a.note_content,a.note_id,b.emp_name,a.note_senddate,a.note_read,a.note_writer sender_id 
+		      from note a , employee b 
+		      where a.note_writer = b.emp_no and a.note_redel='on' and a.note_recipient = #{param1} order by a.note_id desc
+    		)sub
+        	where rownum <= #{param2} * #{param3}
+    	)
+   	 	where row_num > (#{param2}-1) * #{param3}
+		]]>
+	</select>
+	
+	<!-- 받은 메시지함,보낸 메시지함 페이지네이션을 위해 총 갯수 카운트함-->
+	<select id="selectReTotal" resultType="int">
+		select count(*) from note where note_recipient= #{param1} and note_redel='on'
+	</select>
+	<select id="selectSeTotal" resultType="int">
+		select count(*) from note where note_writer = #{param1} and note_sedel='on'
+	</select>
+	
+	<!-- 받은 메시지함에서 상세내용 클릭시 읽은 메시지로 처리전송-->
+	<update id="updateNoteRead">
+		update note set note_read = #{param1} where note_id = #{param2}
+	</update>
+	
+	<!-- 각각의 메시지 리스트에서 내용요약 클릭시 상세내용 페이지 정보전송 -->
+	<select id="carringSeMg" resultType="com.human.springboot.dto.note.carringSeMgDTO">
+		select a.note_id , a.note_recipient, b.emp_name receiver , a.note_content, a.note_senddate
+		from note a , employee b 
+		where a.note_recipient = b.emp_no and
+		note_writer = #{param1} and note_id = #{param2}
+	</select>
+	<select id="carringReMg" resultType="com.human.springboot.dto.note.carringReMgDTO">
+		select a.note_content,b.emp_name,a.note_senddate, a.note_writer sender_id 
+		from note a , employee b 
+		where a.note_writer = b.emp_no and a.note_recipient = #{param1} and note_id = #{param2}
+	</select>
+	
+	<!--각각의 메시지 리스트 삭제버튼 클릭시 삭제(안보이게)진행 -->
+	<update id="delSeMg">
+		update note set note_sedel='hide' where note_id = #{param1}
+	</update>
+	<update id="delReMg">
+		update note set note_redel='hide' where note_id = #{param1}
+	</update>
+	
+	<!--삭제된 리스트 휴지통으로 불러옴 -->
+	<select id="getSedel" resultType="com.human.springboot.dto.note.getSedelDTO">
+	<![CDATA[	
+		select * from
+		(
+    		select rownum as row_num,sub.*
+   			 from(
+       			select a.note_id,a.note_content,a.note_senddate,a.note_recipient,b.emp_name receiver 
+       			from note a,employee b 
+       			where a.note_recipient=b.emp_no and note_writer=#{param1} and note_sedel='hide'
+        	)sub
+  		 	 where rownum <= #{param2} * #{param3}
+  		 )where row_num > (#{param2} - 1) * #{param3}
+  	]]>
+	</select>
+	<select id="getRedel" resultType="com.human.springboot.dto.note.getRedelDTO">
+	<![CDATA[	
+ 		select * from
+ 		(
+     		select rownum as row_num,sub.*
+    			 from(
+        			 select a.note_id,a.note_content,a.note_senddate,a.note_writer,b.emp_name sender 
+        			 from note a,employee b 
+        			 where a.note_writer=b.emp_no and note_recipient=#{param1} and note_redel='hide'
+         	)sub
+   		 	 where rownum <= #{param2} * #{param3}
+   		 )where row_num > (#{param2} - 1) * #{param3}
+   	]]>
+	</select>
+	<!--휴지통 페이지네이션을 위해 갯수 카운트 -->
+	<select id ="countSedel" resultType ="int">
+		select count(*) from note where note_writer=#{param1} and note_sedel='hide'
+	</select>
+	<select id ="countRedel" resultType ="int">
+		select count(*) from note where note_recipient=#{param1} and note_redel='hide'
+	</select>
+	
+	<!--삭제된 메시지 복구 클릭시 복구진행 -->
+	<update id="recoverSedel">
+		update note set note_sedel='on' where note_id=#{param1}
+	</update>
+	<update id="recoverRedel">
+		update note set note_redel='on' where note_id=#{param1}
+	</update>
+	
+	<!--휴지통에서 또 삭제 눌렀을시 DB에만 저장시켜놈 -->
+	<update id="updateSeDel">
+		update note set note_sedel='delete' where note_id=#{param1} 
+	</update>
+	<update id="updateReDel">
+		update note set note_redel='delete' where note_id=#{param1} 
+	</update>
+	
+	<!--보낸사람,받은사람 둘다 delete 된거 카운트함 -->
+	<select id="selectDeleteNote" resultType="int">
+		select count(*) from note where note_redel='delete' and note_sedel='delete' and note_id=#{param1}
+	</select>
+	<!--보낸사람,받은사람 휴지통에서 메시지가 둘다 delete 되면 DB에서도 삭제시킴 -->
+	<delete id="deleteNote">
+		delete from note where note_id=#{param1}
+	</delete>
+
+</mapper>
