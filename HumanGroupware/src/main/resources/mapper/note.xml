@@ -3,7 +3,7 @@
 <mapper namespace="com.human.springboot.dao.NoteDAO">
 
 	<!-- 새로운 메시지 작성시 작성자 이름 전송 -->
-	<select id="select_User" resultType="com.human.springboot.dto.noet.UserDTO">
+	<select id="select_User" resultType="com.human.springboot.dto.note.UserDTO">
   		select emp_name from employee where emp_no=#{param1}
 	</select>
 	
