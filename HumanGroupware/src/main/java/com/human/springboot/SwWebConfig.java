@@ -5,7 +5,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 public class SwWebConfig implements WebMvcConfigurer {
     
-    private String con = "/test/filedownload/**";
+    private String con = "/board/download/**";
     private String res = "file:///D:/testimg/";
 
     @Override

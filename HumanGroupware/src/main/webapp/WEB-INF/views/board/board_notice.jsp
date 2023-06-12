@@ -19,7 +19,8 @@
     <input type="hidden" id="curPage">
     <input type="hidden" id="totalPage">
     <h3>공지사항</h3>
-    <table id="noticeTable" class="table">
+    <br>
+    <table id="noticeTable" class="table table-sm">
         <thead>
             <tr>
                 <th>번호</th><th>제목</th><th>작성자</th>
@@ -28,10 +29,25 @@
         </thead>
         <tbody></tbody>
     </table>
+    <div id="infoText"></div>
     <nav aria-label="Page navigation" id="pageNav">
-      <ul class="pagination justify-content-center">
+      <ul class="pagination pagination-sm justify-content-center">
       </ul>
     </nav>
+    <div class="d-flex flex-row align-items-center justify-content-between">
+        <div class="d-flex justify-content-start">
+                <select class="form-select form-select-sm" name="searchCategory" 
+                    id="searchCategory" style="width: fit-content;">
+                    <option selected value="all">전체보기</option>
+                    <option value="title">제목</option>
+                    <option value="content">내용</option>
+                    <option value="writer">작성자</option>
+                </select>
+                <div class="input-group input-group-sm ms-1">
+                    <input type="text" class="form-control" id="searchKeyword">
+                    <button type="button" class="btn btn-primary" id="btnSearch">검색</button>
+                </div>
+        </div>
     <% String userId = (String)session.getAttribute("loginUser");%>
     <% if(userId != null){ %>
     <div class="d-flex justify-content-end">
@@ -60,7 +76,9 @@ $(document)
     }
     document.location="/board/write/notice";
 })
-
+.on("click", "#btnSearch", ()=>{
+   getBoardList(1);
+})
 function toPage(ths){
     let page = $(ths).text();
     $("#curPage").val(page);
@@ -79,16 +97,20 @@ function lastPage(){
 }
     
 function getBoardList(curPage){
+    let searchCategory = $("#searchCategory option:selected").val();
+    let keyword = $("#searchKeyword").val().trim();
+    if(keyword == undefined || keyword == "") keyword = "all";
     
     $.ajax({
-        url: "/boardlist/notice/"+curPage,
+        url: "/boardlist/notice/"+curPage+"/"+searchCategory+"/"+keyword,
         type: "post",
         dataType: "JSON",
         success: (data) => {
             $("#noticeTable tbody").empty();
+            $("#infoText").empty();
             let total = 0;
             if(data.length == 0){
-                $("#noticeTable").after(
+                $("#infoText").append(
                     "<div class='d-flex justify-content-center'>작성된 글이 없습니다.</div>");
             }
             for(let i=0; i<data.length; i++){
@@ -102,6 +124,8 @@ function getBoardList(curPage){
                 $("#noticeTable tbody").append(post);
                 total = data[i]["totalPage"];
             }
+            $("#noticeTable tbody tr").addClass("bg-light");
+
             $("#pageNav ul").empty();
             let nav = "";
             if(total > 1) {

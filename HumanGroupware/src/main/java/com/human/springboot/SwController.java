@@ -3,9 +3,11 @@ package com.human.springboot;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.UUID;
 import java.net.URLEncoder;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -58,18 +60,23 @@ public class SwController {
         return "board/board_free";
     }
     // 게시판 글 목록
-    @PostMapping("/boardlist/{category}/{page}")
+    @PostMapping("/boardlist/{category}/{page}/{search}/{keyword}")
     @ResponseBody
     public String boardList(@PathVariable("category")String category,
-                            @PathVariable("page")int page){
+                            @PathVariable("page")int page,
+                            @PathVariable("search")String searchCategory,
+                            @PathVariable("keyword")String keyword){
 
         int amount = 10; // 한 페이지 표시 갯수
-        int total = sdao.boardCount(category); // notice or free
+        int total = sdao.boardCount(category, searchCategory, keyword); // notice or free
         int totalPage = (int)Math.ceil(total*1.0/amount);
         System.out.println("currentPage:"+page);
         System.out.println("totalPage:"+totalPage);
 
-        ArrayList<SwBoardDTO> boardList = sdao.boardList(category, page, amount);
+        System.out.println("검색유형: "+searchCategory);
+        System.out.println("검색 키워드: "+keyword);
+
+        ArrayList<SwBoardDTO> boardList = sdao.boardList(category, page, amount, searchCategory, keyword);
         JSONArray jArray = new JSONArray(); 
 
         for (SwBoardDTO items : boardList) {
@@ -113,8 +120,15 @@ public class SwController {
         model.addAttribute("boardHit", board.getBoard_hit());
         model.addAttribute("categoryName", board.getCategory_name());
 
+        String boardFileName = board.getBoard_file_name();
+        System.out.println("첨부파일명: "+boardFileName);
+        System.out.println("첨부파일경로: "+board.getBoard_file_path());
+        if(boardFileName != null){
+            
+            model.addAttribute("boardFileName", boardFileName);
+            model.addAttribute("boardFilePath", board.getBoard_file_path());
+        }
         ArrayList<SwCommentDTO> commentList = sdao.commentList(boardId);
-        System.out.println(commentList.toString());
         model.addAttribute("commentList", commentList);
 
         return "board/board_view";
@@ -128,55 +142,61 @@ public class SwController {
         model.addAttribute("category", category);
         return "board/board_write";
     }
-    //게시판 글 저장
+    //게시판 글 저장(새글작성,수정 통합)
     @PostMapping("/boardInsert")
     public String boardInsert(HttpServletRequest req,
                             @RequestParam(value="boardFile", required = false)MultipartFile multi){
+        String categoryName = "";
+        try {
+            HttpSession userSession = req.getSession();
+            int writer = (int)userSession.getAttribute("userNo");
 
-        HttpSession userSession = req.getSession();
-        int writer = (int)userSession.getAttribute("userNo");
+            categoryName = req.getParameter("boardCategory");
+            String title = req.getParameter("boardTitle");
+            String content = req.getParameter("boardContent");
+            String flag = req.getParameter("flag");
 
-        String categoryName = req.getParameter("boardCategory");
-        String title = req.getParameter("boardTitle");
-        String content = req.getParameter("boardContent");
-        String flag = req.getParameter("flag");
+            System.out.println("제목: "+title);
+            System.out.println("내용: "+content);
 
-        System.out.println("제목: "+title);
-        System.out.println("내용: "+content);
+            String originalFileName = null;
+            String filePath = null;
+            String fileName = null;
 
-        String originalFileName = null;
-        String filePath = null;
-        String fileName = null;
-
-        if(!multi.isEmpty()){
-            try {
-            originalFileName = multi.getOriginalFilename();
-            String fileExt = FilenameUtils.getExtension(originalFileName);
-            System.out.println("업로드 파일명:"+originalFileName);
-            System.out.println("확장자: "+fileExt);
-            fileName = UUID.randomUUID().toString()+"."+fileExt;
-            filePath = "D:/testimg/"+fileName;
-            
-            File file = new File(filePath+filePath);
-            multi.transferTo(file);
-            } catch (IOException e) {
-                e.printStackTrace();
+            if(!multi.isEmpty()){
+                originalFileName = multi.getOriginalFilename();
+                String fileExt = FilenameUtils.getExtension(originalFileName);
+                System.out.println("업로드 파일명:"+originalFileName);
+                System.out.println("확장자: "+fileExt);
+                fileName = UUID.randomUUID().toString()+"."+fileExt;
+                filePath = "D:/testimg/"+fileName;
+                
+                File file = new File(filePath);
+                multi.transferTo(file);
             }
-        }
 
-        int category = categoryName.equals("notice") ? 1 : 2;
+            int category = categoryName.equals("notice") ? 1 : 2;
 
-        if(flag.equals("y")){
-            int boardId = Integer.parseInt(req.getParameter("boardId"));
-            sdao.boardUpdate(boardId, title, content);
-            System.out.println("수정됨");
-            return "redirect:/board/"+categoryName;
+            if(flag.equals("y")){
+                int boardId = Integer.parseInt(req.getParameter("boardId"));
+                if(sdao.boardFileCheck(boardId)){
+                    SwBoardDTO boardFile = sdao.boardFile(boardId);
+                    Path oldFile = Paths.get(boardFile.getBoard_file_path());
+                    Files.deleteIfExists(oldFile);                
+                }
+                sdao.boardUpdate(boardId, title, content, originalFileName, filePath);
+                System.out.println("수정됨");
+                return "redirect:/board/"+categoryName;
+            }
+            sdao.boardInsert(category, writer, title, content, originalFileName, filePath);
+            System.out.println("작성됨");
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        sdao.boardInsert(category, writer, title, content, originalFileName, filePath);
-        System.out.println("작성됨");
         return "redirect:/board/"+categoryName;
     }
-    //게시판 글 수정
+    //게시판 글 수정(내용 불러오기)
     @GetMapping("/boardUpdate/{boardId}")
     public String boardUpdate(@PathVariable("boardId")int boardId, Model model){
         SwBoardDTO board = sdao.boardView(boardId);
@@ -194,6 +214,14 @@ public class SwController {
     @ResponseBody
     public String boardDelete(@RequestParam(value="boardId")String boardId){
         try {
+            if(sdao.boardCommentCount(Integer.parseInt(boardId)) > 0){
+                sdao.deleteAllComment(Integer.parseInt(boardId));
+            }
+            if(sdao.boardFileCheck(Integer.parseInt(boardId))){
+                SwBoardDTO boardFile = sdao.boardFile(Integer.parseInt(boardId));
+                Path path = Paths.get(boardFile.getBoard_file_path());
+                Files.deleteIfExists(path);
+            }
             sdao.boardDelete(Integer.parseInt(boardId));
         } catch (Exception e) {
             e.printStackTrace();
@@ -231,6 +259,28 @@ public class SwController {
            return "fail";
         }
         return "complete";
+    }
+    // 게시판 파일 다운로드
+    @GetMapping("/board/download/{boardId}")
+    public void boardDownload(@PathVariable("boardId")int boardId, 
+                                HttpServletResponse res){
+        try{
+            SwBoardDTO boardFileInfo = sdao.boardFile(boardId);
+            File file = new File(boardFileInfo.getBoard_file_path());
+            byte[] fileByte = FileUtils.readFileToByteArray(file);
+
+            res.setContentType("application/octet-stream");
+            res.setHeader("Content-Disposition", "attachment; fileName=\""+
+                            URLEncoder.encode(boardFileInfo.getBoard_file_name(), 
+                                              "UTF-8")+"\";");
+            res.setHeader("Content-Transfer-Encoding", "Binary");
+
+            res.getOutputStream().write(fileByte);
+            res.getOutputStream().flush();
+            res.getOutputStream().close();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
     // 임시 로그인 화면

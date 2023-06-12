@@ -11,7 +11,7 @@
       order by a.board_id
     </select> -->
     <select id="boardList" resultType="com.human.springboot.dto.SwBoardDTO">
-    <![CDATA[
+    
       select *
       from
           (
@@ -23,12 +23,24 @@
               where a.board_category = b.category_id 
                     and a.board_writer = c.emp_no
                     and b.category_name = #{param1}
+              <choose>
+                <when test='param4.equals("title") and !param5.equals("all")'>
+                    and a.board_title like '%'||#{param5}||'%'
+                </when>
+                <when test='param4.equals("content") and !param5.equals("all")'>
+                    and a.board_content like '%'||#{param5}||'%'
+                </when>
+                <when test='param4.equals("writer") and !param5.equals("all")'>
+                    and c.emp_name like '%'||#{param5}||'%'
+                </when>
+              </choose>
               order by board_id desc
               ) sub
-          where rownum <= #{param2} * #{param3}
+    <![CDATA[
+          where rownum <= #{param2} * #{param3} 
           )
       where row_num > (#{param2} - 1) * #{param3}
-      ]]>
+    ]]>
     </select>
     <insert id="boardInsert">
       <choose>
@@ -46,15 +58,13 @@
                         board_content, board_created, board_updated, free_no,
                         board_file_name, board_file_path)
           values(board_seq.nextval, #{param1}, #{param2}, #{param3}, #{param4},
-                to_char(sysdate, 'YYYY-MM-DD'), to_char(sysdate, 'YYYY-MM-DD'), 
+                to_char(sysdate, 'YYYY-MM-DD'), to_char(sysdate, 'YYYY-MM-DD'),
                 board_free_seq.nextval, #{param5, jdbcType=VARCHAR}, #{param6, jdbcType=VARCHAR})
         </otherwise>                   
       </choose>
     </insert>
     <select id="boardView" resultType="com.human.springboot.dto.SwBoardDTO">
-      select a.board_id, b.emp_name, a.board_title, a.board_content, a.board_writer,
-              a.board_created, a.board_updated, a.board_hit, a.board_category, 
-              c.category_name
+      select a.*, b.emp_name, c.category_name
       from board a, employee b, board_category c
       where a.board_id = #{param1} and a.board_writer = b.emp_no 
             and a.board_category = c.category_id
@@ -66,8 +76,21 @@
     </update>
     <select id="boardCount" resultType="int">
       select count(a.board_id)
-      from board a, board_category b
-      where a.board_category = b.category_id and b.category_name = #{param1}
+      from board a, board_category b, employee c
+      where a.board_category = b.category_id
+            and a.board_writer = c.emp_no
+            and b.category_name = #{param1}
+      <choose>
+        <when test='param2.equals("title") and !param3.equals("all")'>
+            and a.board_title like '%'||#{param3}||'%'
+        </when>
+        <when test='param2.equals("content") and !param3.equals("all")'>
+            and a.board_content like '%'||#{param3}||'%'
+        </when>
+        <when test='param2.equals("writer") and !param3.equals("all")'>
+            and c.emp_name like '%'||#{param3}||'%'
+        </when>
+      </choose>
     </select>
     <delete id="boardDelete">
       delete board
@@ -76,12 +99,26 @@
     <update id="boardUpdate">
       update board
       set board_title = #{param2}, board_content = #{param3}, 
-          board_updated = to_char(sysdate, 'YYYY-MM-DD')  
+          board_updated = to_char(sysdate, 'YYYY-MM-DD')
+      <if test='param4 != null and param5 != null'>
+          , board_file_name = #{param4},
+          board_file_path = #{param5}
+      </if>
       where board_id = #{param1}
     </update>
     <select id="boardCommentCount" resultType="int">
       select count(*)
       from board_comment
+      where board_id = #{param1}
+    </select>
+    <select id="boardFile" resultType="com.human.springboot.dto.SwBoardDTO">
+      select board_file_name, board_file_path
+      from board
+      where board_id = #{param1}
+    </select>
+    <select id="boardFileCheck" resultType="boolean">
+      select nvl2(board_file_path, 1, 0)
+      from board
       where board_id = #{param1}
     </select>
     <insert id="addComment">
@@ -92,6 +129,10 @@
     <delete id="deleteComment">
       delete board_comment
       where comment_no = #{param1}
+    </delete>
+    <delete id="deleteAllComment">
+      delete board_comment
+      where board_id = #{param1}
     </delete>
     <select id="commentList" resultType="com.human.springboot.dto.SwCommentDTO">
       select a.*, b.emp_name

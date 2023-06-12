@@ -37,7 +37,7 @@
         font-size: small;
     }
     body::-webkit-scrollbar {
-    width: 8px;  /* 스크롤바의 너비 */
+    width: 8px;
     }
 
     body::-webkit-scrollbar-thumb {
@@ -61,7 +61,14 @@
             <tr><td>작성자</td><td class="text-center">${empName}</td></tr>
             <tr><td>작성일</td><td class="text-center">${boardCreated}</td></tr>
             <tr><td>내용</td><td class="text-center">${boardContent}</td></tr>
-            <tr><td>첨부파일</td><td></td></tr>
+            <tr><td>첨부파일</td>
+                <td>
+                    <% String filePath = (String)request.getAttribute("boardFilePath"); %> 
+                    <% if(filePath != null){ %>
+                        <a href="/board/download/${boardId}">${boardFileName}</a>
+                    <% } %>
+                </td>
+            </tr>
         </table>
         <div class="d-flex flex-row-reverse" id="btnDiv">
             <button type="button" class="btn btn-primary hide-btn" id="btnDelete">삭제</button>
@@ -114,6 +121,7 @@ $(document)
         $("#comment").css("display", "none");
         $("#btnComment").addClass("hide-btn");
     }
+
 })
 .on("click", "#btnReturn", ()=>{
     document.location="/board/${categoryName}";
