@@ -51,8 +51,12 @@ public class kshController {
 	@GetMapping("/employee/login")
 	public String doLogin(HttpServletRequest req, Model model) {
 	    String emp_id = req.getParameter("emp_id");
+	    String emp_birth = req.getParameter("emp_birth");
+	    
+	    		
+	    		
 	    model.addAttribute("login", emp_id);
-
+	    model.addAttribute("login", emp_birth);
 	    return "employee/login";
 	}
 
@@ -379,5 +383,45 @@ public class kshController {
 			checkVal = "fail";
 		}
 		return checkVal;
+	}
+	/* 메소드명 : Mypage_Search
+	 * 작성일 : 2023-06-09
+	 * 작성자 : 김상호
+	 * 기능 : 메인페이지에서 emp_name으로 employee에 있는 회원을 검색하는 기능입니다.
+	 */
+	@PostMapping("/Main_Search")
+	@ResponseBody
+	public String doMain_Search(HttpServletRequest req, @RequestParam("Search_Emp") String Search_Emp) {
+	    HttpSession login = req.getSession();
+	    login.getAttribute("emp_id");
+
+	    if (login.getAttribute("emp_id") == null) {
+	        return "login";
+	    }
+
+	    JSONArray ja = new JSONArray();
+	    try {
+	        ArrayList<KshEmpDto> edto = edao.Main_Search(Search_Emp); // 수정: 검색 조건으로 Search_Emp 사용
+	        System.out.println(edto);
+	        for (int i = 0; i < edto.size(); i++) {
+	            JSONObject jo = new JSONObject();
+	            KshEmpDto ked = edto.get(i);
+
+	            jo.put("emp_img", ked.getEmp_img());
+	            jo.put("emp_name", ked.getEmp_name());
+	            jo.put("emp_birth", ked.getEmp_birth());
+	            jo.put("emp_mobile", ked.getEmp_mobile());
+	            jo.put("emp_email", ked.getEmp_email());
+	            jo.put("emp_gender", ked.getEmp_gender());
+	            jo.put("emp_depart", ked.getEmp_depart());
+	            jo.put("emp_position", ked.getEmp_position());
+
+	            ja.put(jo);
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+
+	    return ja.toString();
 	}
 }

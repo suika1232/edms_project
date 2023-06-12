@@ -5,18 +5,28 @@
 <head>
 <meta charset="UTF-8">
 <title>근태 현황</title>
+<link type="text/css" rel="stylesheet" href="/resources/css/attendance_current.css">
 </head>
 <body>
-
-<div>
-<!-- 공통 -->
-	<div id=employeeMain>
-		<div id=employeeOption>나의 근태 관리</div>
-		
-		<div id=organization><a href="/hw/attendance/current">근태 현황</a></div>
-		<div id=inquiry><a href="/hw/attendance/management">근태 관리</a></div>
-		<div id=registration><a href="/hw/attendance/byEmployee">사원별 근태 현황</a></div>
+<!-- 임시 링크용 -->
+<div class="option" style="border:0.1px solid black; width:150px;text-align:center;">
+	<a>[임시 링크용 div]</a>
+	<div>
+		<a href="/employee/organization">조직도</a><br>
+		<a href="/employee/inquiry">직원조회</a><br>
+		<a href="/employee/registration">부서변경</a><br>
+		<a href="/attendance/current">근태현황</a><br>
+		<a href="/attendance/management">근태관리</a><br>
+		<a href="/attendance/byEmployee">사원별 근태현황</a>
 	</div>
+</div>
+<!-- 임시 링크용 -->
+	
+<div>
+	<div class="inquiry_main">
+		<a>근태현황</a>
+	</div>
+</div>
 	
 	<div>
 		<div>

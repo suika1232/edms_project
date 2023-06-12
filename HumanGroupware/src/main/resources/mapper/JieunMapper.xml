@@ -6,32 +6,79 @@
 
 <!-- 부서, 직급, 고용형태 옵션 불러오기 ( select )  -->
 	<select id="department_select0" resultType="com.human.springboot.dto.DepartmentDTO">
-		select dep_name from department
+		select dep_name, dep_parent,dep_id, dep_manager
+			from department
 	</select>
-	
 	<select id="position_select0" resultType="com.human.springboot.dto.PositionDTO">
 		select distinct position_name from position
 	</select>
-	
 	<select id="form_select0" resultType="com.human.springboot.dto.PositionDTO">
 		select distinct job_type from position
 	</select>
-	
 	<select id="attendance_employee0" resultType="com.human.springboot.dto.EmployeeDTO">
 		select emp_name, emp_email from employee
 	</select>
-	
 	<select id="exemploye_select1" resultType="com.human.springboot.dto.PositionDTO">
 		select position_id from position where position_name=#{param1} and job_type=#{param2} 
 	</select>
-	
 	<select id="exemployee_select2" resultType="com.human.springboot.dto.DepartmentDTO">
 		select dep_id from department where dep_name = #{param1}
 	</select>
+	
+<!-- 사원 정보 수정 ( update )-->
 	<update id="employee_update0">
 		update employee
-			 set emp_position = #{param1}, emp_depart = #{param2}, emp_mobile = #{param3}
-		 where emp_id = #{param5}
+			 set emp_join = #{param1}, emp_position = #{param2}, emp_depart = #{param3}
+		 where emp_id = #{param4}
 	</update>
-
+	
+<!-- 사원 조회 ( select ) -->
+	<select id="employee_search" resultType="com.human.springboot.dto.EmpDepartPositionDTO">
+		select a.emp_name, a.emp_gender, b.dep_name, c.position_name, c.job_type, a.emp_mobile, a.emp_email, a.emp_id, a.emp_img
+			from employee a, department b, position c
+		where a.emp_depart = b.dep_id and a.emp_position = c.position_id
+		<if test='param1 !=null and param1 !=""'>
+			AND a.emp_name like '%' || #{param1} ||'%'
+		</if>
+		<if test='param2 !=null and param2 !=""'>
+			AND a.emp_mobile like '%' ||#{param2} ||'%'
+		</if>
+		<if test='param3 !=null and param3 !=""'>
+			AND a.emp_email like '%' ||#{param3} ||'%'
+		</if>
+		<if test='param4 !=null and param4 !=""'>
+			AND b.dep_name = #{param4}
+		</if>
+		<if test='param5 !=null and param5 !=""'>
+			AND c.position_name = #{param5}
+		</if>
+	</select>
+	
+	<!-- 부서이름, 직원이름, 직급 불러오기 -->
+	<select id="all_organization" resultType="com.human.springboot.dto.EmpDepartPositionDTO">
+		select a.emp_name, b.dep_name, c.position_name
+			from employee a, department b, position c
+		where a.emp_depart = b.dep_id and a.emp_position = c.position_id
+	</select>
+	
+	<!-- 직원별 근태현황 조회 ( select ) -->
+	<select id="attendance_list" resultType="com.human.springboot.dto.EmpDepartPositionDTO">
+		select a.emp_name, b.dep_name, c.position_name
+			from employee a, department b, position c
+		where a.emp_depart = b.dep_id and a.emp_position = c.position_id
+		<if test='param1 !=null and param1 !=""'>
+			and b.dep_name = #{param1}
+		</if>
+	</select>
+	
+	<insert id="department_insert">
+		insert into department (dep_id, dep_name, dep_manager, dep_parent)
+			values ( dep_id_seq.nextval, #{param1}, #{param2}, #{param3} )
+	</insert>
+	
+	<delete id="department_delete">
+		delete department where dep_id = #{param1}
+	</delete>
+	
+	
 </mapper>

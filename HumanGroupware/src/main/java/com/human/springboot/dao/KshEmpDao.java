@@ -46,4 +46,7 @@ public interface KshEmpDao {
 	
 	//Mypage_emp_delete == 마이페이지에서 회원 삭제
 	void Mypage_delete(String id);
+	
+	//Main_Search == 메인에서 회원 검색
+	ArrayList<KshEmpDto> Main_Search(String name);
 }

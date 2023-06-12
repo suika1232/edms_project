@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.human.springboot.dto.DepartmentDTO;
+import com.human.springboot.dto.EmpDepartPositionDTO;
 import com.human.springboot.dto.EmployeeDTO;
 import com.human.springboot.dto.PositionDTO;
 
@@ -16,12 +17,18 @@ public interface JieunDAO {
 	ArrayList<PositionDTO> position_select0();					// 직급명
 	ArrayList<PositionDTO> form_select0();						// 고용형태
 	ArrayList<EmployeeDTO> attendance_employee0();		// 수신인 불러오기 ( 이름+이메일 )
-	
-	// 입사일자, position(부서, 직급), 고용형태, 핸드폰, 이메일, 주소
-	void employee_update0(int emp_position, int emp_depart, int mobile, String emp_id);	// 직원 정보 업데이트
+	ArrayList<EmpDepartPositionDTO> employee_search(String s, String b, String c, String i, String o);		// 사원 조회
+	ArrayList<EmpDepartPositionDTO> all_organization();	// 조직도 불러오기
+	ArrayList<EmpDepartPositionDTO> attendance_list(String a);	// 직원별 근태조회 ( 부서, 날짜 )
 	
 	// 부서, 직급, 고용형태 id 노출
 	ArrayList<PositionDTO> exemploye_select1(String a, String b);
 	ArrayList<DepartmentDTO> exemployee_select2(String a);
-
+	
+	// 입사일자, position(부서, 직급), 고용형태, 핸드폰, 이메일, 주소
+	void employee_update0(String emp_join, int emp_position, int emp_depart, String emp_id);	// 직원 정보 업데이트
+	
+	// 부서 추가
+	void department_insert(String a, int b, int c);
+	
 }

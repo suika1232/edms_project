@@ -1,0 +1,19 @@
+@charset "UTF-8";
+textarea{resize:none; border:none; width:100%; height:450px;}
+.flexContainer{display:flex;}
+.nav-link{color:blue;}
+.nav-link:hover {color:lightblue;}
+.hidden_td{border: none;}
+#serchUserButton{position:relative; left:40px; font-weight:bold;}
+.table button{font-weight:bold;}
+.table{
+	position:relative;
+	margin-top:20px;
+	margin-left:20px;
+}
+.secondTr{
+	height:100px;
+}
+.thirdTr{
+	height:500px;
+}
