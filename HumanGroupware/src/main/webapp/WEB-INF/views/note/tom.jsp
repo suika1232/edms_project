@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <link rel="stylesheet" href="/css/bootstrap.min.css">
-<link rel="stylesheet" href="/css/tom.css">
+<link rel="stylesheet" href="/css/note/tom.css">
 <title>Insert title here</title>
 </head>
 <body>
@@ -92,5 +92,5 @@
 </body>
 <script src="https://code.jquery.com/jquery-latest.js"></script>
 <script src="/js/bootstrap.bundle.min.js"></script>
-<script src="/js/tom.js"></script>
+<script src="/js/note/tom.js"></script>
 </html>

@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <link rel="stylesheet" href="/css/bootstrap.min.css">
-<link rel="stylesheet" href="/css/SendMg.css">
+<link rel="stylesheet" href="/css/note/SendMg.css">
 <title>Insert title here</title>
 </head>
 <body>
@@ -80,6 +80,6 @@
 <script src = "https://code.jquery.com/jquery-latest.js"></script>
  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 <script src="/js/bootstrap.bundle.min.js"></script>
-<script src="/js/SendMg.js"></script>
+<script src="/js/note/SendMg.js"></script>
 </body>
 </html>

@@ -1,0 +1,22 @@
+@charset "UTF-8";
+.flexContainer{
+	display:flex;
+}
+.nav-link{
+	color:blue;
+}
+.nav-link:hover {
+		color:lightblue; 
+}
+.detailDg{width:500px; position:relative; margin-top:20px; margin-left:20px;}
+#detailContent{height:200px; width:300px;}
+.div4{text-align : center;}
+.div3{text-align : center;}
+.div2{text-align : center;}
+.div1{text-align : center;}
+.div3-1{color:blue; margin-right:220px; font-weight:bold;}
+.div2-1{color:blue; margin-right:220px; font-weight:bold;}
+.div1-1{color:blue; margin-right:220px; font-weight:bold;}
+
+#returnPage{font-weight:bold;}
+#reply{font-weight:bold;}

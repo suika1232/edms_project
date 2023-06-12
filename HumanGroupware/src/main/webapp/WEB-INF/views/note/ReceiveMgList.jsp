@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <link rel="stylesheet" href="/css/bootstrap.min.css">
-<link rel="stylesheet" href="/css/ReceiveMg.css">
+<link rel="stylesheet" href="/css/note/ReceiveMg.css">
 <title>Insert title here</title>
 </head>
 <body>
@@ -82,5 +82,5 @@
 </body>
 <script src="https://code.jquery.com/jquery-latest.js"></script>
 <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
-<script src="/js/ReceiveMg.js"></script>
+<script src="/js/note/ReceiveMg.js"></script>
 </html>

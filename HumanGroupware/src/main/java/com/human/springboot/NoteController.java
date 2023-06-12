@@ -147,7 +147,7 @@ public class NoteController {
 	@ResponseBody
 	public String selectReList(HttpServletRequest req) {
 		int id = Integer.parseInt(req.getParameter("user"));
-		int total = ndao.selectReTotal(id); //�α��ε� ������ ���� �޽����� �� ���� ������ 
+		int total = ndao.selectReTotal(id); 
 		
 		jh_pagination pg = new jh_pagination();
 	
@@ -157,7 +157,7 @@ public class NoteController {
 		int pagenum = pg.getPageNum();
 		int amount = pg.getAmount();
 		
-		int totalPage = (int)Math.ceil(total*1.0/amount); //�� ������ ���� 
+		int totalPage = (int)Math.ceil(total*1.0/amount);  
 		
 		
 		ArrayList<selectReceiveMgDTO>dto = ndao.selectReceiveMg(id, pagenum, amount);
@@ -232,7 +232,7 @@ public class NoteController {
 	
 	@GetMapping("/detailMg")
 	public String detailMg() {
-		return "Mg/DetailMg";
+		return "note/DetailMg";
 	}
 	
 	@GetMapping("/detailMg/{senderID}/{receiverID}/{NoteNumber}/{value}")

@@ -1,0 +1,36 @@
+@charset "UTF-8";
+
+b{cursor:pointer;}
+
+#SendPageBox{position:absolute; margin-top:20px;}
+#ReceivePageBox{position:absolute; margin-top:20px;}
+
+.nav-link{color:blue;}
+.nav-link:hover {color:lightblue;}
+
+.tableBox{position: relative; margin-left:20px; margin-top:50px; width:1000px; height:1250px;}
+
+.pagination{position: absolute; left: 40%; margin-left:40px;}
+.pagination div{display:inline-block;}
+.pagination{text-align:center;}
+
+.flexContainer{display:flex; flex-wrap: nowrap; width:1500px; height:1500px;}
+
+#RetableBox{position:absolute; margin-top:50px;}
+#Retable tr td{width:300px; height:40px;}
+#Retable{width:450px; height:50px;}
+#Retable tr td:nth-child(3) :hover{color:lightblue; cursor:pointer;}
+
+#SetableBox{position:absolute; margin-top:50px;}
+#setable{width:450px; height:50px;}
+#setable tr td{width:300px; height:40px;}
+#setable tr td:nth-child(3) :hover{color:lightblue; cursor:pointer;}
+
+.overflow{
+  	width:100px;
+  	white-space: nowrap;
+  	overflow: hidden;
+  	text-overflow: ellipsis;
+}
+
+.pagetitle{position:relative;}
