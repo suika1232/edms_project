@@ -63,11 +63,14 @@
 	
 	<!-- 직원별 근태현황 조회 ( select ) -->
 	<select id="attendance_list" resultType="com.human.springboot.dto.EmpDepartPositionDTO">
-		select a.emp_name, b.dep_name, c.position_name
-			from employee a, department b, position c
-		where a.emp_depart = b.dep_id and a.emp_position = c.position_id
-		<if test='param1 !=null and param1 !=""'>
-			and b.dep_name = #{param1}
+		select a.emp_name, b.dep_name, c.position_name, d.start_time, d.end_time
+			from employee a, department b, position c, attendance d
+		where a.emp_depart = b.dep_id 
+		   and a.emp_position = c.position_id 
+		   and a.emp_no = d.emp_no
+		   and d.attend_date = #{param1}
+		<if test='param2 !=null and param2 !=""'>
+			and b.dep_name = #{param2}
 		</if>
 	</select>
 	
@@ -80,5 +83,25 @@
 		delete department where dep_id = #{param1}
 	</delete>
 	
+	<!-- 로그인된 직원 정보 ( select ) -->
+	<select id="employeeData_select" resultType="com.human.springboot.dto.EmployeeDTO">
+		select emp_name, emp_mobile, emp_email, emp_id, emp_img
+			from employee
+		where emp_id = #{param1}
+	</select>
+	<select id = "id_load_select" resultType = "com.human.springboot.dto.EmployeeDTO">
+		select emp_no from employee where emp_id = #{param1}
+	</select>
+	
+	<!-- 출퇴근 입력 -->
+	<insert id= "attendance_start_id">
+		insert into attendance (attend_id, emp_no, attend_date, start_time)
+			values( attend_id_seq.nextval, #{param1}, to_char(sysdate, 'YYYY-MM-DD'), TO_CHAR(SYSDATE,'HH:MM:SS'))
+	</insert>
+	<update id="attendance_end_id">
+		update attendance
+			set end_time = to_char(sysdate,'HH:MM:SS')
+		where emp_no = #{param1} and attend_date = to_char(sysdate, 'YYYY-MM-DD')
+	</update>
 	
 </mapper>

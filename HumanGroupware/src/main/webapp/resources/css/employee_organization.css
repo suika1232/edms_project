@@ -44,8 +44,9 @@ main{
 .organization{
 	border:0.1px solid black;
 	clear:right;
-	width:auto;
+	width:45%;
 	height:auto;
+	float:left;
 }
 
 .tree{
@@ -124,8 +125,10 @@ main{
 } */
 .add{
 	border:0.1px solid black;
-	width:400px;
+	width:50%;
 	height:300px;
+	float:right;
+	border-radius: 0.5rem;
 }
 .add_department{
 	width:200px;
@@ -162,7 +165,7 @@ main{
 	outline:none;
 	text-align:center;
 }
-.add_department_a input{
+.dep_name{
 	margin-top:1.5rem;
 	font-size:16px;
 	text-align:center;
@@ -171,12 +174,64 @@ main{
 	height:25px;
 	color:black;
 }
+.dep_manager{
+	margin-top:1.5rem;
+	font-size:16px;
+	text-align:center;
+	border:0 solid black;
+	width:150px;
+	height:25px;
+	color:black;
+}
+.delete_btn{
+	margin-top:1.5rem;
+	width:150px;
+	height:25px;
+	text-align:center;
+	background-color:rgb(148, 133, 133);
+	border:0 solid black;
+	border-radius: 0.5rem;
+}
+.dep_parent{
+	margin-top:1.5rem;
+	font-size:16px;
+	text-align:center;
+	border:0 solid black;
+	width:150px;
+	height:25px;
+	color:black;
+}
+.update_btn{
+	margin-top:4rem;
+	margin-left:16rem;
+	font-size:13px;
+	text-align:center;
+	width:100px;
+	height:25px;
+	color: black;
+	border-radius: 0.5rem;
+	background-color:rgb(187, 183, 183);
+	border:0 solid black;
+}
+.delete_depart{
+	border:0.1px solid black;
+	width:150px;
+	height:150px;
+	
+}
 .add_department_a input:focus{
 	outline:none;
 }
 .depart_name{
 	text-align:center;
 	border-bottom:1px solid black;
+	border-top:0px solid black;
+	border-left:0px solid black;
+	border-right:0px solid black;
+}
+#del_name{
+	text-align:center;
+	border-bottom:1px solid rgb(119, 119, 119);
 	border-top:0px solid black;
 	border-left:0px solid black;
 	border-right:0px solid black;

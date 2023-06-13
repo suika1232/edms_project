@@ -19,9 +19,30 @@
 		<a href="/attendance/current">근태현황</a><br>
 		<a href="/attendance/management">근태관리</a><br>
 		<a href="/attendance/byEmployee">사원별 근태현황</a>
+		<input type=button value="출근" id="start_id">
+		<input type=button value="퇴근" id="end_id">
 	</div>
 </div>
 <!-- 임시 링크용 -->
+<div class="Mysession_container">
+		<div id="Show-img_box"></div>
+		<div id="MY_box">
+			<% if(session.getAttribute("emp_name") != null && session.getAttribute("emp_id")!="") {%>
+				이름: ${ emp_name} , ${emp_id }
+				<div id=emp_depart>부서: </div>
+				<div id="My_box1">
+				<a href='/employee/mypage'>마이페이지</a>
+				<a href='/employee/logout'>로그아웃</a>
+				</div>
+			<% } else {%>
+				로그인 후 이용해주세요
+				<div class="My_box2">
+				<a href='/employee/login'>로그인</a>
+				<a href="/employee/signin">회원가입</a><br>
+				</div>
+			<% } %>
+		</div>
+	</div>
 	<div class="inquiry_main">
 		<a>직원별 근태현황</a>
 	</div>
@@ -53,7 +74,7 @@
 	<tbody id="employee_tbody">
 	</tbody>
 </table>
-
+<input type=hidden id="id_value">
 </div>
 
 </body>
@@ -61,33 +82,65 @@
 <script>
 $(document).ready(function(){
 	loadDep_name();
+	loadatt_id();
+	var now = new Date();
+	var year = now.getFullYear();
 })
+
+/* 출근, 퇴근 임시 확인용 */
+$('#start_id').on('click',function(){
+		$.ajax({url:'/attendance_start_id',  
+				type:'post', 
+				dataType:'text',
+				data:{emp_no:$('#id_value').val()
+						},
+				success:function(data){
+					if(data=='ok'){
+						alert('출근 성공');
+					} else{
+						alert("오류");
+					}
+				}
+		})
+	})
+$('#end_id').on('click', function(){
+	$.ajax({url:'/attendance_end_id',
+			 type:'post',
+			 dataType:'text',
+			 data:{emp_no:$('#id_value').val(),
+				 
+			 },
+			 success:function(data){
+				 if(data=='ok'){
+					 alert('퇴근 성공');
+				 } else{
+					 alert("오류");
+				 }}
+})
+})
+
 
 $('#select_btn').on('click',function(){
 	$('#employee_tbody').empty();
 	let date = $('#name_input').val();
 	let replaces_date = date.replace(/-/g,'');
-	console.log(replaces_date);
+	console.log(date);
 	$.ajax({url:"/attendance_list",
 			 type:'post',
 			 dataType:'json',
 			 data:{dep_name:$('#select_team').val(),
-				 	no:replaces_date},
-		/* 날짜 넣었을 경우 필요 */
- 		/* beforeSend:function(){
-           if(replaces_date==""||replaces_date==null){
-              alert('날짜를 선택하여주십시오.');
-              return false;
-           }
-	}, */
+				 	attend_date:$('#name_input').val(),},
 	success:function(data){
 		for(let i = 0; i<data.length; i++){
 			list = data[i];
 			let attList = '<tr><td class="td_3spx">'+list['emp_name']+'</td>'	// 이름
 						 + '<td class="td_3spx">'+list['dep_name']+'</td>'			// 부서
-						 + '<td class="td_3spx">'+list['position_name']+'</td>'		// 직급
+						 + '<td class="td_3spx">'+list['position_name']+'</td>'	// 직급
+						 + '<td class="td_5spx">'+list['start_time']+'</td>'			// 출근
+						 + '<td class="td_5spx">'+list['end_time']+'</td>'			// 퇴근
 						 + '<tr>';
 			$('#employee_tbody').append(attList);
+			console.log(attList);
 		}}
 	})
 })
@@ -107,5 +160,21 @@ $('#select_btn').on('click',function(){
 						 $('#select_team').append(option);
 					 }},
 	})}
+	
+// 사원 번호 불러오기 ( select )
+	function loadatt_id(){
+	$.ajax({url:'/id_load_select',
+			 type:'post',
+			 dataType:'json',
+			 data:{emp_id:'${emp_id}'},
+			 success:function(data){
+				 for(let i=0; i<data.length; i++){
+					 id = data[i];
+					 let emp_no = id['emp_no'];
+					 $('#id_value').val(emp_no);
+					 console.log(emp_no);
+					 }
+			 }})
+}
 </script>
 </html>

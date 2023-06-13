@@ -84,6 +84,7 @@ main{
 	height:200px;
 	clear:right;
 	border-bottom:1px solid rgb(175, 175, 175);
+	color:black;
 }
 .emp_depart_box{
 	margin-top:1.5rem;

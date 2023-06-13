@@ -49,15 +49,21 @@ main{
 	
 }
 .td_3px{
-	border-bottom:0.1px solid rgb(192, 192, 192);
+	border-bottom:0.1px solid black;
 	width:6rem;
 	text-align:center;
 }
 .td_3spx{
 	width:6rem;
 	text-align:center;
+	border-bottom:0.1px solid rgb(192, 192, 192);
 }
 .td_5px{
+	border-bottom:0.1px solid black;
+	width:8rem;
+	text-align:center;
+}
+.td_5spx{
 	border-bottom:0.1px solid rgb(192, 192, 192);
 	width:8rem;
 	text-align:center;

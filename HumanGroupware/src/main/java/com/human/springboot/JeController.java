@@ -78,6 +78,19 @@ public class JeController {
 	    return retval;
 	}
 	
+	// 퇴근시간 입력 ( update )
+	@PostMapping("/attendance_end_id")
+	@ResponseBody
+	public String doAtt_end_id(HttpServletRequest req) {
+		String retval = "ok";
+	try {
+		String emp_no = req.getParameter("emp_no");
+		JiDao.attendance_end_id(emp_no);
+	} catch(Exception e) {
+		retval = "fail";
+	}
+	return retval;
+	}
 // select option 설정
 	// 사원 정보 추가 ( 부서명 불러오기, select )
 	@PostMapping("/department_select0")
@@ -171,13 +184,16 @@ public class JeController {
 	@ResponseBody
 	public String doAttList(HttpServletRequest req) {
 		String dep_name = req.getParameter("dep_name");
-		ArrayList<EmpDepartPositionDTO> attendance_list = JiDao.attendance_list(dep_name);
+		String attend_date = req.getParameter("attend_date");
+		ArrayList<EmpDepartPositionDTO> attendance_list = JiDao.attendance_list(attend_date, dep_name);
 		JSONArray ja = new JSONArray();
 		for(int i=0; i<attendance_list.size(); i++) {
 			JSONObject jo = new JSONObject();
 			jo.put("emp_name", attendance_list.get(i).getEmp_name());
 			jo.put("dep_name", attendance_list.get(i).getDep_name());
 			jo.put("position_name", attendance_list.get(i).getPosition_name());
+			jo.put("start_time", attendance_list.get(i).getStart_time());
+			jo.put("end_time", attendance_list.get(i).getEnd_time());
 			ja.put(jo);
 		}
 		return ja.toString();
@@ -199,6 +215,26 @@ public class JeController {
 		return ja.toString();
 	}
 
+	// 직원 정보 불러오기
+	@PostMapping("/employeeData_select")
+	@ResponseBody
+	public String doEmployeeData_select(HttpServletRequest req) {
+		String emp_id = req.getParameter("emp_id");
+		System.out.println(emp_id);
+		ArrayList<EmployeeDTO> employeeData_select = JiDao.employeeData_select(emp_id);
+		JSONArray ja = new JSONArray();
+		for(int i=0; i<employeeData_select.size(); i++) {
+			JSONObject jo = new JSONObject();
+			jo.put("emp_name", employeeData_select.get(i).getEmp_name());
+			jo.put("emp_mobile", employeeData_select.get(i).getEmp_mobile());
+			jo.put("emp_email", employeeData_select.get(i).getEmp_email());
+			jo.put("emp_id", employeeData_select.get(i).getEmp_id());
+			jo.put("emp_img", employeeData_select.get(i).getEmp_img());
+			ja.put(jo);
+			
+		}
+		return ja.toString();
+	}
 	// 고용형태 직급 id 뽑기
 	@PostMapping("/exemploye_select1")
 	@ResponseBody
@@ -214,6 +250,20 @@ public class JeController {
 			}
 			return ja.toString();
 }
+	// 직원 번호 뽑기
+	@PostMapping("/id_load_select")
+	@ResponseBody
+	public String doLoad_id(HttpServletRequest req) {
+		String emp_id = req.getParameter("emp_id");
+		ArrayList<EmployeeDTO> id_load_select = JiDao.id_load_select(emp_id);
+		JSONArray ja = new JSONArray();
+		for(int i=0; i<id_load_select.size(); i++) {
+			JSONObject jo = new JSONObject();
+			jo.put("emp_no", id_load_select.get(i).getEmp_no());
+			ja.put(jo);
+		}
+		return ja.toString();
+	}
 	
 	// 부서 id 뽑기
 		@PostMapping("/exemployee_select2")
@@ -247,6 +297,36 @@ public class JeController {
 				e.printStackTrace();
 			}
 			return retval;
+		}
+	
+	// 출근시간 입력
+		@PostMapping("/attendance_start_id")
+		@ResponseBody
+		public String doStart_emp(HttpServletRequest req) {
+			String retval="ok";
+			String emp_no = req.getParameter("emp_no");
+			try {
+				System.out.println(emp_no);
+				JiDao.attendance_start_id(emp_no);
+			} catch(Exception e) {
+				retval = e.getMessage();
+			}
+			return retval;
+		}
+	
+	// 부서 삭제 ( delete )
+		 @PostMapping("/department_delete")
+		 @ResponseBody
+		 public String docartdelete(HttpServletRequest req) { 
+			 String retval="ok";
+			 int dep_id = Integer.parseInt(req.getParameter("dep_id"));
+			 
+			 try {
+					 JiDao.department_delete(dep_id);
+			} catch(Exception e) {
+				retval="fail";
+			} 
+			 return retval;
 		}
 }
 

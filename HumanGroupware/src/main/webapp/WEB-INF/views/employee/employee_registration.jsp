@@ -19,10 +19,30 @@
 		<a href="/attendance/current">근태현황</a><br>
 		<a href="/attendance/management">근태관리</a><br>
 		<a href="/attendance/byEmployee">직원별 근태현황</a>
+		<input type=button value="출근">
+		<input type=button value="퇴근">
 	</div>
 </div>
 <!-- 임시 링크용 -->
-
+<div class="Mysession_container">
+		<div id="Show-img_box"></div>
+		<div id="MY_box">
+			<% if(session.getAttribute("emp_name") != null && session.getAttribute("emp_id")!="") {%>
+				이름: ${ emp_name} 
+				<div id=emp_depart>부서: </div>
+				<div id="My_box1">
+				<a href='/employee/mypage'>마이페이지</a>
+				<a href='/employee/logout'>로그아웃</a>
+				</div>
+			<% } else {%>
+				로그인 후 이용해주세요
+				<div class="My_box2">
+				<a href='/employee/login'>로그인</a>
+				<a href="/employee/signin">회원가입</a><br>
+				</div>
+			<% } %>
+		</div>
+	</div>
 <!-- 사원관리 / 상세 -->
 <div class="inquiry_main">
 		<a>부서/직급 변경</a>
@@ -32,26 +52,25 @@
 	<div class="employee_all">
 		<div>
 			<div class="employee_people">
-				<div class="image">
-					<img src="/resources/img/people.png">
-					
+				<div class="image" id="image">
+					<img src="#">
 				</div>				
 				<div class="test">
 					<div class="input_box_name">
 						<a class="a_box_name">사 원 명</a>
-						<input type=text id="employee_kname" class="input_type">
+						<input type=text id="employee_kname" class="input_type" disabled>
 					</div>
 					<div class="input_box_name">
 						<a class="a_box_name">연 락 처</a>
-						<input type=text id="employee_phone" class="input_type">
+						<input type=text id="employee_phone" class="input_type" disabled>
 					</div>
 					<div class="input_box_name">
 						<a class="a_box_name">이 메 일</a>
-						<input type=text id="employee_email" class="input_type">
+						<input type=text id="employee_email" class="input_type" disabled>
 					</div>
 					<div class="input_box_name">
 						<a class="a_box_name">아 이 디</a>
-						<input type=text id="employee_id" class="input_type">
+						<input type=text id="employee_id" class="input_type" disabled>
 					</div>
 					
 				</div>
@@ -106,7 +125,7 @@ $(document).ready(function(){
 	loadDep_name();
 	loadPos_name();
 	loadJob_type();
-	
+	loadEmployeeData();
 })
 // select 직접입력 
 	// 이메일
@@ -266,7 +285,27 @@ $(document).ready(function(){
 				 }},
 })}
 	
-	
+	function loadEmployeeData(){
+		$.ajax({url:'/employeeData_select',
+				 type:'post',
+				 data:{emp_id:'${emp_id}'},
+				 dataType:'json',
+				 success:function(data){
+					 for(let i=0; i<data.length; i++){
+						 data = data[i];
+						 let name = data['emp_name'];
+						 let mobile = data['emp_mobile'];
+						 let email = data['emp_email'];
+						 let id = data['emp_id'];
+						 let img = '<img src="/"'+data['emp_img']+'>';
+						 $('#employee_kname').val(name);
+						 $('#employee_phone').val(mobile);
+						 $('#employee_email').val(email);
+						 $('#employee_id').val(id);
+						 $('#image').val(img);
+					 }
+				 }})
+	}
 
 </script>
 </html>

@@ -19,9 +19,30 @@
 		<a href="/attendance/current">근태현황</a><br>
 		<a href="/attendance/management">근태관리</a><br>
 		<a href="/attendance/byEmployee">사원별 근태현황</a>
+		<input type=button value="출근" id="start_id">
+		<input type=button value="퇴근" id="end_id">
 	</div>
 	</div>
 <!-- 임시 링크용 -->
+<div class="Mysession_container">
+		<div id="Show-img_box"></div>
+		<div id="MY_box">
+			<% if(session.getAttribute("emp_name") != null && session.getAttribute("emp_id")!="") {%>
+				이름: ${ emp_name} 
+				<div id=emp_depart>부서: </div>
+				<div id="My_box1">
+				<a href='/employee/mypage'>마이페이지</a>
+				<a href='/employee/logout'>로그아웃</a>
+				</div>
+			<% } else {%>
+				로그인 후 이용해주세요
+				<div class="My_box2">
+				<a href='/employee/login'>로그인</a>
+				<a href="/employee/signin">회원가입</a><br>
+				</div>
+			<% } %>
+		</div>
+	</div>
 <div class="inquiry_main">
 	<a>조직도</a>
 </div>
@@ -61,30 +82,34 @@
 	<!-- 부서 추가 -->
 	<div class="add">
 		<div class="add_department_a">
-			<input type=text class="dep_name" value="부 서 명"  id="dep_name" disabled><br>
+			<input type=text class="dep_name" id="dep_name" value="부 서 명"  id="dep_name" disabled><br>
 			
-			<input type=text class="dep_parent" value="상위 부 서 명" disabled><br>
-			<input type=text class="dep_manager" value="담당 부 서 명" disabled><br>
+			<input type=text class="dep_parent"  id="dep_parent" value="상위 부 서 명" disabled><br>
+			<input type=text class="dep_manager" id="dep_manager" value="담당 부 서 명" disabled><br>
+			<input type=text class="dep_name" id="del_name" value="삭 제 부 서 명"  id="dep_name" disabled>
+			<input type=button value="삭제" id="delete_btn" class="delete_btn"><br>
 		</div>
 		<div class="add_department">
 			<input type= text class="depart_name" id="depart_name" placeholder="[2~20자 이내]" ><br>
 			<select class="depart_parent" id=depart_parent>
-				<option value="">없음</option>
+				<option value="0">없음</option>
 			</select>
 			<select class="depart_manager" id=depart_manager>
-				<option value="">없음</option>
+				<option value="0">없음</option>
 			</select>
+			<select class="depart_parent" id=depart_id>
+				<option value="없음">없음</option><br>
+			</select>
+			<input type=button value="추가" id=update_btn class="update_btn"><br>
 		</div>
+		
+	<input type=hidden id="parent_number" value="0"><br>
+	<input type=hidden id="manager_number" value="0">
+	<input type=hidden id="id_number" value="없음">
 	</div>
-	<input type=button value="추가" id=update_btn><br>
-	임시 parent<input type=text id="parent_number" value=""><br>
-	임시 manager<input type=text id="manager_number" value="">
-	임시 id<input type=text id="id_number" value="">
 	
-	임시 삭제 select
-	<select class="depart_parent" id=depart_parent>
-				<option value="">없음</option>
-	</select>
+	
+	
 </body>
 <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script>
@@ -100,6 +125,11 @@ $('#depart_parent').on('click',function(){
 $('#depart_manager').on('click',function(){
 	$('#manager_number').val($('#depart_manager').val());
 });
+$('#depart_id').on('click',function(){
+	$('#id_number').val($('#depart_id').val());
+})
+
+// click 추가상태
 
 
 // select option (부서, 직급, 고용형태) 불러오기
@@ -113,8 +143,10 @@ $('#depart_manager').on('click',function(){
 						 option = data[i];
 						 let parent = '<option value='+option['dep_parent']+'>'+option['dep_name']+'</option>';
 						 let manager = '<option value='+option['dep_manager']+'>'+option['dep_name']+'</option>';
+						 let id ='<option value='+option['dep_id']+'>'+option['dep_name']+'</option>';
 						 $('#depart_parent').append(parent);
 						 $('#depart_manager').append(manager);
+						 $('#depart_id').append(id);
 					 }},
 	})}
 
@@ -148,24 +180,27 @@ $('#update_btn').on('click',function(){
 	})
 })
 	
-//삭제구현  
-
-/* $("#payorder_delete").on("click", function(){
-	let chk = "";
-	$.ajax({url:'/order_delete', type:'post', data:{cart_id: chk}, dataType:'text',
-			beforeSend:function(){
-				if($('input:checkbox[name=check]').is(":checked")==0){
-					alert('선택하십시오');
-					return false;
-			}},
+// 부서 삭제
+$("#delete_btn").on("click", function(){
+	$.ajax({url:'/department_delete', 
+			 type:'post', 
+			 data:{dep_id:$('#id_number').val()}, 
+			 dataType:'text',
+	beforeSend:function(){
+		if($('#id_number').val()=='없음'){
+			alert('삭제할 부서를 선택해 주십시오.');
+			return false;
+	}},
 			success:function(data){
 				if(data=='ok'){
-					if(!confirm('선택한 부서를 삭제하시겠습니까?')) 
+					if(!confirm('선택한 부서를 삭제하시겠습니까?'));
+					alert('선택 부서가 영구제거되었습니다.');
+					location.reload();					
 						return false;
 			    } else {
 					alert("삭제 불가능.");
 				}
 	}})
-}); */
+});
 </script>
 </html>
