@@ -145,9 +145,15 @@
       from employee
       where emp_id = #{param1} and emp_password = #{param2}
     </select>
-    <select id="getUserInfo" resultType="com.human.springboot.dto.EmployeeDTO">
-      select *
-      from employee
-      where emp_id = #{param1}
+    <select id="getUserInfo" resultType="com.human.springboot.dto.SwEmpDTO">
+      select a.emp_no, a.emp_id, a.emp_name, b.dep_name, c.position_name
+      from employee a, department b, position c
+      where a.emp_depart = b.dep_id and a.emp_position = c.position_id 
+            and a.emp_id = #{param1}
+    </select>
+    <select id="empList" resultType="com.human.springboot.dto.SwEmpDTO">
+      select a.emp_no, a.emp_name, c.position_name, b.dep_name
+      from employee a, department b, position c 
+      where a.emp_depart = b.dep_id and a.emp_position = c.position_id
     </select>
 </mapper>

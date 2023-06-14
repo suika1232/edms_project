@@ -22,44 +22,14 @@
         text-align: center; 
         background-color: #0d6efd;
     }
+    .list-group-item:hover{
+        cursor: pointer;
+    }
 </style>
 <body>
-<!-- <nav class="nav justify-content-start bg-primary">
-    <% String userId = (String)session.getAttribute("loginUser");%>
-    <% if(userId == null){ %>
-    <a class="nav-link text-white" href="/temp/login">Login</a>
-    <% } %>
-    <% if(userId != null){ %>
-    <div style="display: flex; align-items: center; font-weight: bold; color: white;">
-        환영합니다&nbsp;
-        <%=session.getAttribute("userName")%>
-        &nbsp;님
-    </div>    
-    <a class="nav-link text-white" href="#" onclick="logout()">Logout</a>
-    <% } %>
-    
-    
-</nav> -->
-
-
-<!-- <div class="flex-column col-md-2 bg-white float-md-start" id="navbar">
-    <div class="panel panel-info">
-        <ul class="list-group">
-            <li class="list-group-item">
-                <a href="#" onclick="changeView('notice')">
-                    <i class="bi bi-info-circle"></i>공지사항</a>
-            </li>
-            <li class="list-group-item">
-                <a href="#" onclick="changeView('free')">
-                    <i class="bi bi-people"></i>자유게시판</a>
-            </li>
-        </ul>
-    </div>
-</div> -->
-
 <div class="container-fluid">
-    <div class="row flex-nowrap fixed-top">
-        <div class="col-md-2 sidebar bg-light float-md-start">
+    <div class="row d-flex flex-nowrap fixed-top">
+        <div class="col-md-2 sidebar bg-light float-md-start ms-2">
             <div class="d-flex flex-column align-items-center">
                 <a href="#" class="navbar-brand text-center d-block">HumanGroupWare</a>
             </div>
@@ -78,21 +48,39 @@
                 <% } %>
               </div>
             </div>
-            <div>
+            <br>
+            <div class="d-flex flex-column">
                 <ul class="list-group">
-                    <li class="list-group-item">
-                        <a href="#" onclick="changeView('notice')">
-                            <i class="bi bi-info-circle"></i>공지사항</a>
+                    <li class="list-group-item" id="list-notice" 
+                        onclick="changeView('notice')">
+                        <i class="bi bi-info-circle"></i>공지사항
                     </li>
-                    <li class="list-group-item">
-                        <a href="#" onclick="changeView('free')">
-                            <i class="bi bi-people"></i>자유게시판</a>
+                    <li class="list-group-item" id="list-free" 
+                        onclick="changeView('free')">
+                        <i class="bi bi-people"></i>자유게시판
+                    </li>
+                </ul>
+                <br>
+                <ul class="list-group">
+                    <li class="list-group-item" id="list-draft" 
+                        onclick="changeView('draft')">
+                        <i class="bi bi-pencil-square"></i>기안하기
+                    </li>
+                    <li class="list-group-item" id="list-list" 
+                        onclick="changeView('list')">
+                        <i class="bi bi-list-check"></i>결재목록
+                    </li>
+                </ul>
+                <ul class="list-group">
+                    <li class="list-group-item" id="list-template"
+                        onclick="changeView('template')">
+                        <i class="bi bi-file-earmark"></i>결재양식
                     </li>
                 </ul>
             </div>
         </div>
         <div class="col float-md-end video-warp">
-            <iframe id="sectionView" src="/board/notice" style="width: 100%; height: 100%;"></iframe>
+            <iframe id="sectionView" src="/board/notice" style="width: 99%; height: 100%;"></iframe>
         </div>
     </div>
 </div>
@@ -105,7 +93,15 @@
 <script>
 
 function changeView(menu){
-    $("#sectionView").attr("src", "/board/"+menu);
+    if(menu == "notice" || menu == "free"){
+        $("#sectionView").attr("src", "/board/"+menu);
+    }else if(menu == "draft" || menu == "list"){
+        $("#sectionView").attr("src", "/edms/"+menu);
+    }
+    if(menu == "template") $("#sectionView").attr("src", "/edms/template/leave");
+    $(".list-group-item").removeClass("active");
+    $("#list-"+menu).addClass("active");
+    
 }
 function logout(){
     if(!confirm("로그아웃 합니까?")) return;

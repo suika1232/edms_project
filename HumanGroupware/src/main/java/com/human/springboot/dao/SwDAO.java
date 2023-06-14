@@ -1,8 +1,9 @@
 package com.human.springboot.dao;
 
-import com.human.springboot.dto.EmployeeDTO;
+
 import com.human.springboot.dto.SwBoardDTO;
 import com.human.springboot.dto.SwCommentDTO;
+import com.human.springboot.dto.SwEmpDTO;
 
 import java.util.ArrayList;
 import org.apache.ibatis.annotations.Mapper;
@@ -29,6 +30,8 @@ public interface SwDAO {
     ArrayList<SwCommentDTO> commentList(int board_id);
 
     boolean userCheck(String id, String pw);
-    EmployeeDTO getUserInfo(String userId);
+    SwEmpDTO getUserInfo(String userId);
+
+    ArrayList<SwEmpDTO> empList();
 
 }

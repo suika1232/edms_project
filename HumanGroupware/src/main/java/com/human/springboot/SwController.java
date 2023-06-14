@@ -1,19 +1,22 @@
 package com.human.springboot;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.UUID;
 import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.time.ZoneId;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.json.HTTP;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.web.ServerProperties.Reactive.Session;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,9 +27,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.human.springboot.dao.SwDAO;
+import com.human.springboot.dto.EmpDepartPositionDTO;
 import com.human.springboot.dto.EmployeeDTO;
 import com.human.springboot.dto.SwBoardDTO;
 import com.human.springboot.dto.SwCommentDTO;
+import com.human.springboot.dto.SwEmpDTO;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -282,6 +287,61 @@ public class SwController {
             e.printStackTrace();
         }
     }
+    // 전자결재 목록
+    @GetMapping("/edms/list")
+    public String edmsList(){
+
+        return "edms/edms_list";
+    }
+    // 전자결재 기안하기
+    @GetMapping("/edms/draft")
+    public String edmsDraft(){
+        return "edms/edms_draft";
+    }
+    // 전자결재 직원 리스트 불러오기
+    @PostMapping("/edms/emplist")
+    @ResponseBody
+    public String edmsEmpList(){
+        ArrayList<SwEmpDTO> empList = sdao.empList();
+        JSONArray jArray = new JSONArray();
+        for (SwEmpDTO emp: empList) {
+            JSONObject jObject = new JSONObject();
+            jObject.put("empNo", emp.getEmp_no());
+            jObject.put("empName", emp.getEmp_name());
+            jObject.put("empPosition", emp.getPosition_name());
+            jObject.put("empDepart", emp.getDep_name());
+            jArray.put(jObject);
+        }
+        return jArray.toString();
+    }
+    // 전자결재 양식
+    @GetMapping("/edms/template/leave")
+    public String edmsTemplateLeave(HttpServletRequest req, Model model){
+
+        HttpSession session = req.getSession();
+        String loginUser = (String) session.getAttribute("loginUser");
+        SwEmpDTO userInfo = sdao.getUserInfo(loginUser);
+        String empName = userInfo.getEmp_name();
+        String empDepart = userInfo.getDep_name();
+        String empPosition = userInfo.getPosition_name();
+
+        LocalDate now = LocalDate.now(ZoneId.of("Asia/Seoul"));
+        int year = now.getYear();
+        int month = now.getMonthValue();
+        int day = now.getDayOfMonth();
+
+        System.out.printf("현재날짜: %d 년 %d 월 %d 일 \n", year, month, day);
+
+        model.addAttribute("year", year);
+        model.addAttribute("month", month);
+        model.addAttribute("day", day);
+
+        model.addAttribute("empName", empName);
+        model.addAttribute("empDepart", empDepart);
+        model.addAttribute("empPosition", empPosition);
+
+        return "edms/edms_template_leave";
+    }
 
     // 임시 로그인 화면
     @GetMapping("/temp/login")
@@ -301,7 +361,7 @@ public class SwController {
 
         if(sdao.userCheck(userId, userPw)){
             System.out.printf("유저 확인됨 %s \n", userId);
-            EmployeeDTO userInfo = sdao.getUserInfo(userId);
+            SwEmpDTO userInfo = sdao.getUserInfo(userId);
             userSession.setAttribute("loginUser", userId);
             userSession.setAttribute("userNo", userInfo.getEmp_no());
             userSession.setAttribute("userName", userInfo.getEmp_name());
@@ -328,12 +388,17 @@ public class SwController {
     }
     // 테스트 업로드
     @PostMapping("/testupload")
-    public String testUpload(@RequestParam(value="fileUpload")MultipartFile multi){
+    public String testUpload(@RequestParam(value="fileUpload")MultipartFile multi,
+                            Model model){
         try {
             String fileName = multi.getOriginalFilename();
+            String filePath = "D:/testimg/" + fileName;
             System.out.println(fileName);
-            File file = new File("D:/testimg/"+fileName);
+            File file = new File(filePath);
             multi.transferTo(file);
+
+            model.addAttribute("fileName", fileName);
+            model.addAttribute("filePath", filePath);
         } catch (Exception e) {
            e.printStackTrace();
         }
@@ -341,14 +406,17 @@ public class SwController {
     }
     // 테스트 다운로드
     @GetMapping("/test/filedownload")
-    public void testDownload(HttpServletResponse res){
+    public void testDownload(HttpServletResponse res,
+                            HttpServletRequest req){
         try{
+            String filePath = req.getParameter("filePath");
+            String fileName = req.getParameter("fileName");
             byte[] fileByte = 
-            FileUtils.readFileToByteArray(new File("D:/testimg/\uC5D0\uC5B4\uD504\uB77C\uC774\uC5B4.jpg"));
+            FileUtils.readFileToByteArray(new File(filePath));
 
             res.setContentType("application/octet-stream");
             res.setHeader("Content-Disposition", "attachment; fileName=\""+
-                            URLEncoder.encode("air.jpg", "UTF-8")+"\";");
+                            URLEncoder.encode(fileName, "UTF-8")+"\";");
             res.setHeader("Content-Transfer-Encoding", "Binary");
 
             res.getOutputStream().write(fileByte);
