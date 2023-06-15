@@ -60,8 +60,24 @@
         color:purple;
         cursor: pointer;
     }
+    #writer, #approverMidName, #approverFinalName, #leavePeriod{
+        width: 50px; padding: 0; outline: none; border: none;
+    }
+    #writeYear, #writeMonth, #writeDay{
+        padding: 0; outline: none; border: none; text-align: right;
+    }
+    #writeYear{
+        width: 60px;
+    }
+    #writeMonth, #writeDay{
+        width: 35px; 
+    }
+    #leavePeriodDiv input[type=text]{
+        outline: none; border: none; text-align: right; background-color: rgb(247, 245, 245);
+    }
 </style>
 <body>
+<form id="approvalForm" method="post" action="/edmsSend/leave">
 <div class="table-responsive-md">
     <table class="table">
         <tbody>
@@ -111,12 +127,21 @@
                         </td>
                         <td>작성</td>
                         <td>팀장</td>
-                        <td>파트장</td>
+                        <td>부서장</td>
                     </tr>
                     <tr>
-                        <td>${empName}</td>
-                        <td><btn></td>
-                        <td></td>
+                        <td>
+                            <input type="text" id="writer" name="writer" value="${empName}" readonly>
+                            <input type="hidden" id="writerId" name="writerId" value="${empNo}" readonly>
+                        </td>
+                        <td>
+                            <input type="text" id="approverMidName" readonly>
+                            <input type="hidden" id="midId" name="midId" readonly>
+                        </td>
+                        <td>
+                            <input type="text" id="approverFinalName" readonly>
+                            <input type="hidden" id="finalId" name="finalId" readonly>
+                        </td>
                     </tr>
                 </table>
             </td>
@@ -139,6 +164,7 @@
                     <tr>
                         <td>구분</td>
                         <td>
+                            <input type="hidden" id="selectedLeaveCategory" name="selectedLeaveCategory">
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" 
                                     name="leaveCategory" id="leaveCategory1" value="연차">
@@ -169,27 +195,32 @@
                     <tr>
                         <td>일시</td>
                         <td style="font-size: 12px; text-align: center;">
-                            <div class="text-start d-inline-block">
-                                <input type="text"> 년 
-                                <input type="text"> 월 
-                                <input type="text"> 일부터
+                            <div id="leavePeriodDiv" class="text-start d-inline-block">
+                                <input type="text" id="startYear" name="startYear"> 년 
+                                <input type="text" id="startMonth" name="startMonth"> 월 
+                                <input type="text" id="startDay" name="startDay"> 일부터
                                 <br>~<br>
-                                <input type="text"> 년 
-                                <input type="text"> 월 
-                                <input type="text"> 일까지 
-                                &lt;<span id="vacDays"></span> 일간&gt;
+                                <input type="text" id="endYear" name="endYear"> 년 
+                                <input type="text" id="endMonth" name="endMonth"> 월 
+                                <input type="text" id="endDay" name="endDay"> 일까지 
+                                &nbsp;<input type="number" id="leavePeriod" name="leavePeriod"
+                                        style="text-align: right;" readonly>일간
                             </div>
                         </td>
                     </tr>
                     <tr>
                         <td>사유</td>
-                        <td><textarea id="vacReason"></textarea></td>
+                        <td><textarea id="leaveDetail" name="leaveDetail"></textarea></td>
                     </tr>
                     <tr>
                         <td colspan="2" style="border-bottom: none;">
                             <p>위와 같이 휴가를 신청하오니 허락하여 주시기 바랍니다.</p>
                             <br>
-                            <p>${year} 년 ${month} 월 ${day} 일</p>           
+                            <p>
+                                <input type="number" id="writeYear" name="writeYear" value="${year}" readonly> 년 
+                                <input type="number" id="writeMonth" name="wirteMonth" value="${month}" readonly> 월 
+                                <input type="number" id="writeDay" name="writeDay" value="${day}" readonly> 일
+                            </p>           
                         </td>
                     </tr>
                     <tr>
@@ -204,16 +235,15 @@
     </table>
 </div>
 <div class="d-flex gap-2 mt-5 justify-content-center">
-    <button type="button" name="btnSubmit" id="btnSubmit" class="btn btn-primary">상신</button>
+    <button type="submit" name="btnSubmit" id="btnSubmit" class="btn btn-primary">상신</button>
 </div>
-<!-- Modal trigger button -->
+</form>
+<!-- 모달 열기 -->
 <button type="button" id="btnOpenModal" class="btn btn-primary btn-sm" data-bs-toggle="modal" 
     data-bs-target="#modalId" style="display: none;">
   Launch
 </button>
-
-<!-- Modal Body -->
-<!-- if you want to close by clicking outside the modal, delete the last endpoint:data-bs-backdrop and data-bs-keyboard -->
+<!-- 모달 -->
 <div class="modal fade" id="modalId" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-sm" role="document">
         <div class="modal-content">
@@ -225,8 +255,9 @@
                 <table></table>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-                <button type="button" class="btn btn-primary">확인</button>
+                <button type="button" class="btn btn-secondary" 
+                    data-bs-dismiss="modal" id="btnModalClose">취소</button>
+                <!-- <button type="button" class="btn btn-primary" id="btnModalConfirm">확인</button> -->
             </div>
         </div>
     </div>
@@ -237,7 +268,7 @@
 <script src="/js/bootstrap-js/bootstrap.bundle.min.js"></script>
 <script>
 $(document)
-.on("click", "#btnApprovalLine", ()=>{
+.on("click", "#btnApprovalLine", function(){
     let approvalLine = $("#selectApprover option:selected").val();
     let lineStep = $("#selectApprover option:selected").text();
     console.log(approvalLine);
@@ -248,13 +279,13 @@ $(document)
         $.ajax({
             url: "/edms/emplist",
             type: "post",
-            data:{},
             dataType: "json",
             success: (data)=>{
                 console.table(data);
                 $("#modalBody table").empty();
                 data.forEach(el => {
-                    let str = "<tr><td><span data-value='"+el["empNo"]+"'>";
+                    let str = "<tr><td><span data-name="+el["empName"];
+                    str += " data-id="+el["empNo"]+">";
                     str += "["+el["empDepart"]+"]";
                     str += el["empName"]+" "+el["empPosition"];
                     str += "</span></td></tr>";
@@ -263,11 +294,92 @@ $(document)
                 $("#modalBody span").attr("onclick", "empInfo(this)");
             }
         })
+    }else{
+        alert("먼저 결재자를 선택해주세요");
+        return;
     }
 })
+.on("change", "#leavePeriodDiv input[type=text]", function(){
+    let str = $(this).val();
+    let pattern = /^[0-9]+$/;
+    if(!pattern.test(str)){
+        alert("날짜는 숫자로 입력해주세요");
+        $(this).val("");
+    }
+})
+.on("blur", "#endDay", ()=>{
+    let startDate = getStartDate($("#startYear").val(), 
+                            $("#startMonth").val(), 
+                            $("#startDay").val());
+
+    let endDate = getEndDate($("#endYear").val(),
+                            $("#endMonth").val(),
+                            $("#endDay").val());
+                            
+    if(startDate == "Invalid Date" || endDate == "Invalid Date"){
+        console.log("invalid date");
+        return;
+    }
+    console.log("시작: "+startDate);
+    console.log("종료: "+endDate);
+
+    let leavePeriod = new Date(endDate.getTime()-startDate.getTime());
+    leavePeriod = Math.floor(leavePeriod / (1000*60*60*24)+1);
+    if(leavePeriod < 0) { 
+        alert("종료날짜는 시작날짜 이후여야 합니다.");
+        return;
+    }
+    console.log("기간: "+leavePeriod);
+    if($("#leaveCategory2").is(":checked")){
+        $("#leavePeriod").val(0.5);
+    }else{
+        $("#leavePeriod").val(leavePeriod);
+    }
+})
+.on("blur", "#leavePeriodDiv input[type=text]", function(){
+    let id = $(this).attr("id");
+    let value = $(this).val();
+    if(id.includes("Year")) return;
+    if(value.length == 1) $(this).val("0"+value);
+})
+.on("click", "input:radio[name=leaveCategory]", function(){
+    $("#leavePeriod").val("");
+    let checked = $(this).val();
+    $("#selectedLeaveCategory").val(checked);
+    if(checked == "반차"){
+        $("#leavePeriod").val(0.5);
+    }else{
+        $(this).each((i, obj)=>{
+            let value = $(obj).val().trim();
+            console.log(value)
+            if(value == "") return;
+        })
+        $("#endDay").trigger("blur");
+    }
+})
+.on("submit", "#approvalForm", ()=>{
+    if(!confirm("상신 합니까?")) return false;
+})
+.on("blur", "#leaveDetail", function(){
+    console.log($(this).val());
+})
 function empInfo(ths){
-    let selectApprover = $(ths).data("value");
-    console.log(selectApprover);
+    let selectedApprovalLine = $("#selectApprover option:selected").val();
+    if(selectedApprovalLine == "mid"){
+        $("#approverMidName").val($(ths).data("name"));
+        $("#midId").val($(ths).data("id"));
+        $("#btnModalClose").trigger("click");
+    }else if(selectedApprovalLine == "final"){
+        $("#approverFinalName").val($(ths).data("name"));
+        $("#finalId").val($(ths).data("id"));
+        $("#btnModalClose").trigger("click");
+    }
+}
+function getStartDate(y, m ,d){
+    return new Date(y+"-"+m+"-"+d);
+}
+function getEndDate(y, m, d){
+    return new Date(y+"-"+m+"-"+d);
 }
 </script>
 </html>

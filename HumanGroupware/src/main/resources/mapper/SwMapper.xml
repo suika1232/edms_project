@@ -156,4 +156,20 @@
       from employee a, department b, position c 
       where a.emp_depart = b.dep_id and a.emp_position = c.position_id
     </select>
+    <insert id="edmsSend">
+      insert into edms(edms_id, edms_drafter, edms_mid_approver, 
+                        edms_fnl_approver, edms_title)
+      values(edms_seq.nextval, #{param1}, #{param2}, #{param3}, #{param4})
+    </insert>
+    <insert id="edmsLeave">
+      <selectKey resultType="int" keyProperty="edms_id" order="BEFORE">
+        select edms_seq.currval as edms_id from dual
+      </selectKey>
+      insert into edms_leave
+      values(edms_leave_seq.nextval, #{edms_id}, #{param1}, #{param2}, #{param3}, #{param4})
+    </insert>
+    <select id="edmsList" resultType="com.human.springboot.dto.SwEdmsDTO">
+      select *
+      from edms
+    </select>
 </mapper>

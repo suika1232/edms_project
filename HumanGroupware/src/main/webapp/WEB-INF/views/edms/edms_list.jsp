@@ -10,7 +10,7 @@
     <title>결재목록</title>
 </head>
 <body>
-<h3>결재수신목록</h3>
-
+<h3>결재목록</h3>
+    
 </body>
 </html>

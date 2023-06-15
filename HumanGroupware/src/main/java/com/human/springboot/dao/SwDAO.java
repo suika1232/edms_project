@@ -33,5 +33,7 @@ public interface SwDAO {
     SwEmpDTO getUserInfo(String userId);
 
     ArrayList<SwEmpDTO> empList();
+    void edmsSend(int drater, int appMid, int appFinal, String title);
+    void edmsLeave(String category, String startDate, String endDate, String detail);
 
 }

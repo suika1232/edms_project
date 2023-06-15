@@ -321,6 +321,7 @@ public class SwController {
         HttpSession session = req.getSession();
         String loginUser = (String) session.getAttribute("loginUser");
         SwEmpDTO userInfo = sdao.getUserInfo(loginUser);
+        int empNo = userInfo.getEmp_no();
         String empName = userInfo.getEmp_name();
         String empDepart = userInfo.getDep_name();
         String empPosition = userInfo.getPosition_name();
@@ -336,11 +337,49 @@ public class SwController {
         model.addAttribute("month", month);
         model.addAttribute("day", day);
 
+        model.addAttribute("empNo", empNo);
         model.addAttribute("empName", empName);
         model.addAttribute("empDepart", empDepart);
         model.addAttribute("empPosition", empPosition);
 
         return "edms/edms_template_leave";
+    }
+    // 전자결재 송신
+    @PostMapping("/edmsSend/{edmsCategory}")
+    public String edmsSend(@PathVariable("edmsCategory")String edmsCategory,
+                             HttpServletRequest req){
+        int writerId = Integer.parseInt(req.getParameter("writerId"));
+        int midId = Integer.parseInt(req.getParameter("midId"));
+        int finalId = Integer.parseInt(req.getParameter("finalId"));
+        
+        String edmsTitle = req.getParameter("edmsTitle");
+        
+        sdao.edmsSend(writerId, midId, finalId, edmsTitle);
+
+        if(edmsCategory.equals("leave")){
+            String category = req.getParameter("selectedLeaveCategory");
+            String startDate = req.getParameter("startYear")+"-"+
+                                req.getParameter("startMonth")+"-"+
+                                req.getParameter("startDay");
+            String endDate = req.getParameter("endYear")+"-"+
+                                req.getParameter("endMonth")+"-"+
+                                req.getParameter("endDay");
+            String leaveDetail = req.getParameter("leaveDetail");
+            System.out.println("카테고리: "+category);
+            System.out.println("시작: "+startDate);
+            System.out.println("종료: "+endDate);
+            System.out.println("상세내용:"+leaveDetail);
+
+            sdao.edmsLeave(category, startDate, endDate, leaveDetail);
+        }
+       
+
+        
+        
+
+
+
+        return "redirect:/edms/list";
     }
 
     // 임시 로그인 화면
