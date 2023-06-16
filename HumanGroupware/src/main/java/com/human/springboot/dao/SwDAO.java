@@ -3,6 +3,7 @@ package com.human.springboot.dao;
 
 import com.human.springboot.dto.SwBoardDTO;
 import com.human.springboot.dto.SwCommentDTO;
+import com.human.springboot.dto.SwEdmsDTO;
 import com.human.springboot.dto.SwEmpDTO;
 
 import java.util.ArrayList;
@@ -33,7 +34,15 @@ public interface SwDAO {
     SwEmpDTO getUserInfo(String userId);
 
     ArrayList<SwEmpDTO> empList();
-    void edmsSend(int drater, int appMid, int appFinal, String title);
-    void edmsLeave(String category, String startDate, String endDate, String detail);
+    void edmsSend(int drater, int appMid, int appFinal, String title, String category);
+    void edmsLeave(String category, String startDate, String endDate, String detail, int period);
+    ArrayList<SwEdmsDTO> edmsList();
+
+    SwEdmsDTO findEdms(int edmsId);
+    String getEmpName(int empNo);
+    SwEdmsDTO edmsLeaveView(int edmsId);
+
+    void edmsApprovalConfirm(int edmsId, int approverId, String status);
+    void edmsApprovalReject(int edmsId, int approverId, String status, String reason);
 
 }

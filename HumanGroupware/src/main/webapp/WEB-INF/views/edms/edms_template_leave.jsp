@@ -358,6 +358,10 @@ $(document)
     }
 })
 .on("submit", "#approvalForm", ()=>{
+    if($("#edmsTitle").val().trim()==""){
+        alert("제목을 작성해야 합니다.");
+        return false;
+    }
     if(!confirm("상신 합니까?")) return false;
 })
 .on("blur", "#leaveDetail", function(){

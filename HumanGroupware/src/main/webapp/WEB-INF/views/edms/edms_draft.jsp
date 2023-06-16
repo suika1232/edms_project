@@ -32,15 +32,6 @@
                         </div>
                     </td>
                 </tr>
-                <!-- <tr class="">
-                    <td scope="row">제목</td>
-                    <td>
-                        <div class="">
-                            <input type="text" class="form-control form-control-sm" 
-                                    name="edmsTitle" id="edmsTitle">
-                        </div>
-                    </td>
-                </tr> -->
             </tbody>
         </table>
     </div>
