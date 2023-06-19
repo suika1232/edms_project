@@ -81,10 +81,16 @@
         border: none; outline: none;
     }
     .signNamePosition{
-        float: left;
-        top: 24px;
         position: relative;
-        left: 15px;
+        top: 24px;
+    }
+    .signImg{
+        width: 50px;
+        height: 50px;
+        opacity: 0.6;
+        margin: 0 0;
+        position: relative;
+        bottom: 15px;
     }
 </style>
 <body>
@@ -96,13 +102,13 @@
             <tr class="">
                 <td scope="row" style="width: 155px;">번호</td>
                 <td>
-                    <input type="text" id="edmsId" value="${edmsId}">
+                    <input type="text" id="edmsId" value="${edmsId}" readonly>
                 </td>
             </tr>
             <tr>
                 <td scope="row" style="width: 155px;">분류</td>
                 <td>
-                    <input type="text" id="edmsCategory" value="${edmsCategory}">
+                    <input type="text" id="edmsCategory" value="${edmsCategory}" readonly>
                 </td>
             </tr>
             <tr class="">
@@ -116,9 +122,20 @@
             <tr class="">
                 <td scope="row" style="width: 155px;">상태</td>
                 <td>
-                    <input type="text" id="edmsStatus" value="${edmsStatus}">
+                    <input type="text" id="edmsStatus" value="${edmsStatus}" readonly>
                 </td>
             </tr>
+            <% 
+                String edmsStatus = (String)request.getAttribute("edmsStatus");
+                if(edmsStatus.equals("반려")){ %>
+            <tr>
+                <td scope="row" style="width: 155px;">사유</td>
+                <td>
+                    <%=request.getAttribute("edmsReason")%>
+                </td>
+            </tr>
+
+            <%  } %>
         </tbody>
     </table>
 </div>
@@ -143,7 +160,9 @@
                     </tr>
                     <tr>
                         <td>
-                            <input type="text" id="writer" name="writer" value="${empName}" readonly>
+                            
+                            <input type="text" id="writer" name="writer" value="${empName}" class="signNamePosition" readonly>
+                            <img src="/img/확인.png" class="signImg">
                             <input type="hidden" id="writerId" name="writerId" value="${empNo}" readonly>
                         </td>
                         <td>
@@ -328,7 +347,7 @@ $(document)
             }else $(el).prop("checked", true);
         })
     }
-    let loginUser = '<%=(int)session.getAttribute("userNo")%>';
+    let loginUser = '<%=(int)session.getAttribute("emp_no")%>';
     console.log(loginUser);
     if($("#edmsStatus").val() == "결재대기"){
         if(loginUser == $("#midId").val() || loginUser == $("#finalId").val()){
@@ -372,9 +391,10 @@ $(document)
     })
 })
 function approverSign(approverCheck){
-    console.log(approverCheck);
     let check = $(approverCheck).val();
     let id = $(approverCheck).attr("id");
+    console.log(check)
+    console.log(id);
 
     if(check == "y"){
         let signImg = $("<img>",{
@@ -384,14 +404,13 @@ function approverSign(approverCheck){
             height: "50px",
             opacity: "0.6",
             margin: "0 0",
-            display: "inline-block",
             position: "relative",
             bottom: "15px"
         })
         $(approverCheck).before(signImg);
-        if(id == "midId"){
+        if(id == "midCheck"){
             $("#approverMidName").addClass("signNamePosition");
-        }else{
+        }else if(id == "finalCheck"){
             $("#approverFinalName").addClass("signNamePosition");
         }
     }

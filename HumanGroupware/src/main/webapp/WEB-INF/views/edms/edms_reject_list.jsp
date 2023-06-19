@@ -8,12 +8,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/bootstrap-css/bootstrap.min.css">
-    <title>결재목록</title>
+    <title>반려문서 목록</title>
 </head>
 <style>
 </style>
 <body>
-<h3 style="text-align: center;">결재목록</h3>
+<h3 style="text-align: center;">반려문서 목록</h3>
 <table id="edmsListTable" class="table table-sm table-hover text-center">
     <thead>
         <tr>
@@ -31,11 +31,10 @@
 $(document)
 .ready(()=>{
     getEdmsList();
-    
 })
 function getEdmsList(){
     $.ajax({
-        url: "/getEdmsList/all",
+        url: "/getEdmsList/reject",
         type: "post",
         dataType: "json",
         success: (data)=>{
@@ -52,22 +51,10 @@ function getEdmsList(){
                 str += "<td><span>"+edms["edmsStatus"]+"</span></td>";    
                 
                 $("#edmsListTable tbody").append(str);
-
-                setStatusColor();
             });
+            $("#edmsListTable span").css("color", "red");
         }
     })
-}
-function setStatusColor(){
-    $("#edmsListTable tbody").find("span").each(function(i, el){
-        let span = $(this);
-        let status = span.text();
-        if(status == "결재대기"){
-            span.css("color", "#0d6efd");
-        }else if(status == "완료"){
-            span.css("color", "green");
-        }else span.css("color", "red");
-    });
 }
 </script>
 </html>

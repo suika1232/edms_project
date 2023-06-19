@@ -15,11 +15,11 @@
 </style>
 <body>
 <div class="container-fluid">
-    <div class="table-responsive-md">
+    <div class="">
         <table class="table">
             <tbody>
                 <tr class="">
-                    <td scope="row" style="width: 155px;">구분</td>
+                    <td scope="row" style="width: 155px; height: 50px;">구분</td>
                     <td>
                         <div class="">
                             <select class="form-select form-select-sm" 

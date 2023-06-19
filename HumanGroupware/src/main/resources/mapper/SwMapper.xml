@@ -146,7 +146,7 @@
       where emp_id = #{param1} and emp_password = #{param2}
     </select>
     <select id="getUserInfo" resultType="com.human.springboot.dto.SwEmpDTO">
-      select a.emp_no, a.emp_id, a.emp_name, b.dep_name, c.position_name
+      select a.emp_no, a.emp_id, a.emp_name,a.board_authority, b.dep_name, c.position_name
       from employee a, department b, position c
       where a.emp_depart = b.dep_id and a.emp_position = c.position_id 
             and a.emp_id = #{param1}
@@ -158,8 +158,8 @@
     </select>
     <insert id="edmsSend">
       insert into edms(edms_id, edms_drafter, edms_mid_approver, 
-                        edms_fnl_approver, edms_title, edms_category)
-      values(edms_seq.nextval, #{param1}, #{param2}, #{param3}, #{param4}, #{param5})
+                        edms_fnl_approver, edms_title, edms_category, edms_ref)
+      values(edms_seq.nextval, #{param1}, #{param2}, #{param3}, #{param4}, #{param5}, #{param6})
     </insert>
     <insert id="edmsLeave">
       <selectKey resultType="int" keyProperty="edms_id" order="BEFORE">
@@ -171,7 +171,15 @@
     <select id="edmsList" resultType="com.human.springboot.dto.SwEdmsDTO">
       select a.edms_id, a.edms_category, a.edms_title, b.emp_name, c.dep_name,a.edms_date, a.edms_status
       from edms a, employee b, department c
-      where a.edms_drafter = b.emp_no and b.emp_depart = c.dep_id
+      where a.edms_drafter = b.emp_no and b.emp_depart = c.dep_id and not a.edms_status = '반려'
+      order by a.edms_id desc
+    </select>
+    <select id="edmsRejectList" resultType="com.human.springboot.dto.SwEdmsDTO">
+      select a.edms_id, a.edms_category, a.edms_title, b.emp_name, c.dep_name,a.edms_date, a.edms_status
+      from edms a, employee b, department c
+      where a.edms_drafter = b.emp_no and b.emp_depart = c.dep_id 
+            and a.edms_status = '반려' and a.edms_drafter = #{param1}
+      order by a.edms_id desc
     </select>
     <select id="getEmpName" resultType="String">
       select emp_name

@@ -35,7 +35,7 @@
             </div>
             <div class="card">
               <div class="card-body text-center">
-                <% String id = (String)session.getAttribute("loginUser");%>
+                <% String id = (String)session.getAttribute("emp_id");%>
                 <% if(id == null){ %>
                 <a class="nav-link text-white login-btn" href="/temp/login">Login</a>
                 <% } %>
@@ -70,6 +70,10 @@
                         onclick="changeView('list')">
                         <i class="bi bi-list-check"></i>결재목록
                     </li>
+                    <li class="list-group-item" id="list-list" 
+                        onclick="changeView('reject')">
+                        <i class="bi bi-list-check"></i>반려문서함
+                    </li>
                 </ul>
                 <ul class="list-group">
                     <li class="list-group-item" id="list-template"
@@ -95,7 +99,7 @@
 function changeView(menu){
     if(menu == "notice" || menu == "free"){
         $("#sectionView").attr("src", "/board/"+menu);
-    }else if(menu == "draft" || menu == "list"){
+    }else if(menu == "draft" || menu == "list" || menu == "reject"){
         $("#sectionView").attr("src", "/edms/"+menu);
     }
     if(menu == "template") $("#sectionView").attr("src", "/edms/template/leave");

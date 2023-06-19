@@ -155,7 +155,7 @@ public class SwController {
         String categoryName = "";
         try {
             HttpSession userSession = req.getSession();
-            int writer = (int)userSession.getAttribute("userNo");
+            int writer = (int)userSession.getAttribute("emp_no");
 
             categoryName = req.getParameter("boardCategory");
             String title = req.getParameter("boardTitle");
@@ -294,11 +294,26 @@ public class SwController {
         
         return "edms/edms_list";
     }
+    // 반려문서함
+    @GetMapping("/edms/reject")
+    public String edmsRejectList(){
+        
+        return "edms/edms_reject_list";
+    }
     // 결재목록 불러오기
-    @PostMapping("/getEdmsList")
+    @PostMapping("/getEdmsList/{category}")
     @ResponseBody
-    public String getEdmsList(){
-        ArrayList<SwEdmsDTO> edmsList = sdao.edmsList();
+    public String getEdmsList(@PathVariable("category")String category,
+                                HttpServletRequest req){
+        System.out.println("불러올 전자결재 목록: "+category);
+
+        HttpSession session = req.getSession();
+        ArrayList<SwEdmsDTO> edmsList = null;
+        if(category.equals("all")){
+            edmsList = sdao.edmsList();
+        }else if(category.equals("reject")){
+            edmsList = sdao.edmsRejectList((int)session.getAttribute("emp_no"));
+        }
 
         JSONArray jArray = new JSONArray();
         for (SwEdmsDTO edms : edmsList) {
@@ -323,7 +338,7 @@ public class SwController {
         String edmsCategory = edms.getEdms_category();
 
         HttpSession session = req.getSession();
-        String loginUser = (String)session.getAttribute("loginUser");
+        String loginUser = (String)session.getAttribute("emp_id");
         SwEmpDTO userInfo = sdao.getUserInfo(loginUser);
 
         System.out.println("결재문서 접근유저: "+userInfo.getEmp_no());
@@ -377,6 +392,10 @@ public class SwController {
         }
         model.addAttribute("categoryDetail", categoryDetail);
 
+        if(edms.getEdms_status().equals("반려")){
+            model.addAttribute("edmsReason", edms.getEdms_reason());
+        }
+
         
 
         return "edms/edms_approval";
@@ -407,7 +426,7 @@ public class SwController {
     public String edmsTemplateLeave(HttpServletRequest req, Model model){
 
         HttpSession session = req.getSession();
-        String loginUser = (String) session.getAttribute("loginUser");
+        String loginUser = (String) session.getAttribute("emp_id");
         SwEmpDTO userInfo = sdao.getUserInfo(loginUser);
         int empNo = userInfo.getEmp_no();
         String empName = userInfo.getEmp_name();
@@ -439,11 +458,12 @@ public class SwController {
         int writerId = Integer.parseInt(req.getParameter("writerId"));
         int midId = Integer.parseInt(req.getParameter("midId"));
         int finalId = Integer.parseInt(req.getParameter("finalId"));
+        String refList = req.getParameter("edmsRefList");
         
         String edmsTitle = req.getParameter("edmsTitle");
         edmsCategory = edmsCategory.equals("leave") ? "휴가" : "업무";
 
-        sdao.edmsSend(writerId, midId, finalId, edmsTitle, edmsCategory);
+        sdao.edmsSend(writerId, midId, finalId, edmsTitle, edmsCategory, refList);
 
         if(edmsCategory.equals("휴가")){
             String category = req.getParameter("selectedLeaveCategory");
@@ -514,10 +534,11 @@ public class SwController {
         if(sdao.userCheck(userId, userPw)){
             System.out.printf("유저 확인됨 %s \n", userId);
             SwEmpDTO userInfo = sdao.getUserInfo(userId);
-            userSession.setAttribute("loginUser", userId);
-            userSession.setAttribute("userNo", userInfo.getEmp_no());
+            userSession.setAttribute("emp_id", userId);
+            userSession.setAttribute("emp_no", userInfo.getEmp_no());
             userSession.setAttribute("userName", userInfo.getEmp_name());
             userSession.setAttribute("authority", userInfo.getBoard_authority());
+            System.out.println(userInfo.getBoard_authority());
         }
         return "redirect:/temp/home";
     }

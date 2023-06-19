@@ -34,9 +34,10 @@ public interface SwDAO {
     SwEmpDTO getUserInfo(String userId);
 
     ArrayList<SwEmpDTO> empList();
-    void edmsSend(int drater, int appMid, int appFinal, String title, String category);
+    void edmsSend(int drater, int appMid, int appFinal, String title, String category, String refList);
     void edmsLeave(String category, String startDate, String endDate, String detail, int period);
     ArrayList<SwEdmsDTO> edmsList();
+    ArrayList<SwEdmsDTO> edmsRejectList(int drafter);
 
     SwEdmsDTO findEdms(int edmsId);
     String getEmpName(int empNo);
@@ -44,5 +45,6 @@ public interface SwDAO {
 
     void edmsApprovalConfirm(int edmsId, int approverId, String status);
     void edmsApprovalReject(int edmsId, int approverId, String status, String reason);
+   
 
 }

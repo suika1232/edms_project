@@ -85,7 +85,7 @@
                 <td scope="row" style="width: 155px;">제목</td>
                 <td>
                     <div class="">
-                        <input type="text" class="form-control form-control-sm" 
+                        <input type="text" class="form-control form-control-sm align-middle" 
                                 name="edmsTitle" id="edmsTitle"
                                 style="width: 500px;">
                     </div>
@@ -95,16 +95,30 @@
                 <td scope="row" style="width: 155px;">결재선지정</td>
                 <td>
                     <div class="">
-                        <select class="form-select form-select-sm d-inline-block" 
+                        <select class="form-select form-select-sm d-inline-block align-middle" 
                         name="selectApprover" id="selectApprover"
                         style="width: 140px;">
                         <option selected hidden>결재자 선택</option>
                         <option value="mid">중간승인자</option>
                         <option value="final">최종승인자</option>
                         </select>
-                        <button type="button" class="btn btn-primary btn-sm d-inline-block"
+                        <button type="button" class="btn btn-primary btn-sm d-inline-block align-middle"
                                 id="btnApprovalLine">선택</button>
                     </div>
+                </td>
+            </tr>
+            <tr>
+                <td scope="row" style="width: 155px;">참조</td>
+                <td>
+                    <div class="">
+                        <!-- <input type="text" class="form-control form-control-sm d-inline-block align-middle" 
+                                    name="edmsRef" id="edmsRef"
+                                    style="width: 400px;" readonly> -->
+                        <div id="edmsRef" class="d-inline-block align-middle fs-6" style="width: 465px; height: 62px; padding: 4px 8px; background-color: #fff; outline: 1px solid #ced4da; border-radius: 3px;"></div>
+                        <button type="button" class="btn btn-primary btn-sm d-inline-block align-middle"
+                            id="btnSelectRef">선택</button>
+                    </div>
+                    <input type="hidden" id="edmsRefList" name="edmsRefList">
                 </td>
             </tr>
         </tbody>
@@ -256,7 +270,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" 
-                    data-bs-dismiss="modal" id="btnModalClose">취소</button>
+                    data-bs-dismiss="modal" id="btnModalClose">닫기</button>
                 <!-- <button type="button" class="btn btn-primary" id="btnModalConfirm">확인</button> -->
             </div>
         </div>
@@ -363,9 +377,39 @@ $(document)
         return false;
     }
     if(!confirm("상신 합니까?")) return false;
+    let refList = [];
+    $("#edmsRef a").each(function(i, el){
+        refList.push($(el).data("value"));
+    })
+    if(refList.length > 0){
+        $("#edmsRefList").val(refList);
+    }
 })
 .on("blur", "#leaveDetail", function(){
     console.log($(this).val());
+})
+.on("click", "#btnSelectRef", ()=>{
+    $.ajax({
+            url: "/edms/emplist",
+            type: "post",
+            dataType: "json",
+            success: (data)=>{
+                console.table(data);
+                $("#modalBody table").empty();
+                data.forEach(el => {
+                    let str = "<tr><td><span data-name="+el["empName"];
+                    str += " data-id="+el["empNo"]+">";
+                    str += "["+el["empDepart"]+"]";
+                    str += el["empName"]+" "+el["empPosition"];
+                    str += "</span></td></tr>";
+                    $("#modalBody table").append(str);
+                    $("#modalBody span").attr("onclick", "refSelect(this)");
+                });
+            }, complete: ()=>{
+                $("#modalTitle").text("참조자 선택");
+                $("#btnOpenModal").trigger("click");
+            }
+        })
 })
 function empInfo(ths){
     let selectedApprovalLine = $("#selectApprover option:selected").val();
@@ -378,6 +422,35 @@ function empInfo(ths){
         $("#finalId").val($(ths).data("id"));
         $("#btnModalClose").trigger("click");
     }
+}
+function refSelect(ths){
+    let count = 1;
+    let flag = true
+    $("#edmsRef").find("a").each(function(i, el){
+        count += 1;
+        if($(el).data("value") == $(ths).data("id")){
+            // console.log("el value "+$(el).data("value"));
+            // console.log("ths value "+$(ths).data("id"));
+            $(el).remove();
+            count -= 1;
+            flag = false;
+            return;
+        }
+    })
+    // console.log(count)
+    let a = $("<a>",{ href: "#"}).css("font-size", "12px")
+    a.attr("id", "a"+$(ths).data("id"));
+    a.attr("data-value",$(ths).data("id"));
+    a.text($(ths).text());
+
+    if(flag){
+        if(count == 1){
+        $("#edmsRef").append(a);
+        }else if(count > 1){
+            $("#edmsRef").append(a);
+        }
+    }
+
 }
 function getStartDate(y, m ,d){
     return new Date(y+"-"+m+"-"+d);

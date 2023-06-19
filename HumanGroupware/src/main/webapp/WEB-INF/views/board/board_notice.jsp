@@ -64,7 +64,7 @@ $(document)
     $("#curPage").val("1");
     getBoardList(1);
 
-    let userId = '<%=(String)session.getAttribute("loginUser")%>';
+    let userId = '<%=(String)session.getAttribute("emp_id")%>';
     console.log("로그인 유저:"+userId);
 })
 .on("click", "#btnNewPost", ()=>{
