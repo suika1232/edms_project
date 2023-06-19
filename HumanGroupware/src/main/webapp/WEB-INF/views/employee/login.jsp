@@ -74,7 +74,7 @@ $(document)
 // 취소 버튼을 누르면 메인으로 돌아갑니다.
 .on('click','#x',function(){
 	alert("로그인이 취소되었습니다");
-	window.location.href = '/employee/main';
+	window.location.href = '/temp/temp_main';
 })
 // 로그인 정보를 입력하고 확인을 누르면 맞으면 main 틀리면 다시 입력하게 합니다.
 .on('click','#ok',function(){
@@ -90,7 +90,7 @@ $(document)
 		success : function(data){
 			if(data == "ok"){
 				alert("로그인 되셨습니다!");
-				document.location = '/employee/main';
+				document.location = '/temp/temp_main';
 			}else{
 				alert("로그인 정보가 일치하지 않습니다")
 			}

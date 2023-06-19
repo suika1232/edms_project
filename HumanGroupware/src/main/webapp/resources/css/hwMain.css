@@ -1,25 +1,285 @@
+/* 전체 body */
+body{
+	font-family: Arial, sans-serif;
+	margin : 0;
+	padding : 0;
+	background-color : #f0f0f0;
+	margin-top: 0%;
+	margin-bottom: 0%;
+	width: 100%;
+
+}
+/* 링크 디자인 */
+a{
+	text-decoration: none;
+	color: #000;
+}
+/* 제목 디자인 */
+.title_container{
+	background-color: #ffffff;
+	display: flex;
+	justify-content: space-between;
+	padding: 0%;
+	margin:0;
+}
+/* HumanGroupWare 디자인*/
+.title_box1{
+	font-size : 30px;
+	font-weight: bold;
+}
+/* 원래 이미지 넣으려고 만든 디자인 */
+.title_box2{
+	width: 50%;
+    height: 100%;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+	height: 10vh; /* vh 단위를 사용하여 뷰포트의 높이에 대응하도록 변경 */
+	margin:0;
+	padding:0;
+}
+/* 회사사원 검색 디자인*/
+.title_box3 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 5%;
+    font-size : 18px;
+    font-weight: bold;
+}
+
+.gap {
+    margin-right: -20%;
+}
+
+input[type="text"] {
+    padding: 2%;
+    border: 1px solid #ccc;
+    border-radius: 3%;
+}
+
+#Search_EmpBtn {
+    padding: 2.5% 5%;
+    background-color: #007bff;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 3%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+svg.bi-search {
+    width: 75%;
+    height: 100%;
+    margin-right: 20%;
+}
+/* 다이로그램 디자인 */ 
 .emp_dialog {
-  display: none;
+    display: none;
+    background-color: #f2f2f2;
+    border: 1px solid #ccc;
+    border-radius: 5%;
+    padding: 10%;
+    margin-top: 5%;
 }
 
 .emp_info {
-  display: flex;
-  flex-wrap: nowrap;
-  align-items: center;
-}
-
-.emp_item {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 10px;
+    font-size: 15px;
+    font-weight: bold;
 }
 
 .emp_item img {
-  width: 100px; /* 이미지의 너비를 원하는 크기로 조정 */
-  height: auto; /* 이미지의 높이를 자동으로 조정하여 가로 세로 비율 유지 */
-  margin-bottom: 5px; /* 이미지 아래 여백 설정 */
+    width: 25%;
+    height: 25%;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-right: 10%;
+}
+.emp_item {
+	display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 5%;
+}
+.emp_item .info-text p {
+    margin: 0;
+    white-space: nowrap;
+ }
+.emp_item p:first-child {
+	font-weight: bold;
+    margin-right: 10px;
+}
+/* Session 디자인 */
+.Mysession_container {
+	background-color:#fff;
+	border: 1px solid #ccc;
+	width : 100%;
+	font-weight: bold;
+}
+#MY_box img {
+    width: 100%;
+}
+/* 카테고리 디자인 */
+.Category_container{
+	border: 1px solid #ccc;
+	width: 100%;
+}
+#Category_box1,
+#Category_box2,
+#Category_box3,
+#Category_box4,
+#Category_box5,
+#Category_box6 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+#Category_box1 svg,
+#Category_box2 svg,
+#Category_box3 svg,
+#Category_box4 svg,
+#Category_box5 svg,
+#Category_box6 svg {
+  width: 40%;
+  fill: currentColor;
+  margin-bottom: 10%;
+}
+#linkContainer,
+#linkContainer2,
+#linkContainer3,
+#linkContainer4,
+#linkContainer5,
+#linkContainer6 {
+  text-align: center;
+}
+#linkContainer a,
+#linkContainer2 a,
+#linkContainer3 a,
+#linkContainer4 a,
+#linkContainer5 a,
+#linkContainer6 a {
+  display: block;
+  margin-bottom: 1%;
+}
+.container-left{
+	 width: 15%;
+     float: left;
+     box-sizing: border-box;
 }
 
-.emp_item p {
-  margin: 0; /* 기본 여백 제거 */
+/* 게시판 및 업무 디자인 */
+.container_right1{
+	width: 50%;
+    float: left;
+    box-sizing: border-box;        
+}
+.container_right2{
+	width: 50%;
+    float: right;
+    box-sizing: border-box;        
+}
+.detail_container1 {
+  	display: flex;
+  	flex-direction: row;
+  	border: 1px solid #ccc;
+}
+.board_box1 {
+  	width: 100%;
+  	background-color: #f2f2f2;
+}
+.detail_container2 {
+  	display: flex;
+  	flex-direction: row;
+  	border: 1px solid #ccc;
+}
+.board_box2 {
+  	width: 100%;
+  	background-color: #f2f2f2;
+}
+#board_title1{
+	font-weight : bold;
+	margin-bottom: 1%;
+	text-align: center;
+}
+#board_title2 {
+	font-weight: bold;
+  	margin-bottom: 1%;
+  	text-align: center;
+}
+#board_notice{
+	background-color: #ffffff;
+  	padding: 5%;
+  	border: 1px solid #cccccc;
+  	margin-bottom: 1%;
+}
+#board_free {
+  	background-color: #ffffff;
+  	padding: 5%;
+  	border: 1px solid #cccccc;
+  	margin-bottom: 1%;
+}
+#board_free {
+      font-family: Arial, sans-serif;
+      font-size: 16px;
+}
+#board_notice a {
+	color: #0066cc;
+	text-decoration: none;
+}
+#board_notice a:hover {
+      text-decoration: underline;
+}
+#board_notice td {
+	padding : 5px;
+}
+
+#board_notice tr {
+	text-align : center;
+    border-bottom: 1px solid #ccc;
+}
+
+#board_free a {
+    color: #0066cc;
+	text-decoration: none;
+}
+
+#board_free a:hover {
+      text-decoration: underline;
+}
+#board_free td {
+	padding : 5px;
+}
+
+#board_free tr {
+	text-align : center;
+    border-bottom: 1px solid #ccc;
+}
+.Work_box {
+  	width: 100%;
+  	background-color: #f2f2f2;
+}
+
+#Work_title {
+  	font-weight: bold;
+ 	margin-bottom: 1%;
+ 	text-align: center;
+}
+
+#Work {
+  	background-color: #ffffff;
+  	padding: 10%;
+  	border: 1px solid #cccccc;
+}
+.container_right3{
+	width: 50%;
+    float: left;
+    box-sizing: border-box;       
+}
+#View {
+  width: 85%;
+  float: left;
+  box-sizing: border-box;
 }

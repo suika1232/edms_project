@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.human.springboot.dto.KshBoardDto;
 import com.human.springboot.dto.KshEmpDto;
 
 
@@ -49,4 +50,13 @@ public interface KshEmpDao {
 	
 	//Main_Search == 메인에서 회원 검색
 	ArrayList<KshEmpDto> Main_Search(String name);
+	
+	//Board_Free == 메인에서 자유게시판 갖고오기
+	ArrayList<KshBoardDto> Free_list(String emp_id);
+	
+	//Board_Notice == 메인에서 공지사항 갖고오기
+	ArrayList<KshBoardDto> Notice_list(String emp_id);
+	
+	//Main_Get == 메인에서 depart,img 갖고오기
+	ArrayList<KshEmpDto> Main_Get(String emp_id);
 }
