@@ -53,7 +53,7 @@
 		<div>
 			<div class="employee_people">
 				<div class="image" id="image">
-					<img src="#">
+				
 				</div>				
 				<div class="test">
 					<div class="input_box_name">
@@ -128,21 +128,6 @@ $(document).ready(function(){
 	loadEmployeeData();
 })
 // select 직접입력 
-	// 이메일
-	.on("change", "#select_team", function(){
-		let selectedOption = $(this).children("option:selected").val();
-		console.log(selectedOption);
-	 })
-	$('#selectEmail').change(function(){
-	   $("#selectEmail option:selected").each(function () {
-			if($(this).val()== '1'){
-				 $("#employee_email3").val('');
-				 $("#employee_email3").attr("disabled",false); 
-			}else{ 
-				 $("#employee_email3").val($(this).text());
-				 $("#employee_email3").attr("disabled",true);
-			}});
-	});
 	// 직급
 	$('#select_position').change(function(){
 		   $("#select_position option:selected").each(function () {
@@ -204,11 +189,14 @@ $(document).ready(function(){
 			},
 			success:function(data){
 				if(data=="ok"){
-					alert('정보 입력이 완료되었습니다.')
-					document.location.href="/employee/registration";
+					let position = $("#employee_position2").val();
+					let form = $("#employee_form2").val();
+					let team = $("#employee_team2").val();
+					alert(position+'정보 입력이 완료되었습니다.');
+					location.reload();
 				}else{
 					alert('알수 없는 오류가 발생하였습니다.')
-					document.location.href="/employee/registration";
+					location.reload();
 				}
 			}
 		})

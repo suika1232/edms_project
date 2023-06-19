@@ -31,7 +31,7 @@ public class JeController {
 	public String employeeInquiry() {
 		return "employee/employee_inquiry";
 	}
-	// 사원 등록 ( 페이지 접속 )
+	// 사원 부서/직급 변경 ( 페이지 접속 )
 	@GetMapping("/employee/registration")
 	public String employeeRegistration() {
 		return "employee/employee_registration";
@@ -68,7 +68,6 @@ public class JeController {
 	    	int emp_position=Integer.parseInt(req.getParameter("emp_position"));
 	    	int emp_depart=Integer.parseInt(req.getParameter("emp_depart"));
 			String emp_id=req.getParameter("emp_id");
-			System.out.println(emp_id);
 			
 			JiDao.employee_update0(emp_join, emp_position,emp_depart ,emp_id);
 	    } catch (Exception e) {
@@ -85,9 +84,13 @@ public class JeController {
 		String retval = "ok";
 	try {
 		String emp_no = req.getParameter("emp_no");
-		JiDao.attendance_end_id(emp_no);
+		int param = Integer.parseInt(req.getParameter("param"));
+		String night_time = req.getParameter("night_time");
+		System.out.println("print param result : "+param);
+		JiDao.attendance_end_id(param, emp_no, night_time);
 	} catch(Exception e) {
 		retval = "fail";
+		e.printStackTrace();
 	}
 	return retval;
 	}
@@ -185,7 +188,9 @@ public class JeController {
 	public String doAttList(HttpServletRequest req) {
 		String dep_name = req.getParameter("dep_name");
 		String attend_date = req.getParameter("attend_date");
-		ArrayList<EmpDepartPositionDTO> attendance_list = JiDao.attendance_list(attend_date, dep_name);
+		System.out.println("dep_name print : "+ dep_name);
+		System.out.println("attend_date print :"+ attend_date);
+		ArrayList<EmpDepartPositionDTO> attendance_list = JiDao.attendance_list(attend_date,dep_name);
 		JSONArray ja = new JSONArray();
 		for(int i=0; i<attendance_list.size(); i++) {
 			JSONObject jo = new JSONObject();
@@ -194,11 +199,35 @@ public class JeController {
 			jo.put("position_name", attendance_list.get(i).getPosition_name());
 			jo.put("start_time", attendance_list.get(i).getStart_time());
 			jo.put("end_time", attendance_list.get(i).getEnd_time());
+			jo.put("night_time", attendance_list.get(i).getNight_time());
+			jo.put("tardy_time", attendance_list.get(i).getTardy_time());
+			
 			ja.put(jo);
 		}
 		return ja.toString();
 	}
 	
+	// 휴가 체크 ( select )
+	@PostMapping("/leave_select_list")
+	@ResponseBody
+	public String doleaveList(HttpServletRequest req) {
+		String dep_name = req.getParameter("dep_name");
+		String attend_date = req.getParameter("attend_date");
+		System.out.println("dep_name(leave) print : "+ dep_name);
+		System.out.println("attend_date(leave) print :"+ attend_date);
+		ArrayList<EmpDepartPositionDTO> leave_select_list = JiDao.leave_select_list(attend_date, dep_name);
+		JSONArray ja = new JSONArray();
+		for(int i=0; i<leave_select_list.size(); i++) {
+			JSONObject jo = new JSONObject();
+			jo.put("emp_name", leave_select_list.get(i).getEmp_name());
+			jo.put("dep_name", leave_select_list.get(i).getDep_name());
+			jo.put("position_name", leave_select_list.get(i).getPosition_name());
+			jo.put("leave_start", leave_select_list.get(i).getLeave_start());
+			jo.put("leave_end", leave_select_list.get(i).getLeave_end());
+			ja.put(jo);
+		}
+		return ja.toString();
+	}
 	// 조직도 부서이름 불러오기
 	@PostMapping("/all_organization")
 	@ResponseBody
@@ -306,14 +335,46 @@ public class JeController {
 			String retval="ok";
 			String emp_no = req.getParameter("emp_no");
 			try {
-				System.out.println(emp_no);
 				JiDao.attendance_start_id(emp_no);
 			} catch(Exception e) {
 				retval = e.getMessage();
 			}
 			return retval;
 		}
-	
+	// 출근 1회 제한
+		@PostMapping("/attendance_chack")
+		@ResponseBody
+		public String doEmp_idc(HttpServletRequest req) {
+			String retval = "ok";
+			int EmpCount = 0;
+			int emp_no =  Integer.parseInt(req.getParameter("emp_no"));
+			String attend_date = req.getParameter("attend_date");
+			String emp_id = req.getParameter("emp_id");
+			System.out.println(emp_no);
+			System.out.println(attend_date);
+			System.out.println(emp_id);
+			EmpCount = JiDao.attendance_chack(emp_no, attend_date);
+			System.out.println(EmpCount);
+			try {
+					if(emp_id =="") {
+						retval = "2";
+						System.out.println("2 go"+emp_id);
+					} else {
+						if(EmpCount == 0) {
+							retval = "0";
+						}else {
+							retval = "1";
+						}
+					}
+					
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+				
+			}
+			return retval;
+			
+		}
+		
 	// 부서 삭제 ( delete )
 		 @PostMapping("/department_delete")
 		 @ResponseBody

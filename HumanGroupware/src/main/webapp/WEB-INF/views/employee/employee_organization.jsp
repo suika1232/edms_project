@@ -141,7 +141,7 @@ $('#depart_id').on('click',function(){
 				 success:function(data){
 					 for(let i=0; i<data.length; i++){
 						 option = data[i];
-						 let parent = '<option value='+option['dep_parent']+'>'+option['dep_name']+'</option>';
+						 let parent = '<option value='+option['dep_id']+'>'+option['dep_name']+'</option>';
 						 let manager = '<option value='+option['dep_manager']+'>'+option['dep_name']+'</option>';
 						 let id ='<option value='+option['dep_id']+'>'+option['dep_name']+'</option>';
 						 $('#depart_parent').append(parent);
