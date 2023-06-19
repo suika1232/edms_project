@@ -283,3 +283,8 @@ svg.bi-search {
   float: left;
   box-sizing: border-box;
 }
+#NotLogin{
+	font-weight: bold;
+	text-align: center;
+	font-size : 20px;
+}
