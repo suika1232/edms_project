@@ -49,7 +49,6 @@ function FreeList() {
     	type: 'post',
     	success: function(data) {
       	if (data.length == 0) {
-        	console.log('No data');
         	return false;
       	}
       	for (let i = 0; i < Math.min(data.length, 5); i++) {
@@ -61,6 +60,25 @@ function FreeList() {
       		}
     	}
   	})
+  	$.ajax({
+      url: '/Main_Session',
+      data: {emp_id: $('#emp_id').val()},
+      dataType: 'text',
+      type: 'post',
+      success: function(data){
+        if (data == 'ok') {
+          
+        } else {
+        	let loginMessage = "<tr><td colspan='3' id='NotLogin'>로그인 후 보실 수 있습니다.</td></tr>";
+            $('#board_free').append(loginMessage);
+        }
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+        console.log('Error: ' + textStatus);
+        console.log('Error Detail:', errorThrown);
+      }
+    })
+  	
 }
 //메인페이지에서 공지사항 내용을 가져오는 기능입니다.
 function NoticeList() {
@@ -71,7 +89,6 @@ function NoticeList() {
 		type: 'post',
 		success:function(data){
 			if(data.length == 0){
-				console.log('NO Data');
 				return false;
 			}
 			for(let i=0; i< Math.min(data.length, 5); i++){
@@ -83,6 +100,24 @@ function NoticeList() {
 			}
 		}
 	})
+	$.ajax({
+      url: '/Main_Session',
+      data: {emp_id: $('#emp_id').val()},
+      dataType: 'text',
+      type: 'post',
+      success: function(data){
+        if (data == 'ok') {
+          
+        } else {
+        	let loginMessage = "<tr><td colspan='3' id='NotLogin'>로그인 후 보실 수 있습니다.</td></tr>";
+            $('#board_notice').append(loginMessage);
+        }
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+        console.log('Error: ' + textStatus);
+        console.log('Error Detail:', errorThrown);
+      }
+    })
 }
 </script>
 </html>

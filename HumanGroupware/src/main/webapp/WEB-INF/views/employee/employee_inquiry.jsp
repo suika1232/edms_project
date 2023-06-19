@@ -23,10 +23,30 @@
 		<a href="/attendance/current">근태현황</a><br>
 		<a href="/attendance/management">근태관리</a><br>
 		<a href="/attendance/byEmployee">직원별 근태현황</a>
+		<input type=button value="출근">
+		<input type=button value="퇴근">
 	</div>
 </div>
 <!-- 임시 링크용 -->
-
+<div class="Mysession_container">
+		<div id="Show-img_box"></div>
+		<div id="MY_box">
+			<% if(session.getAttribute("emp_name") != null && session.getAttribute("emp_id")!="") {%>
+				이름: ${ emp_name} 
+				<div id=emp_depart>부서: </div>
+				<div id="My_box1">
+				<a href='/employee/mypage'>마이페이지</a>
+				<a href='/employee/logout'>로그아웃</a>
+				</div>
+			<% } else {%>
+				로그인 후 이용해주세요
+				<div class="My_box2">
+				<a href='/employee/login'>로그인</a>
+				<a href="/employee/signin">회원가입</a><br>
+				</div>
+			<% } %>
+		</div>
+	</div>
 <!-- 사원관리 / 상세 -->
 <div>
 	

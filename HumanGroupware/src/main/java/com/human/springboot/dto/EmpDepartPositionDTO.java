@@ -11,6 +11,91 @@ public class EmpDepartPositionDTO {
 	String emp_email;
 	int position_id;
 	String emp_img;
+	int attend_id;
+	int emp_no;
+	String attend_date;
+	String start_time;
+	String end_time;
+	String night_time;
+	String tardy_time;
+	int edms_id;
+	int edms_drafter;
+	String leave_category;
+	String leave_start;
+	String leave_end;
+	
+	public int getEdms_id() {
+		return edms_id;
+	}
+	public void setEdms_id(int edms_id) {
+		this.edms_id = edms_id;
+	}
+	public int getEdms_drafter() {
+		return edms_drafter;
+	}
+	public void setEdms_drafter(int edms_drafter) {
+		this.edms_drafter = edms_drafter;
+	}
+	public String getLeave_category() {
+		return leave_category;
+	}
+	public void setLeave_category(String leave_category) {
+		this.leave_category = leave_category;
+	}
+	public String getLeave_start() {
+		return leave_start;
+	}
+	public void setLeave_start(String leave_start) {
+		this.leave_start = leave_start;
+	}
+	public String getLeave_end() {
+		return leave_end;
+	}
+	public void setLeave_end(String leave_end) {
+		this.leave_end = leave_end;
+	}
+	public String getNight_time() {
+		return night_time;
+	}
+	public void setNight_time(String night_time) {
+		this.night_time = night_time;
+	}
+	public String getTardy_time() {
+		return tardy_time;
+	}
+	public void setTardy_time(String tardy_time) {
+		this.tardy_time = tardy_time;
+	}
+	public int getAttend_id() {
+		return attend_id;
+	}
+	public void setAttend_id(int attend_id) {
+		this.attend_id = attend_id;
+	}
+	public int getEmp_no() {
+		return emp_no;
+	}
+	public void setEmp_no(int emp_no) {
+		this.emp_no = emp_no;
+	}
+	public String getAttend_date() {
+		return attend_date;
+	}
+	public void setAttend_date(String attend_date) {
+		this.attend_date = attend_date;
+	}
+	public String getStart_time() {
+		return start_time;
+	}
+	public void setStart_time(String start_time) {
+		this.start_time = start_time;
+	}
+	public String getEnd_time() {
+		return end_time;
+	}
+	public void setEnd_time(String end_time) {
+		this.end_time = end_time;
+	}
 	public String getEmp_img() {
 		return emp_img;
 	}
