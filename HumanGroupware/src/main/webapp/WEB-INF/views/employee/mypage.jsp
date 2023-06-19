@@ -105,7 +105,7 @@ $(document)
 	let result = confirm("변경사항은 변경/저장 버튼을 따로 눌러야 저장됩니다.메인으로 돌아가시겠습니까?");
 	if(result){
 		alert("메인으로 돌아갑니다!");
-		window.location.href = '/employee/main';
+		window.location.href = '/temp/temp_main';
 	} else {
 		alert("다시 수정하세요");
 		window.location.href = '/employee/mypage';
@@ -116,7 +116,7 @@ $(document)
 	let result = confirm("주의: 변경사항이 저장되지 않았습니다!");
 	if(result){
 		alert("메인으로 돌아갑니다");
-		window.location.href = '/employee/main';
+		window.location.href = '/temp/temp_main';
 	}else {
 		alert("다시 수정해주세요!")
 		window.location.href = '/employee/mypage';
@@ -257,7 +257,7 @@ $(document)
       	success: function(data) {
         	if (data === 'ok') {
           		alert("탈퇴되었습니다.");
-          		window.location.href = '/employee/main';
+          		window.location.href = '/temp/temp_main';
         	} else {
           		alert("탈퇴 실패");
         	}

@@ -77,7 +77,7 @@ $(document)
 /*취소버튼을 누르면 메인으로 돌아가는 코드입니다.*/
 .on('click','#x',function(){
 	alert("회원가입이 취소되었습니다");
-	window.location.href = '/employee/main';
+	window.location.href = '/temp/temp_main';
 })
 /*회원가입 ajax를 이용해 insert 하는 부분*/
 .on('click', '#ok', function () {

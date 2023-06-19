@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.human.springboot.dao.KshEmpDao;
+import com.human.springboot.dto.KshBoardDto;
 import com.human.springboot.dto.KshEmpDto;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -29,7 +30,11 @@ public class kshController {
 	/*페이지 이동*/
 	@GetMapping("/")
 	public String doRoot() {
-		return "redirect:employee/main";
+		return "redirect:temp/temp_main";
+	}
+	@GetMapping("/temp/temp_main")
+	public String doTemp_main() {
+		return "temp/temp_main";
 	}
 	@GetMapping("/employee/main")
 	public String doMain() {
@@ -51,19 +56,16 @@ public class kshController {
 	@GetMapping("/employee/login")
 	public String doLogin(HttpServletRequest req, Model model) {
 	    String emp_id = req.getParameter("emp_id");
-	    String emp_birth = req.getParameter("emp_birth");
-	    
-	    		
 	    		
 	    model.addAttribute("login", emp_id);
-	    model.addAttribute("login", emp_birth);
+	    
 	    return "employee/login";
 	}
 
 	@GetMapping("/employee/logout")
 	public String doLogout(HttpServletRequest req) {
 	    req.getSession().invalidate();
-	    return "redirect:/employee/main";
+	    return "redirect:/temp/temp_main";
 	}
 	/* 메소드명: InsertEmp
 	 * 작성일: 2023-05-24 
@@ -135,9 +137,10 @@ public class kshController {
 		try {
 			if(login_id_pw != (null)) {
 				for(int i=0; i<login_session.size(); i++) {
+					login.setAttribute("emp_no", login_session.get(i).getEmp_no());
 					login.setAttribute("emp_id", login_session.get(i).getEmp_id());
 					login.setAttribute("emp_name", login_session.get(i).getEmp_name());
-				}
+					}
 			}else {
 				loginVal = "fail";
 			}
@@ -375,7 +378,6 @@ public class kshController {
 		String checkVal = "ok";
 		String id = req.getParameter("emp_id");
 		HttpSession session = req.getSession();
-		System.out.println(id);
 		try {
 			session.invalidate();
 			edao.Mypage_delete(id);
@@ -401,8 +403,7 @@ public class kshController {
 
 	    JSONArray ja = new JSONArray();
 	    try {
-	        ArrayList<KshEmpDto> edto = edao.Main_Search(Search_Emp); // 수정: 검색 조건으로 Search_Emp 사용
-	        System.out.println(edto);
+	        ArrayList<KshEmpDto> edto = edao.Main_Search(Search_Emp);
 	        for (int i = 0; i < edto.size(); i++) {
 	            JSONObject jo = new JSONObject();
 	            KshEmpDto ked = edto.get(i);
@@ -424,4 +425,120 @@ public class kshController {
 
 	    return ja.toString();
 	}
+	/* 메소드명 : Board_Free
+	 * 작성일 : 2023-06-13
+	 * 작성자 : 김상호
+	 * 기능 : 메인페이지에서 자유 게시판을 보여주는 기능입니다.
+	 */
+	@PostMapping("/Board_Free")
+	@ResponseBody
+	public String doBoard_Free(HttpServletRequest req) {
+		HttpSession login = req.getSession();
+		login.getAttribute("emp_id");
+		
+		if(login.getAttribute("emp_id") == null ) {
+			return "login";
+		}
+		
+		JSONArray ja = new JSONArray();
+		try {
+			ArrayList<KshBoardDto> bdto = edao.Free_list((String) login.getAttribute("emp_id"));
+			for(int i=0; i<bdto.size(); i++) {
+				JSONObject jo = new JSONObject();
+				KshBoardDto kbd = bdto.get(i);
+				
+				jo.put("board_id", kbd.getBoard_id());
+				jo.put("board_title", kbd.getBoard_title());
+				jo.put("emp_name", kbd.getEmp_name());
+				jo.put("board_created", kbd.getBoard_created());
+				
+				ja.put(jo);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return ja.toString();
+	}
+	/* 메소드명 : Board_Notice 
+	 * 작성일 : 2023-06-13
+	 * 작성자 : 김상호
+	 * 기능 : 메인페이지에서 공지사항을 보여주는 기능입니다.
+	 */
+	@PostMapping("/Board_Notice")
+	@ResponseBody
+	public String doBoard_Notice(HttpServletRequest req) {
+		HttpSession login = req.getSession();
+		login.getAttribute("emp_id");
+		
+		if(login.getAttribute("emp_id") == null ) {
+			return "login";
+		}
+		JSONArray ja = new JSONArray();
+		try {
+			ArrayList<KshBoardDto> bdto = edao.Notice_list((String) login.getAttribute("emp_id"));
+			for(int i=0; i<bdto.size(); i++) {
+				JSONObject jo = new JSONObject();
+				KshBoardDto kbd = bdto.get(i);
+				
+				jo.put("board_id", kbd.getBoard_id());
+				jo.put("board_title", kbd.getBoard_title());
+				jo.put("emp_name", kbd.getEmp_name());
+				jo.put("board_created", kbd.getBoard_created());
+				
+				ja.put(jo);
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return ja.toString();
+	}
+	/* 메소드명 : Main_Get
+	 * 작성일 : 2023-06-13
+	 * 작성자 : 김상호
+	 * 기능 : main page에서 img랑 depart를 가져온다
+	 */
+	@PostMapping("/Main_Get")
+	@ResponseBody
+	public String doMain_Get(HttpServletRequest req) {
+		HttpSession login = req.getSession();
+		login.getAttribute("emp_id");
+		
+		if(login.getAttribute("emp_id") == null ) {
+			return "login";
+		}
+		JSONArray ja = new JSONArray();
+		try {
+			ArrayList<KshEmpDto> edto = edao.Main_Get((String) login.getAttribute("emp_id"));
+			for(int i=0; i<edto.size(); i++) {
+				JSONObject jo = new JSONObject();
+				KshEmpDto ked = edto.get(i);
+				
+				jo.put("emp_img", ked.getEmp_img());
+				jo.put("emp_position", ked.getEmp_position());
+				jo.put("emp_depart", ked.getEmp_depart());
+				ja.put(jo);
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return ja.toString();
+	}
+	/* 메소드명 : Main_Session
+ 	 * 작성일 : 2023-06-19
+ 	 * 작성자 : 김상호
+ 	 * 기능 : 메인페이지에서 세션정보가 없으면 페이지에 못들어가게 막는 코드입니다.
+	 */
+	@PostMapping("/Main_Session")
+	@ResponseBody
+	public String doMain_Session(HttpServletRequest req) {
+		String checkVal ="ok";
+		HttpSession login = req.getSession();
+	    login.getAttribute("emp_id");
+
+	    if (login.getAttribute("emp_id") == null) {
+	        return "login";
+	    }
+	    return checkVal;
+	}
+	
 }

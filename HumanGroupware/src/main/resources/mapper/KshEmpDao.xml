@@ -19,7 +19,7 @@
 		select emp_id from employee where emp_id=#{param1} and emp_password=#{param2}
 	</select>
 	<select id="emp_login_session" resultType="com.human.springboot.dto.KshEmpDto">
-		select emp_id,emp_name from employee where emp_id=#{param1} and emp_password=#{param2}
+		select emp_id,emp_no,emp_name from employee where emp_id=#{param1} and emp_password=#{param2}
 	</select>
 	<!-- 로그인 아이디 찾기 -->
 	<select id="FindID" resultType="com.human.springboot.dto.KshEmpDto">
@@ -69,5 +69,28 @@
 	<!-- 메인페이지 회원 검색 -->
 	<select id= "Main_Search" resultType="com.human.springboot.dto.KshEmpDto">
 		select * from employee where emp_name = #{param1}
+	</select>
+	
+	<!-- 메인페이지 자유게시판 불러오기 -->
+	<select id= "Free_list" resultType="com.human.springboot.dto.KshBoardDto">
+		select a.board_title, b.emp_name, a.board_created , a.board_id
+		from board a, employee b
+		where a.board_writer = b.emp_no and a.board_category = 2
+		order by board_id desc
+	</select>
+	
+	<!-- 메인페이지 공지사항 불러오기 -->
+	<select id= "Notice_list" resultType="com.human.springboot.dto.KshBoardDto">
+		select a.board_title, b.emp_name, a.board_created , a.board_id
+		from board a, employee b
+		where a.board_writer = b.emp_no and a.board_category = 1
+		order by board_id desc
+	</select>
+	
+	<!-- 메인페이지에서 이미지와 부서 불러오기 -->
+	<select id="Main_Get" resultType="com.human.springboot.dto.KshEmpDto">
+		select emp_img,emp_position,emp_depart
+		from employee
+		where emp_id = #{param1}
 	</select>
 </mapper>
