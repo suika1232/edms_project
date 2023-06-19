@@ -49,7 +49,7 @@
                     <button type="button" class="btn btn-primary" id="btnSearch">검색</button>
                 </div>
         </div>
-    <% String userId = (String)session.getAttribute("loginUser");%>
+    <% String userId = (String)session.getAttribute("emp_id");%>
     <% if(userId != null){ %>
         <div class="d-flex justify-content-center">
             <button type="button" class="btn btn-primary text-nowrap" id="btnNewPost">글쓰기</button>

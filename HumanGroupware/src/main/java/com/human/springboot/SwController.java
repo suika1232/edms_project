@@ -1,19 +1,22 @@
 package com.human.springboot;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.UUID;
 import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.time.ZoneId;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.json.HTTP;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.web.ServerProperties.Reactive.Session;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,9 +27,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.human.springboot.dao.SwDAO;
+import com.human.springboot.dto.EmpDepartPositionDTO;
 import com.human.springboot.dto.EmployeeDTO;
 import com.human.springboot.dto.SwBoardDTO;
 import com.human.springboot.dto.SwCommentDTO;
+import com.human.springboot.dto.SwEdmsDTO;
+import com.human.springboot.dto.SwEmpDTO;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -282,6 +288,212 @@ public class SwController {
             e.printStackTrace();
         }
     }
+    // 전자결재 목록 페이지
+    @GetMapping("/edms/list")
+    public String edmsList(){
+        
+        return "edms/edms_list";
+    }
+    // 결재목록 불러오기
+    @PostMapping("/getEdmsList")
+    @ResponseBody
+    public String getEdmsList(){
+        ArrayList<SwEdmsDTO> edmsList = sdao.edmsList();
+
+        JSONArray jArray = new JSONArray();
+        for (SwEdmsDTO edms : edmsList) {
+            JSONObject jObject = new JSONObject();
+            jObject.put("edmsId", edms.getEdms_id());
+            jObject.put("edmsCategory", edms.getEdms_category());
+            jObject.put("edmsTitle", edms.getEdms_title());
+            jObject.put("empName", edms.getEmp_name());
+            jObject.put("depName", edms.getDep_name());
+            jObject.put("edmsDate", edms.getEdms_date());
+            jObject.put("edmsStatus", edms.getEdms_status());
+            jArray.put(jObject);
+        }
+        return jArray.toString();
+    }
+    // 결재문서 상세확인
+    @GetMapping("/edms/view/{edmsId}")
+    public String edmsView(@PathVariable("edmsId")int edmsId, Model model, 
+                            HttpServletRequest req){
+
+        SwEdmsDTO edms = sdao.findEdms(edmsId);
+        String edmsCategory = edms.getEdms_category();
+
+        HttpSession session = req.getSession();
+        String loginUser = (String)session.getAttribute("loginUser");
+        SwEmpDTO userInfo = sdao.getUserInfo(loginUser);
+
+        System.out.println("결재문서 접근유저: "+userInfo.getEmp_no());
+        
+        model.addAttribute("loginUser", userInfo);
+        model.addAttribute("edmsId", edmsId);
+        model.addAttribute("edmsTitle", edms.getEdms_title());
+        
+        model.addAttribute("empName", edms.getEmp_name());
+        model.addAttribute("empDepart", edms.getDep_name());
+        model.addAttribute("empPosition", edms.getPosition_name());
+
+        model.addAttribute("midId", edms.getEdms_mid_approver());
+        model.addAttribute("midName", 
+                            sdao.getEmpName(edms.getEdms_mid_approver()));
+        
+        model.addAttribute("finalId", edms.getEdms_fnl_approver());
+        model.addAttribute("finalName", 
+                            sdao.getEmpName(edms.getEdms_fnl_approver()));
+        
+        model.addAttribute("edmsDate", edms.getEdms_date());
+        System.out.println("불러올 문서날짜: "+edms.getEdms_date());
+        model.addAttribute("edmsCategory", edmsCategory);
+        model.addAttribute("edmsStatus", edms.getEdms_status());
+        
+        String midCheck = edms.getEdms_mid_chk();
+        String finalCheck = edms.getEdms_fnl_chk();
+
+        model.addAttribute("midCheck", midCheck);
+        model.addAttribute("finalCheck", finalCheck);
+
+        if(midCheck.equals("y")){
+            if(finalCheck.equals("y")){
+                model.addAttribute("edmsStep", "complete");
+            }else{
+                model.addAttribute("edmsStep", "final");
+            }
+        }else{
+            model.addAttribute("edmsStep", "mid");
+        }                                
+
+        String categoryDetail = "";
+        if(edmsCategory.equals("휴가")){
+            SwEdmsDTO leave = sdao.edmsLeaveView(edmsId);
+            categoryDetail = leave.getLeave_category();
+            model.addAttribute("leaveCategory", leave.getLeave_category());
+            model.addAttribute("leaveStart", leave.getLeave_start());
+            model.addAttribute("leaveEnd", leave.getLeave_end());
+            model.addAttribute("leaveDetail", leave.getLeave_detail());
+            model.addAttribute("leavePeriod", leave.getLeave_period());
+        }
+        model.addAttribute("categoryDetail", categoryDetail);
+
+        
+
+        return "edms/edms_approval";
+    }
+    // 전자결재 기안하기
+    @GetMapping("/edms/draft")
+    public String edmsDraft(){
+        return "edms/edms_draft";
+    }
+    // 전자결재 직원 리스트 불러오기
+    @PostMapping("/edms/emplist")
+    @ResponseBody
+    public String edmsEmpList(){
+        ArrayList<SwEmpDTO> empList = sdao.empList();
+        JSONArray jArray = new JSONArray();
+        for (SwEmpDTO emp: empList) {
+            JSONObject jObject = new JSONObject();
+            jObject.put("empNo", emp.getEmp_no());
+            jObject.put("empName", emp.getEmp_name());
+            jObject.put("empPosition", emp.getPosition_name());
+            jObject.put("empDepart", emp.getDep_name());
+            jArray.put(jObject);
+        }
+        return jArray.toString();
+    }
+    // 전자결재 양식
+    @GetMapping("/edms/template/leave")
+    public String edmsTemplateLeave(HttpServletRequest req, Model model){
+
+        HttpSession session = req.getSession();
+        String loginUser = (String) session.getAttribute("loginUser");
+        SwEmpDTO userInfo = sdao.getUserInfo(loginUser);
+        int empNo = userInfo.getEmp_no();
+        String empName = userInfo.getEmp_name();
+        String empDepart = userInfo.getDep_name();
+        String empPosition = userInfo.getPosition_name();
+
+        LocalDate now = LocalDate.now(ZoneId.of("Asia/Seoul"));
+        int year = now.getYear();
+        int month = now.getMonthValue();
+        int day = now.getDayOfMonth();
+
+        System.out.printf("현재날짜: %d 년 %d 월 %d 일 \n", year, month, day);
+
+        model.addAttribute("year", year);
+        model.addAttribute("month", month);
+        model.addAttribute("day", day);
+
+        model.addAttribute("empNo", empNo);
+        model.addAttribute("empName", empName);
+        model.addAttribute("empDepart", empDepart);
+        model.addAttribute("empPosition", empPosition);
+
+        return "edms/edms_template_leave";
+    }
+    // 전자결재 상신
+    @PostMapping("/edmsSend/{edmsCategory}")
+    public String edmsSend(@PathVariable("edmsCategory")String edmsCategory,
+                             HttpServletRequest req){
+        int writerId = Integer.parseInt(req.getParameter("writerId"));
+        int midId = Integer.parseInt(req.getParameter("midId"));
+        int finalId = Integer.parseInt(req.getParameter("finalId"));
+        
+        String edmsTitle = req.getParameter("edmsTitle");
+        edmsCategory = edmsCategory.equals("leave") ? "휴가" : "업무";
+
+        sdao.edmsSend(writerId, midId, finalId, edmsTitle, edmsCategory);
+
+        if(edmsCategory.equals("휴가")){
+            String category = req.getParameter("selectedLeaveCategory");
+            String startDate = req.getParameter("startYear")+"-"+
+                                req.getParameter("startMonth")+"-"+
+                                req.getParameter("startDay");
+            String endDate = req.getParameter("endYear")+"-"+
+                                req.getParameter("endMonth")+"-"+
+                                req.getParameter("endDay");
+            String leaveDetail = req.getParameter("leaveDetail");
+            int leavePeriod = Integer.parseInt(req.getParameter("leavePeriod"));
+
+            System.out.println("카테고리: "+category);
+            System.out.println("시작: "+startDate);
+            System.out.println("종료: "+endDate);
+            System.out.println("상세내용:"+leaveDetail);
+            System.out.println("총 일수: "+leavePeriod);
+
+            sdao.edmsLeave(category, startDate, endDate, leaveDetail, leavePeriod);
+        }
+
+        return "redirect:/edms/list";
+    }
+    // 전자결재 결재하기
+    @PostMapping("/edms/approval/{edmsId}")
+    @ResponseBody
+    public String edmsApproval(@PathVariable("edmsId")int edmsId,
+                                HttpServletRequest req){
+        // String approveLine = req.getParameter("edmsStep");
+        try{
+            int approver = Integer.parseInt(req.getParameter("approver"));
+            String receive = req.getParameter("receive");
+            System.out.println("결재처리: "+ receive);
+            String reason = req.getParameter("reason");
+
+            if(receive.equals("반려")){
+                System.out.println("처리내용: "+reason);
+                sdao.edmsApprovalReject(edmsId, approver, receive, reason);
+            }else if(receive.equals("승인")){
+                receive = "완료";
+                sdao.edmsApprovalConfirm(edmsId, approver, receive);
+            }
+
+        }catch(Exception e){
+            e.printStackTrace();
+            return "fail";
+        }
+        
+        return "complete";
+    }
 
     // 임시 로그인 화면
     @GetMapping("/temp/login")
@@ -301,7 +513,7 @@ public class SwController {
 
         if(sdao.userCheck(userId, userPw)){
             System.out.printf("유저 확인됨 %s \n", userId);
-            EmployeeDTO userInfo = sdao.getUserInfo(userId);
+            SwEmpDTO userInfo = sdao.getUserInfo(userId);
             userSession.setAttribute("loginUser", userId);
             userSession.setAttribute("userNo", userInfo.getEmp_no());
             userSession.setAttribute("userName", userInfo.getEmp_name());
@@ -328,12 +540,17 @@ public class SwController {
     }
     // 테스트 업로드
     @PostMapping("/testupload")
-    public String testUpload(@RequestParam(value="fileUpload")MultipartFile multi){
+    public String testUpload(@RequestParam(value="fileUpload")MultipartFile multi,
+                            Model model){
         try {
             String fileName = multi.getOriginalFilename();
+            String filePath = "D:/testimg/" + fileName;
             System.out.println(fileName);
-            File file = new File("D:/testimg/"+fileName);
+            File file = new File(filePath);
             multi.transferTo(file);
+
+            model.addAttribute("fileName", fileName);
+            model.addAttribute("filePath", filePath);
         } catch (Exception e) {
            e.printStackTrace();
         }
@@ -341,14 +558,17 @@ public class SwController {
     }
     // 테스트 다운로드
     @GetMapping("/test/filedownload")
-    public void testDownload(HttpServletResponse res){
+    public void testDownload(HttpServletResponse res,
+                            HttpServletRequest req){
         try{
+            String filePath = req.getParameter("filePath");
+            String fileName = req.getParameter("fileName");
             byte[] fileByte = 
-            FileUtils.readFileToByteArray(new File("D:/testimg/\uC5D0\uC5B4\uD504\uB77C\uC774\uC5B4.jpg"));
+            FileUtils.readFileToByteArray(new File(filePath));
 
             res.setContentType("application/octet-stream");
             res.setHeader("Content-Disposition", "attachment; fileName=\""+
-                            URLEncoder.encode("air.jpg", "UTF-8")+"\";");
+                            URLEncoder.encode(fileName, "UTF-8")+"\";");
             res.setHeader("Content-Transfer-Encoding", "Binary");
 
             res.getOutputStream().write(fileByte);
