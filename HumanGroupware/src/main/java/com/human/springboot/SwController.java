@@ -339,18 +339,32 @@ public class SwController {
         model.addAttribute("midId", edms.getEdms_mid_approver());
         model.addAttribute("midName", 
                             sdao.getEmpName(edms.getEdms_mid_approver()));
-        model.addAttribute("midCheck", edms.getEdms_mid_chk());
         
         model.addAttribute("finalId", edms.getEdms_fnl_approver());
         model.addAttribute("finalName", 
                             sdao.getEmpName(edms.getEdms_fnl_approver()));
-        model.addAttribute("finalCheck", edms.getEdms_fnl_chk());
-
+        
         model.addAttribute("edmsDate", edms.getEdms_date());
         System.out.println("불러올 문서날짜: "+edms.getEdms_date());
         model.addAttribute("edmsCategory", edmsCategory);
         model.addAttribute("edmsStatus", edms.getEdms_status());
         
+        String midCheck = edms.getEdms_mid_chk();
+        String finalCheck = edms.getEdms_fnl_chk();
+
+        model.addAttribute("midCheck", midCheck);
+        model.addAttribute("finalCheck", finalCheck);
+
+        if(midCheck.equals("y")){
+            if(finalCheck.equals("y")){
+                model.addAttribute("edmsStep", "complete");
+            }else{
+                model.addAttribute("edmsStep", "final");
+            }
+        }else{
+            model.addAttribute("edmsStep", "mid");
+        }                                
+
         String categoryDetail = "";
         if(edmsCategory.equals("휴가")){
             SwEdmsDTO leave = sdao.edmsLeaveView(edmsId);
@@ -362,6 +376,8 @@ public class SwController {
             model.addAttribute("leavePeriod", leave.getLeave_period());
         }
         model.addAttribute("categoryDetail", categoryDetail);
+
+        
 
         return "edms/edms_approval";
     }
@@ -416,7 +432,7 @@ public class SwController {
 
         return "edms/edms_template_leave";
     }
-    // 전자결재 송신
+    // 전자결재 상신
     @PostMapping("/edmsSend/{edmsCategory}")
     public String edmsSend(@PathVariable("edmsCategory")String edmsCategory,
                              HttpServletRequest req){
@@ -458,11 +474,18 @@ public class SwController {
                                 HttpServletRequest req){
         // String approveLine = req.getParameter("edmsStep");
         try{
+            int approver = Integer.parseInt(req.getParameter("approver"));
             String receive = req.getParameter("receive");
             System.out.println("결재처리: "+ receive);
             String reason = req.getParameter("reason");
-            System.out.println("처리내용: "+reason);
-            
+
+            if(receive.equals("반려")){
+                System.out.println("처리내용: "+reason);
+                sdao.edmsApprovalReject(edmsId, approver, receive, reason);
+            }else if(receive.equals("승인")){
+                receive = "완료";
+                sdao.edmsApprovalConfirm(edmsId, approver, receive);
+            }
 
         }catch(Exception e){
             e.printStackTrace();

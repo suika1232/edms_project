@@ -191,20 +191,39 @@
     </select>
     <update id="edmsApprovalReject">
       <selectKey resultType="int" keyProperty="approver" order="BEFORE">
-        select count(*)
+        select count(*) as approver
         from edms
-        where edms_id = #{param1} and edms_mid_approver = {param2}
+        where edms_id = #{param1} and edms_mid_approver = #{param2}
       </selectKey>
       <choose>
         <when test='approver == 1'>
           update edms
-          set edms_mid_chk = #{param3}, edms_reason = #{param4}
-          where edms_id = #{param1} and edms_mid_approver = {param2}
+          set edms_status = #{param3}, edms_mid_chk = 'y', edms_reason = #{param4}
+          where edms_id = #{param1} and edms_mid_approver = #{param2}
         </when>
         <when test='approver == 0'>
           update edms
-          set edms_fnl_chk = #{param3}, edms_reason = #{param4}
-          where edms_id = #{param1} and edms_fnl_approver = {param2}
+          set edms_status = #{param3}, edms_fnl_chk = 'y', edms_reason = #{param4}
+          where edms_id = #{param1} and edms_fnl_approver = #{param2}
+        </when>
+      </choose>
+    </update>
+    <update id="edmsApprovalConfirm">
+      <selectKey resultType="int" keyProperty="approver" order="BEFORE">
+        select count(*) as approver
+        from edms
+        where edms_id = #{param1} and edms_mid_approver = #{param2}
+      </selectKey>
+      <choose>
+        <when test='approver == 1'>
+          update edms
+          set edms_mid_chk = 'y'
+          where edms_id = #{param1} and edms_mid_approver = #{param2}
+        </when>
+        <when test='approver == 0'>
+          update edms
+          set edms_status = #{param3}, edms_fnl_chk = 'y'
+          where edms_id = #{param1} and edms_fnl_approver = #{param2}
         </when>
       </choose>
     </update>

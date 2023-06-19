@@ -77,22 +77,33 @@
     .displayNone{
         display: none;
     }
+    #edmsInfoTable input[type=text]{
+        border: none; outline: none;
+    }
+    .signNamePosition{
+        float: left;
+        top: 24px;
+        position: relative;
+        left: 15px;
+    }
 </style>
 <body>
-<input type="hidden" id="edmsId" value="${edmsId}">
 <input type="hidden" id="loginUser" value="${loginUser.emp_no}">
-<input type="hidden" id="edmsCategory" value="${edmsCategory}">
 <input type="hidden" id="edmsStep" value="${edmsStep}">
 <div class="table-responsive-md">
-    <table class="table">
+    <table class="table" id="edmsInfoTable">
         <tbody>
             <tr class="">
                 <td scope="row" style="width: 155px;">번호</td>
-                <td>${edmsId}</td>
+                <td>
+                    <input type="text" id="edmsId" value="${edmsId}">
+                </td>
             </tr>
             <tr>
                 <td scope="row" style="width: 155px;">분류</td>
-                <td>${edmsCategory}</td>
+                <td>
+                    <input type="text" id="edmsCategory" value="${edmsCategory}">
+                </td>
             </tr>
             <tr class="">
                 <td scope="row" style="width: 155px;">제목</td>
@@ -104,7 +115,9 @@
             </tr>
             <tr class="">
                 <td scope="row" style="width: 155px;">상태</td>
-                <td>${edmsStatus}</td>
+                <td>
+                    <input type="text" id="edmsStatus" value="${edmsStatus}">
+                </td>
             </tr>
         </tbody>
     </table>
@@ -317,9 +330,14 @@ $(document)
     }
     let loginUser = '<%=(int)session.getAttribute("userNo")%>';
     console.log(loginUser);
-    if(loginUser == $("#midId").val() || loginUser == $("#finalId").val()){
+    if($("#edmsStatus").val() == "결재대기"){
+        if(loginUser == $("#midId").val() || loginUser == $("#finalId").val()){
         $("#btnOpenModal").attr("disabled", false);
+        }
     }
+    approverSign($("#midCheck"));
+    approverSign($("#finalCheck"));
+    
     $("#modalBody table tr:nth-child(3)").addClass("displayNone");
 })
 .on("change", "input[name=approvalCheck]", function(){
@@ -334,6 +352,8 @@ $(document)
 })
 .on("click", "#btnConfirm", ()=>{
 
+    let approver = $("#loginUser").val();
+    console.log(approver);
     let receive = $("input[name=approvalCheck]:checked").val();
     console.log(receive);
     let reason = $("#approverOpinion").val();
@@ -342,7 +362,7 @@ $(document)
     $.ajax({
         url: "/edms/approval/"+$("#edmsId").val(),
         type: "post",
-        data:{receive: receive, reason: reason},
+        data:{approver: approver, receive: receive, reason: reason},
         dataType: "text",
         success: (data)=>{
             if(data == "complete") alert("결재 처리 완료");
@@ -351,6 +371,30 @@ $(document)
         }
     })
 })
+function approverSign(approverCheck){
+    console.log(approverCheck);
+    let check = $(approverCheck).val();
+    let id = $(approverCheck).attr("id");
 
+    if(check == "y"){
+        let signImg = $("<img>",{
+            src: "/img/확인.png"
+        }).css({
+            width: "50px",
+            height: "50px",
+            opacity: "0.6",
+            margin: "0 0",
+            display: "inline-block",
+            position: "relative",
+            bottom: "15px"
+        })
+        $(approverCheck).before(signImg);
+        if(id == "midId"){
+            $("#approverMidName").addClass("signNamePosition");
+        }else{
+            $("#approverFinalName").addClass("signNamePosition");
+        }
+    }
+}
 </script>
 </html>

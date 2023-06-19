@@ -48,7 +48,7 @@
                     <button type="button" class="btn btn-primary" id="btnSearch">검색</button>
                 </div>
         </div>
-    <% String userId = (String)session.getAttribute("loginUser");%>
+    <% String userId = (String)session.getAttribute("emp_id");%>
     <% if(userId != null){ %>
     <div class="d-flex justify-content-end">
         <button type="button" class="btn btn-primary" id="btnNewPost">글쓰기</button>
