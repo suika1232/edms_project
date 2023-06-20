@@ -5,6 +5,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<% String name = (String)session.getAttribute("emp_name");%>
+<% String userid = (String)session.getAttribute("emp_id");%>
 <link rel="stylesheet" href="/css/bootstrap-css/bootstrap.min.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 <link rel="stylesheet" href="/css/note/NewMg.css">
@@ -58,7 +60,7 @@
 	  </div>
 	<table class="table">
 	<tr>
-		<th>작성자</th><td><input type = text id ="mg_Writer"></td> 
+		<th>작성자</th><td><input type = text id ="mg_Writer" value=<%=name %>></td> 
 	</tr>
 	<tr>
 		<th>받는사람</th><td><input type =text id="mg_Receiver" value="${senderName}" placeholder="찾기버튼을 눌러주세요"><button id = "serchUserButton" class="btn btn-light" onclick="openUserBox()">찾기</button></td>
@@ -67,7 +69,7 @@
 		<th>내용</th><td><textarea id="mg_Content" placeholder = "1000자 이내로 작성"></textarea></td> 
 	</tr>
 	<tr><td class="hidden_td"><button id="sendButton" class="btn btn-light">작성</button><button id="cancelButton" class="btn btn-light">취소</button></td></tr>
-	<tr><td class="hidden_td"><input type ="hidden" id="userId" value="${senderID}" style = border:none;><input type ="hidden" id="userNo" value = "5"></td></tr>
+	<tr><td class="hidden_td"><input type ="hidden" id="userId" value="${senderID}" style = border:none;><input type ="hidden" id="userNo" value = <%=userid %>></td></tr>
 	</table>
 </div>
 <div class="modal" tabindex="-1" id="userBox">

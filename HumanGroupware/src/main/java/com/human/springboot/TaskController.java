@@ -43,6 +43,7 @@ public class TaskController {
 		HttpSession login = req.getSession();
 	  	
 		String empId = (String) login.getAttribute("emp_id");
+		System.out.println(empId);
 		
 		int checkUser = tdao.checkUser(empId);
 		

@@ -24,6 +24,7 @@ import com.human.springboot.dto.note.selectSeMgDTO;
 import com.human.springboot.dto.note.serchDTO;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 
@@ -42,7 +43,7 @@ public class NoteController {
 	
 	@PostMapping("/userName")
 	@ResponseBody
-	public String UserId(HttpServletRequest req) {
+	public String UserId(HttpServletRequest req,HttpSession session) {
 		
 		int id = Integer.parseInt(req.getParameter("user"));
 		
@@ -242,7 +243,6 @@ public class NoteController {
 							@PathVariable("value")int value,
 							Model model) {
 		String human ;
-		System.out.println("��������");
 		if(value==1){ 
 					
 			UserDTO dto = ndao.select_User(senderID);

@@ -15,7 +15,7 @@ import com.human.springboot.dto.task.userinfoDTO;
 public interface TaskDAO {
 	
 	int checkUser(String ID);
-	userinfoDTO userinfo(String ID);
+	userinfoDTO userinfo(String empId);
 	
 	void insertDailyWork(String title,int userID,String depart,String content,
 						String notes,String created,int reportNo);

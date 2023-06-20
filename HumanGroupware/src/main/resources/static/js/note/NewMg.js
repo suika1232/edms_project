@@ -1,6 +1,6 @@
 $(document)
 .ready(()=>{
-	getUserName()
+/*	getUserName()*/
 })
 .on("click","#cancelButton",()=>{
 	document.location="/receive"
@@ -24,7 +24,7 @@ function openUserBox() {
       $('#userBox').modal('show');
       
 }
-function getUserName(){
+/*function getUserName(){
 	$.ajax({url:"/userName",
 			type:"post",
 			dataType:"text",
@@ -33,7 +33,7 @@ function getUserName(){
 					$("#mg_Writer").val(data)
 			}	
 	})
-}
+}*/
 function sendMessage(){
 	$.ajax({url:"/sendMg",
 			type:"post",
