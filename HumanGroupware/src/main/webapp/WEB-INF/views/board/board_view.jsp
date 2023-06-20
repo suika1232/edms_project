@@ -110,7 +110,7 @@
 <script>
 $(document)
 .ready(()=>{
-    let loginUser = '<%=session.getAttribute("userNo")%>';
+    let loginUser = '<%=session.getAttribute("emp_no")%>';
     if(loginUser != "null"){
         let writer = $("#boardWriter").val();
         if(writer == parseInt(loginUser)){
