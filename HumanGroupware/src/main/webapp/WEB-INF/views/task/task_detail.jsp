@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<link rel="stylesheet" href="/css/bootstrap.min.css">
+<link rel="stylesheet" href="/css/bootstrap-css/bootstrap.min.css">
 <title>Insert title here</title>
 <style>
 .flexContainer{display:flex;}
@@ -156,7 +156,7 @@
 </div>
 </body>
 <script src ="http://code.jquery.com/jquery-latest.js"></script>
-<script src="/js/bootstrap.bundle.min.js"></script>
+<script src="/js/bootstrap-js/bootstrap.bundle.min.js"></script>
 <script>
 $(document)
 .ready(function(){

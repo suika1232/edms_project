@@ -16,9 +16,13 @@
 .pagination div{display:inline-block;}
 .table tr td:nth-child(4) :hover{color:lightblue; cursor:pointer;}
 .table{
+	width:90%;
 	position:relative;
 	margin-top:20px;
 	margin-left:20px;
+}
+.tableBox{
+	width:100%;
 }
 .overflow {
   	width:100px;

@@ -10,7 +10,7 @@
 		where a.emp_depart=b.dep_id and c.emp_no=b.dep_manager and a.emp_id=#{param1}
 	</select>
 	<select id="getReport" resultType="com.human.springboot.dto.task.getReportDTO">
-		select * from reportBox where report_id=#{param1}
+		select * from task_template where report_id=#{param1}
 	</select>
 	<select id ="getUserDepart" resultType="com.human.springboot.dto.task.getUserDepartDTO">
 		select a.emp_name, c.emp_name managerName, b.dep_manager managerNum,a.emp_depart,b.dep_name

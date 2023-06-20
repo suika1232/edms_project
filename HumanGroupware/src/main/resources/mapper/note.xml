@@ -143,5 +143,7 @@
 	<delete id="deleteNote">
 		delete from note where note_id=#{param1}
 	</delete>
-
+	<select id="selectUser" resultType="com.human.springboot.dto.note.UserDTO">
+		select emp_no,emp_name from employee where emp_depart=#{param1}
+	</select>
 </mapper>

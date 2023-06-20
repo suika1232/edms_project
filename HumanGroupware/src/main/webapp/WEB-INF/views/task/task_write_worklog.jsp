@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<link rel="stylesheet" href="/css/bootstrap.min.css">
+<link rel="stylesheet" href="/css/bootstrap-css/bootstrap.min.css">
 <title>Insert title here</title>
 </head>
 <style>
@@ -117,6 +117,7 @@ div.editable {
 		</table>
 		<!-- <div class="editable" contenteditable="true"> 
 		</div> -->
+		<div id=templateBox></div>
 			<div class="button-container">
 	  			<button id="insert_WorkLog">작성</button>
 			    <button id="cancel">이전</button>
@@ -125,7 +126,7 @@ div.editable {
 	</div>
 </body>
 <script src ="http://code.jquery.com/jquery-latest.js"></script>
-<script src="/js/bootstrap.bundle.min.js"></script>
+<script src="/js/bootstrap-js/bootstrap.bundle.min.js"></script>
 <script>
 $(document)
 .ready(function(){
@@ -143,8 +144,8 @@ $(document)
 					alert("에러")
 				},
 				success:function(data){
-					
-					$(".button-container").prepend(data.tag)
+					$("#templateBox").empty()
+					$("#templateBox").append(data.tag)
 					$("style").append(data.style)
 					$("#inputDepart").val($("#departName").val())		
 					$("#content").val("일일 업무 내용 작성")

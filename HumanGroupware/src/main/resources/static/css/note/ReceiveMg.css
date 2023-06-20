@@ -15,6 +15,9 @@
 .table tr input{position:relative; left:40px;}
 #deleteMessage:hover{color:green;}
 .table tr td:nth-child(4) :hover{color:lightblue; cursor:pointer;}
+.tableBox{
+	width:100%;
+}
 .overflow {
   	width:100px;
   	white-space: nowrap;
