@@ -9,8 +9,10 @@
 <title>Insert title here</title>
 </head>
 <body>
+<% String name = (String)session.getAttribute("emp_name");%>
+<% String userid = (String)session.getAttribute("emp_id");%>
 <div class="flexContainer">
- <div class="b-example-divider b-example-vr"></div>
+ <!-- <div class="b-example-divider b-example-vr"></div>
 	  <div class="d-flex flex-column flex-shrink-0 p-3 bg-light" id="divT" style="width: 280px;" id="sideBar">
 	      <span class="fs-4">MESSAGE</span>
 	    <hr>
@@ -53,8 +55,8 @@
 	        <li><a class="dropdown-item" href="#">Sign out</a></li>
 	      </ul>
 	    </div>
-	  </div>
-	  <input type="hidden" id="userId" value="5">	
+	  </div> -->
+	  <input type="hidden" id="userId" value=<%=userid %>>	
 	<div class="tableBox">	
 		<table id="sendMessageList" class="table">
 			<tr><td><input type = checkbox id="kingCheckBox" onclick = "selectAll(this)"></td>
