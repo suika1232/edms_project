@@ -70,15 +70,9 @@
                         onclick="changeView('list')">
                         <i class="bi bi-list-check"></i>결재목록
                     </li>
-                    <li class="list-group-item" id="list-list" 
+                    <li class="list-group-item" id="list-reject" 
                         onclick="changeView('reject')">
                         <i class="bi bi-list-check"></i>반려문서함
-                    </li>
-                </ul>
-                <ul class="list-group">
-                    <li class="list-group-item" id="list-template"
-                        onclick="changeView('template')">
-                        <i class="bi bi-file-earmark"></i>결재양식
                     </li>
                 </ul>
             </div>
@@ -102,7 +96,6 @@ function changeView(menu){
     }else if(menu == "draft" || menu == "list" || menu == "reject"){
         $("#sectionView").attr("src", "/edms/"+menu);
     }
-    if(menu == "template") $("#sectionView").attr("src", "/edms/template/leave");
     $(".list-group-item").removeClass("active");
     $("#list-"+menu).addClass("active");
     
