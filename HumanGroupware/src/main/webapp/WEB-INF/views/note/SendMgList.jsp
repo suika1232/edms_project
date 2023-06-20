@@ -10,7 +10,7 @@
 </head>
 <body>
 <% String name = (String)session.getAttribute("emp_name");%>
-<% String userid = (String)session.getAttribute("emp_id");%>
+<% int userno = (int)session.getAttribute("emp_no");%>
 <div class="flexContainer">
  <!-- <div class="b-example-divider b-example-vr"></div>
 	  <div class="d-flex flex-column flex-shrink-0 p-3 bg-light" id="divT" style="width: 280px;" id="sideBar">
@@ -56,7 +56,7 @@
 	      </ul>
 	    </div>
 	  </div> -->
-	  <input type="hidden" id="userId" value=<%=userid %>>	
+	  <input type="hidden" id="userId" value=<%=userno %>>	
 	<div class="tableBox">	
 		<table id="sendMessageList" class="table">
 			<tr><td><input type = checkbox id="kingCheckBox" onclick = "selectAll(this)"></td>

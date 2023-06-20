@@ -59,7 +59,6 @@
 	  </div> -->
 	<div id="detailContentDg" class=detailDg>	
 		<% int value = (int)request.getAttribute("value");%>
-		<%=value %>
 		<%if(value == 1){ %>
 			<c:forEach var="info" items="${info}">
 				<div><input type ="hidden" id="sender_id" value="${info.sender_id}" readonly></div>

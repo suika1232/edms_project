@@ -10,6 +10,7 @@
 <title>Insert title here</title>
 </head>
 <body>
+<% int userno = (int)session.getAttribute("emp_no");%>
 <div class="flexContainer">
 	 <!-- <div class="b-example-divider b-example-vr"></div>
 	  <div class="d-flex flex-column flex-shrink-0 p-3 bg-light" style="width: 280px;" id="sideBar">
@@ -55,7 +56,7 @@
 	      </ul>
 	    </div>
 	  </div> -->
-	<input type="hidden" id="userId" value="5">
+	<input type="hidden" id="userId" value=<%=userno %>>
 	<div class="tableBox">		
 		<table id="receiveMessageList" class="table">
 			<tr><td><input type = checkbox id=kingCheckBox onclick = "selectAll(this)"></td>
