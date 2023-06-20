@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<link rel="stylesheet" href="/css/bootstrap.min.css">
+<link rel="stylesheet" href="/css/bootstrap-css/bootstrap.min.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 <title>Insert title here</title>
 <style>
@@ -111,7 +111,7 @@
 </div>
 </body>
 <script src ="http://code.jquery.com/jquery-latest.js"></script>
-<script src="/js/bootstrap.bundle.min.js"></script>
+<script src="/js/bootstrap-js/bootstrap.bundle.min.js"></script>
 <script>
 $(document)
 .ready(function(){
@@ -119,10 +119,11 @@ $(document)
 	checkManager()
 })
 .on("click","#loglist tr:gt(1) td:nth-child(4)",function(){
+	
 	let workNo = $(this).parent("tr").find("td:nth-child(1)").find("input[type=checkbox]").val()
-	
+	alert(workNo)
 	let repNo = $(this).parent("tr").find("td:nth-child(2)").find("input[type=hidden]").attr("id")
-	
+	alert(repNo)
 	openModal(repNo,workNo) 
 })
 .on("click","#updateWorkLog",function(){
@@ -171,6 +172,8 @@ function getUserReportList(){
 	})
 }
 function openModal(repNo,workNo){
+	alert("리포트번호"+repNo)
+	alert("가져온 번호2"+workNo)
 	$('#detailLog').modal('show');
 	getUserReport(repNo,workNo)
 }

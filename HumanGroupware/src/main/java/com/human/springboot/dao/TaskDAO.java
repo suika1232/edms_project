@@ -11,6 +11,7 @@ import com.human.springboot.dto.task.selectTaskDTO;
 import com.human.springboot.dto.task.taskReportDTO;
 import com.human.springboot.dto.task.userinfoDTO;
 
+
 @Mapper
 public interface TaskDAO {
 	
@@ -42,4 +43,5 @@ public interface TaskDAO {
 	
 	selectTaskDTO detailTask(int taskID);
 	taskReportDTO detailTask_Report(int task_reportID);
+	
 }

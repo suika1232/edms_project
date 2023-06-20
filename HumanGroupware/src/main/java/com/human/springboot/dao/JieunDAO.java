@@ -10,7 +10,7 @@ import com.human.springboot.dto.EmpDepartPositionDTO;
 import com.human.springboot.dto.EmployeeDTO;
 import com.human.springboot.dto.PositionDTO;
 
-@Mapper
+@Mapper 
 public interface JieunDAO {
 
 // 옵션 리스트 ( select )

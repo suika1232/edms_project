@@ -73,7 +73,7 @@ public class TaskController {
 	}
 	@GetMapping("/WorkLog")
 	public String workLog() {
-		return "task/task_write_report";
+		return "task/task_write_worklog";
 	}
 
 	@GetMapping("/depWorkLog")
@@ -98,6 +98,7 @@ public class TaskController {
 	public Map<String,Object> getReport(HttpServletRequest req) {
 		Map<String,Object> response = new HashMap<>();
 		int repNo=Integer.parseInt(req.getParameter("repNo"));
+		System.out.println("번호 잘 들어갔는지"+repNo);
 		getReportDTO dto = tdao.getReport(repNo);
 		
 		String tag= dto.getReport_tag();
@@ -156,6 +157,7 @@ public class TaskController {
 		
 		Map<String , Object> response= new HashMap<>();
 		int reportNum=Integer.parseInt(req.getParameter("repNo"));
+		System.out.println("들어온번호: "+reportNum);
 		getReportDTO dto = tdao.getReport(reportNum);
 		
 		String tag= dto.getReport_tag();
@@ -239,7 +241,7 @@ public class TaskController {
 	  }
 	@GetMapping("/writeReport")
 	public String wrirteReport () {
-		return "task/ts_write_report";
+		return "task/task_write_report";
 	}
 	////////////////////////////////////////////��������//////////////////////////////////
 	
@@ -290,6 +292,7 @@ public class TaskController {
 	@ResponseBody
 	public String selectUser(HttpServletRequest req) {
 		int departNO = Integer.parseInt(req.getParameter("departNum"));
+		System.out.println("departNumber:"+ departNO);
 		ArrayList<UserDTO>dto = ndao.selectUser(departNO);
 		
 		JSONArray ja = new JSONArray();
