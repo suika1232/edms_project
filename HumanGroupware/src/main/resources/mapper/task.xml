@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.human.springboot.dao.TaskDAO">
+	<select id="checkUser" resultType="int">
+		select count(*) from employee where emp_id=#{param1}
+	</select>
+	<select id="userinfo" resultType="com.human.springboot.dto.task.userinfoDTO">
+		select a.emp_no,a.emp_name,a.emp_position,a.emp_depart,b.dep_name,c.emp_name managerName, b.dep_manager managerNum
+		from employee a, department b,employee c 
+		where a.emp_depart=b.dep_id and c.emp_no=b.dep_manager and a.emp_id=#{param1}
+	</select>
+	<select id="getReport" resultType="com.human.springboot.dto.task.getReportDTO">
+		select * from reportBox where report_id=#{param1}
+	</select>
+	<select id ="getUserDepart" resultType="com.human.springboot.dto.task.getUserDepartDTO">
+		select a.emp_name, c.emp_name managerName, b.dep_manager managerNum,a.emp_depart,b.dep_name
+		from employee a, department b,employee c 
+		where a.emp_depart=b.dep_id and c.emp_no=b.dep_manager and a.emp_name=#{param1}
+	</select>
+	<insert id="insertDailyWork">
+		insert into daily_work values(daily_seq.nextval,#{param1},#{param2},#{param3},#{param4},#{param5},#{param6},#{param7},'on')
+	</insert>
+	<select id="getWorkData" resultType="com.human.springboot.dto.task.getWorkDataDTO">
+		select * from daily_work where dwork_id=#{param1} 
+	</select>
+	<select id="getWorkList" resultType="com.human.springboot.dto.task.getWorkDataDTO">
+		select * from daily_work where dwork_writer=#{param1} and daily_condition = 'on'
+	</select>
+	<delete id="updateWorkLog">
+		update daily_work set daily_condition='hide' where dwork_id=#{param1}
+	</delete>
+	<select id="getDworkLog" resultType="com.human.springboot.dto.task.getWorkDataDTO">
+		select * from daily_work where dwork_depart=#{param1} and daily_condition='on'
+	</select>
+	<insert id="insertTask_report">
+		insert into task_report values(tr_seq.nextval,#{param1},#{param2},#{param3},#{param4},#{param5},'on',#{param6},#{param7})  
+	</insert>
+	<select id="selectTask" resultType="com.human.springboot.dto.task.selectTaskDTO">
+		select * from task where task_performer = #{param1}
+	</select>
+	<insert id="insertTask">
+		insert into task values (t_id.nextval,#{param1},#{param2},#{param3},#{param4},#{param5},#{param6},'',#{param7},'진행중')
+	</insert>
+	<select id="selectReport" resultType="com.human.springboot.dto.task.taskReportDTO">
+		select * from task_report where tr_writer=#{param1}
+	</select>
+	<select id="selectReceiveReport" resultType="com.human.springboot.dto.task.taskReportDTO">
+		select * from task_report where tr_receiver=#{param1}
+	</select>
+	<select id="selectSendTask" resultType="com.human.springboot.dto.task.selectTaskDTO">
+		select * from task where task_drafter=#{param1}
+	</select>
+	<select id="selectReceiveTask" resultType="com.human.springboot.dto.task.selectTaskDTO">
+		select * from task where task_performer=#{param1}
+	</select>
+	<select id="detailTask" resultType="com.human.springboot.dto.task.selectTaskDTO">
+		select *from task where task_id = #{param1}
+	</select>
+	<select id="detailTask_Report" resultType="com.human.springboot.dto.task.taskReportDTO">
+		select *from task_report where tr_id = #{param1}
+	</select>
+<!-- 	<select id="dtailTask" resultType="com.human.springboot.Task.selectTaskDTO">
+	
+	</select>
+	<select id="dtailTask_Report" resultType="com.human.springboot.Task.taskReportDTO">
+	
+	</select> -->
+</mapper>

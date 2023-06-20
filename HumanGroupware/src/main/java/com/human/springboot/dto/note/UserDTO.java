@@ -5,4 +5,5 @@ import lombok.Data;
 @Data
 public class UserDTO {
 	private String emp_name;
+	private int emp_no;
 }

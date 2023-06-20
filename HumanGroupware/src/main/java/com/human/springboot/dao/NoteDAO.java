@@ -18,6 +18,7 @@ public interface NoteDAO {
 	void SendMg(String content,int writer,int receiver);
 	void updateNoteRead(String read,int noteNum);
 	UserDTO select_User(int id);
+	ArrayList<UserDTO> selectUser(int departNO);
 	ArrayList<serchDTO> serch_User();
 	
 	ArrayList<selectReceiveMgDTO> selectReceiveMg(int id,int pagenum, int amount);
