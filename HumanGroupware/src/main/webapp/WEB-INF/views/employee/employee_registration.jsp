@@ -9,40 +9,6 @@
 <link type="text/css" rel="stylesheet" href="/resources/css/employee_registration.css">
 </head>
 <body>
-<!-- 임시 링크용 -->
-<div class="option" style="border:0.1px solid black; width:150px;text-align:center;">
-	<a>[임시 링크용 div]</a>
-	<div>
-		<a href="/employee/organization">조직도</a><br>
-		<a href="/employee/inquiry">직원조회</a><br>
-		<a href="/employee/registration">부서/직급변경</a><br>
-		<a href="/attendance/current">근태현황</a><br>
-		<a href="/attendance/management">근태관리</a><br>
-		<a href="/attendance/byEmployee">직원별 근태현황</a>
-		<input type=button value="출근">
-		<input type=button value="퇴근">
-	</div>
-</div>
-<!-- 임시 링크용 -->
-<div class="Mysession_container">
-		<div id="Show-img_box"></div>
-		<div id="MY_box">
-			<% if(session.getAttribute("emp_name") != null && session.getAttribute("emp_id")!="") {%>
-				이름: ${ emp_name} 
-				<div id=emp_depart>부서: </div>
-				<div id="My_box1">
-				<a href='/employee/mypage'>마이페이지</a>
-				<a href='/employee/logout'>로그아웃</a>
-				</div>
-			<% } else {%>
-				로그인 후 이용해주세요
-				<div class="My_box2">
-				<a href='/employee/login'>로그인</a>
-				<a href="/employee/signin">회원가입</a><br>
-				</div>
-			<% } %>
-		</div>
-	</div>
 <!-- 사원관리 / 상세 -->
 <div class="inquiry_main">
 		<a>부서/직급 변경</a>
@@ -107,6 +73,7 @@
 				<div>
 					<input type=hidden id=emp_position1>
 					<input type=hidden id=emp_depart1>
+					<input type=hidden id = emp_imgimg>
 				</div>
 			</div>
 			<div>
@@ -192,7 +159,7 @@ $(document).ready(function(){
 					let position = $("#employee_position2").val();
 					let form = $("#employee_form2").val();
 					let team = $("#employee_team2").val();
-					alert(position+'정보 입력이 완료되었습니다.');
+					alert('정보 입력이 완료되었습니다.');
 					location.reload();
 				}else{
 					alert('알수 없는 오류가 발생하였습니다.')
@@ -285,12 +252,18 @@ $(document).ready(function(){
 						 let mobile = data['emp_mobile'];
 						 let email = data['emp_email'];
 						 let id = data['emp_id'];
-						 let img = '<img src="/"'+data['emp_img']+'>';
+						 let test = data['emp_img'];
 						 $('#employee_kname').val(name);
 						 $('#employee_phone').val(mobile);
 						 $('#employee_email').val(email);
 						 $('#employee_id').val(id);
-						 $('#image').val(img);
+						 $('#emp_imgimg').val(test);
+						 path = $('#emp_imgimg').val();
+						 new_path = path.split("static")[1]
+						 console.log(new_path);
+						 let img = '<img src="/resources'+new_path+'">';
+						 $('#image').append(img);
+						 
 					 }
 				 }})
 	}

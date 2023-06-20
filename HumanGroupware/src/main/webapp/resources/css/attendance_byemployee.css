@@ -1,8 +1,9 @@
+
 /* 대표 제목 */
 .inquiry_main{
 	width:90vh;
 	height:4rem;
-	background-color: rgb(233, 233, 233);
+	background-color: rgb(206, 206, 206);
 	border-radius: 0.5rem;
 	margin-top:2rem;
 	align-items : center;
@@ -29,14 +30,15 @@ body{
     background-color: rgb(255, 255, 255);
 }
 main{
-    width: 90%;
+    width: 100%;
     margin: 0 auto;
 }
 /* 전체 div */
 .employee_data{
 	clear:right;
-	height:500px;
-	background-color:rgb(233, 233, 233);
+	width:auto;
+	height:auto;
+	background-color: rgb(206, 206, 206);
 	border-radius: 0.5rem;
 }
 /* 테이블 table */

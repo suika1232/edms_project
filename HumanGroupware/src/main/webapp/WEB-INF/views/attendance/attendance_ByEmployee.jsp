@@ -8,26 +8,7 @@
 <link type="text/css" rel="stylesheet" href="/resources/css/attendance_byemployee.css">
 </head>
 <body>
-
-<div class="Mysession_container">
-		<div id="Show-img_box"></div>
-		<div id="MY_box">
-			<% if(session.getAttribute("emp_name") != null && session.getAttribute("emp_id")!="") {%>
-				이름: ${ emp_name}
-				<div id=emp_depart></div>
-				<div id="My_box1">
-				<a href='/employee/mypage'>마이페이지</a>
-				<a href='/employee/logout'>로그아웃</a>
-				</div>
-			<% } else {%>
-				로그인 후 이용해주세요
-				<div class="My_box2">
-				<a href='/employee/login'>로그인</a>
-				<a href="/employee/signin">회원가입</a><br>
-				</div>
-			<% } %>
-		</div>
-	</div>
+<div class = "all_table">
 	<div class="inquiry_main">
 		<a>직원별 근태현황</a>
 	</div>
@@ -59,10 +40,8 @@
 	</tbody>
 </table>
 <input type=hidden id="id_value">
-<input type=text id="start_leave">
-<input type=text id="end_leave">
 </div>
-
+</div>
 </body>
 <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script>
@@ -170,9 +149,6 @@ $(document).ready(function(){
 					}
 			 }})
 }
-		
-		
-		
 		
 	/* 출근 */
 	$('#start_id').on('click',function(){

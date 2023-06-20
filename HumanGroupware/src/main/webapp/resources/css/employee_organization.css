@@ -2,7 +2,7 @@
 .inquiry_main{
 	width:90vh;
 	height:4rem;
-	background-color: rgb(233, 233, 233);
+	background-color: rgb(206, 206, 206);
 	border-radius: 0.5rem;
 	margin-top:2rem;
 	align-items : center;
@@ -124,11 +124,16 @@ main{
 	margin-left:1rem;
 } */
 .add{
-	border:0.1px solid black;
+	border-left:0.1px solid gray;
 	width:50%;
 	height:300px;
 	float:right;
-	border-radius: 0.5rem;
+}
+.add_position{
+	border:0px solid gray;
+	width:50%;
+	height:300px;
+	float:left;
 }
 .add_department{
 	width:200px;
@@ -170,6 +175,7 @@ main{
 	font-size:16px;
 	text-align:center;
 	border:0 solid black;
+	background-color:white;
 	width:150px;
 	height:25px;
 	color:black;
@@ -179,6 +185,7 @@ main{
 	font-size:16px;
 	text-align:center;
 	border:0 solid black;
+	background-color:white;
 	width:150px;
 	height:25px;
 	color:black;
@@ -191,12 +198,14 @@ main{
 	background-color:rgb(148, 133, 133);
 	border:0 solid black;
 	border-radius: 0.5rem;
+	cursor:pointer;
 }
 .dep_parent{
 	margin-top:1.5rem;
 	font-size:16px;
 	text-align:center;
 	border:0 solid black;
+	background-color:white;
 	width:150px;
 	height:25px;
 	color:black;
@@ -212,6 +221,7 @@ main{
 	border-radius: 0.5rem;
 	background-color:rgb(187, 183, 183);
 	border:0 solid black;
+	cursor:pointer;
 }
 .delete_depart{
 	border:0.1px solid black;
@@ -230,6 +240,13 @@ main{
 	border-right:0px solid black;
 }
 #del_name{
+	text-align:center;
+	border-bottom:1px solid rgb(119, 119, 119);
+	border-top:0px solid black;
+	border-left:0px solid black;
+	border-right:0px solid black;
+}
+.dep_name{
 	text-align:center;
 	border-bottom:1px solid rgb(119, 119, 119);
 	border-top:0px solid black;
