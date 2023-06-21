@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <link rel="stylesheet" href="/css/bootstrap-css/bootstrap.min.css">
-<link rel="stylesheet" href="/css/note/ReceiveMg.css">
+<link rel="stylesheet" href="/css/note/ReceiveMg.css?after">
 <title>Insert title here</title>
 </head>
 <body>

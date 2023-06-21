@@ -19,7 +19,7 @@
 		select emp_id from employee where emp_id=#{param1} and emp_password=#{param2}
 	</select>
 	<select id="emp_login_session" resultType="com.human.springboot.dto.KshEmpDto">
-		select emp_id,emp_no,emp_name from employee where emp_id=#{param1} and emp_password=#{param2}
+		select emp_id,emp_no,emp_name,emp_position from employee where emp_id=#{param1} and emp_password=#{param2}
 	</select>
 	<!-- 로그인 아이디 찾기 -->
 	<select id="FindID" resultType="com.human.springboot.dto.KshEmpDto">

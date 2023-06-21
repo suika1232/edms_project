@@ -4,7 +4,8 @@
 .flexContainer{display:flex;flex-wrap: nowrap;}
 .nav-link{color:blue;}
 .nav-link:hover {color:lightblue;}
-.table tr td{width:100px;}
+/* .table tr td:not(:nth-child(2)){width:100px;} */
+.table tr td:nth-child(2){width:85px}
 .tableBox{position:relative;}
 .pagination{position: absolute; left: 40%; margin-left:40px;}
 .pagination div{display:inline-block;}
