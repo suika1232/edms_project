@@ -33,9 +33,6 @@
     #templateLeaveBody > tbody > tr > td:first-child{
         width: 100px;
     }
-    #templateLeaveBody > tbody > tr:nth-child(6) > td:nth-child(2){
-        height: 200px;
-    }
     #templateLeaveBody > tbody > tr:nth-child(7) > td{
         height: 150px;
     }
@@ -139,6 +136,7 @@
         </tbody>
     </table>
 </div>
+<% String edmsCategory = (String)request.getAttribute("edmsCategory"); %>
 <div class="d-flex justify-content-center" id="templateDocument">
     <table>
         <tr>
@@ -147,7 +145,11 @@
                     <tr>
                         <td rowspan="2">
                             <div style="padding: 0; margin: 0; width: 334px;">
+                                <% if(edmsCategory.equals("휴가")){ %>
                                 <p style="font-size: 30px;">휴가신청서</p>
+                                <% }else{ %>
+                                <p style="font-size: 30px;">품의서</p>
+                                <% } %>
                             </div>
                         </td>
                         <td rowspan="2" style="vertical-align: middle">
@@ -183,7 +185,7 @@
             <td style="padding: 0; margin: 0; width: 600px; vertical-align: top;">
                 <table id="templateLeaveBody" style="width: 600px;">
                     <tr>
-                        <td>소속</td>
+                        <td>소속</td> 
                         <td>&emsp;${empDepart}</td>
                     </tr>
                     <tr>
@@ -194,6 +196,7 @@
                         <td>성명</td>
                         <td>&emsp;${empName}</td>
                     </tr>
+                    <% if(edmsCategory.equals("휴가")){ %>
                     <tr>
                         <td>구분</td>
                         <td>
@@ -241,13 +244,30 @@
                             </div>
                         </td>
                     </tr>
+                    <% }else{ %>
+                    <% String date = (String)request.getAttribute("edmsDate");
+                       String[] dateAr = date.split("-"); %>
+                    <tr>
+                        <td>작성일</td>
+                        <td class="text-start">
+                            &nbsp;
+                            <%=dateAr[0]%>&nbsp;년 
+                            <%=dateAr[1]%>&nbsp;월  
+                            <%=dateAr[2]%>&nbsp;일 
+                        </td>
+                    </tr>
+                    <% } %>
                     <tr>
                         <td>사유</td>
-                        <td><textarea id="leaveDetail" name="leaveDetail" readonly>${leaveDetail}</textarea></td>
+                        <td><textarea id="edmsDetail" name="edmsDetail" readonly>${detail}</textarea></td>
                     </tr>
                     <tr>
                         <td colspan="2" style="border-bottom: none;">
+                            <%if(edmsCategory.equals("휴가")){ %>
                             <p>위와 같이 휴가를 신청하오니 허락하여 주시기 바랍니다.</p>
+                            <% }else{ %>
+                            <p>위와 같은 사유로 품의서를 제출하오니 허락하여 주시기 바랍니다.</p>
+                            <% } %>
                             <br>
                             <p>
                                 <% 
@@ -346,6 +366,12 @@ $(document)
                 $(el).attr("disabled", true);
             }else $(el).prop("checked", true);
         })
+        $("#templateLeaveBody > tbody > tr:nth-child(6) > td:nth-child(2)")
+        .css("height", "200px");
+    
+    }else if(edmsCategory == "품의"){
+        $("#templateLeaveBody > tbody > tr:nth-child(7) > td")
+        .css("height", "55px");
     }
     let loginUser = '<%=(int)session.getAttribute("emp_no")%>';
     console.log(loginUser);

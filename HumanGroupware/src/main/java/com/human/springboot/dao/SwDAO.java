@@ -46,5 +46,7 @@ public interface SwDAO {
     void edmsApprovalConfirm(int edmsId, int approverId, String status);
     void edmsApprovalReject(int edmsId, int approverId, String status, String reason);
    
+    void edmsLoa(String edmsDetail, int expense);
+    SwEdmsDTO edmsLoaView(int edmsId);
 
 }

@@ -17,6 +17,7 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.SystemPropertyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -376,23 +377,24 @@ public class SwController {
             model.addAttribute("edmsStep", "mid");
         }                                
 
-        String categoryDetail = "";
         if(edmsCategory.equals("휴가")){
             SwEdmsDTO leave = sdao.edmsLeaveView(edmsId);
-            categoryDetail = leave.getLeave_category();
+            String categoryDetail = leave.getLeave_category();
             model.addAttribute("leaveCategory", leave.getLeave_category());
             model.addAttribute("leaveStart", leave.getLeave_start());
             model.addAttribute("leaveEnd", leave.getLeave_end());
-            model.addAttribute("leaveDetail", leave.getLeave_detail());
+            model.addAttribute("detail", leave.getLeave_detail());
             model.addAttribute("leavePeriod", leave.getLeave_period());
+            model.addAttribute("categoryDetail", categoryDetail);
+        }else{
+            SwEdmsDTO loa = sdao.edmsLoaView(edmsId);
+            model.addAttribute("detail", loa.getLoa_detail());
+            model.addAttribute("loaExpense", loa.getLoa_expense());
         }
-        model.addAttribute("categoryDetail", categoryDetail);
 
         if(edms.getEdms_status().equals("반려")){
             model.addAttribute("edmsReason", edms.getEdms_reason());
         }
-
-        
 
         return "edms/edms_approval";
     }
@@ -418,8 +420,9 @@ public class SwController {
         return jArray.toString();
     }
     // 전자결재 양식
-    @GetMapping("/edms/template/leave")
-    public String edmsTemplateLeave(HttpServletRequest req, Model model){
+    @GetMapping("/edms/template/{category}")
+    public String edmsTemplateLeave(@PathVariable("category")String category,
+                                     HttpServletRequest req, Model model){
 
         HttpSession session = req.getSession();
         String loginUser = (String) session.getAttribute("emp_id");
@@ -444,8 +447,13 @@ public class SwController {
         model.addAttribute("empName", empName);
         model.addAttribute("empDepart", empDepart);
         model.addAttribute("empPosition", empPosition);
+        
+        System.out.println("선택된 양식: "+category);
+        String goTo = "edms/edms_template_";
+        goTo += category.equals("leave") ? "leave" : "loa";
+        System.out.println("리턴: "+goTo);
 
-        return "edms/edms_template_leave";
+        return goTo;
     }
     // 전자결재 상신
     @PostMapping("/edmsSend/{edmsCategory}")
@@ -457,7 +465,7 @@ public class SwController {
         String refList = req.getParameter("edmsRefList");
         
         String edmsTitle = req.getParameter("edmsTitle");
-        edmsCategory = edmsCategory.equals("leave") ? "휴가" : "업무";
+        edmsCategory = edmsCategory.equals("leave") ? "휴가" : "품의";
 
         sdao.edmsSend(writerId, midId, finalId, edmsTitle, edmsCategory, refList);
 
@@ -479,8 +487,18 @@ public class SwController {
             System.out.println("총 일수: "+leavePeriod);
 
             sdao.edmsLeave(category, startDate, endDate, leaveDetail, leavePeriod);
-        }
 
+        }else if(edmsCategory.equals("품의")){
+            System.out.println("loaExpense: ["+req.getParameter("loaExpense")+"]");
+
+            String loaDetail = req.getParameter("loaDetail");
+            int loaExpense = Integer.parseInt(req.getParameter("loaExpense"));
+
+            System.out.println("상세: "+loaDetail);
+            System.out.println("비용: "+loaExpense);
+
+            sdao.edmsLoa(loaDetail, loaExpense);
+        }
         return "redirect:/edms/list";
     }
     // 전자결재 결재하기
