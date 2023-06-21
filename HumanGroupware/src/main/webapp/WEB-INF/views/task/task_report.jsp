@@ -14,6 +14,9 @@
 .flexContainer{
 	display:flex;
 }
+.tableBox {
+	width:95%;
+}
 input{ outline:none; border:none;}
 </style>
 <body>
@@ -30,51 +33,6 @@ input{ outline:none; border:none;}
 <input type="hidden" id="userName" value =<%=userName %>>
 <input type="hidden" id="userID" value =<%=userid %>>
 <div class="flexContainer"> 
-	<div class="flex-shrink-0 bg-white" style="width: 280px;">
-	    <a href="/" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom">
-	      <svg class="bi pe-none me-2" width="30" height="24"><use xlink:href="#bootstrap"></use></svg>
-	      <span class="fs-5 fw-semibold">Task</span>
-	    </a>
-	    <ul class="list-unstyled ps-0">
-	      <li class="mb-1">
-	        <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="true">
-	          Work__Log
-	        </button>
-	        <div class="collapse show" id="home-collapse">
-	          <ul id="btn1" class="btn-toggle-nav list-unstyled fw-normal pb-1 small">            
-	            <li><a href="/MyWorkLog" class="link-dark d-inline-flex text-decoration-none rounded">내 업무일지</a></li>
-	            <li><a href="/WorkLog" class="link-dark d-inline-flex text-decoration-none rounded">일지작성</a></li>
-	          </ul>
-	        </div>
-	      </li>
-	      <li class="mb-1">
-	        <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse" aria-expanded="false">
-	          Work__Report
-	        </button>
-	        <div class="collapse" id="dashboard-collapse">
-	          <ul id="btn2"class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-	            <li><a href="/Taskhome" class="link-dark d-inline-flex text-decoration-none rounded">작성한 업무보고</a></li>
-	             <li><a href="/requestTask" class="link-dark d-inline-flex text-decoration-none rounded">지시받은 업무</a></li>
-	            <li><a href="/writeReport" class="link-dark d-inline-flex text-decoration-none rounded">작성하기</a></li>
-	          </ul>
-	        </div>
-	      </li>
-	      <li class="border-top my-3"></li>
-	      <li class="mb-1">
-	        <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#account-collapse" aria-expanded="false">
-	          Account
-	        </button>
-	        <div class="collapse" id="account-collapse">
-	          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-	            <li><a href="/" class="link-dark d-inline-flex text-decoration-none rounded">New...</a></li>
-	            <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Profile</a></li>
-	            <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Settings</a></li>
-	            <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Sign out</a></li>
-	          </ul>
-	        </div>
-	      </li>
-	    </ul>
-	</div>
 <%if(userid==managerNum){%>
 	<div class="tableBox">
 			<table id="SendTask" class="table">
@@ -86,7 +44,7 @@ input{ outline:none; border:none;}
 					<td>업무 기한</td>
 				</tr>
 			</table>
-			<div id="pageButtonBox"><1,2,3></div>
+			<div id="pageButtonBox"></div>
 	</div>
 <%}else {%>
 	<div class="tableBox">
@@ -99,7 +57,7 @@ input{ outline:none; border:none;}
 					<td>업무 기한</td>
 				</tr>
 			</table>
-			<div id="pageButtonBox"><1,2,3></div>
+			<div id="pageButtonBox"></div>
 	</div>
 <%} %>
 </div>
@@ -116,7 +74,7 @@ $(document)
 .on("click","#SendTask tr:gt(1) td:nth-child(3)",function(){
 	
 	let type = "S_Task"
-	alert($(this).parent("tr").find("input[name='task_Num']").val())
+	
 	let t_id = $(this).parent("tr").find("input[name='task_Num']").val()
 	let userID=$("#userID").val()
 	
@@ -126,7 +84,7 @@ $(document)
 .on("click","#ReceiveTask tr:gt(1) td:nth-child(3)",function(){
 	
 	let type = "R_Task"
-	alert($(this).parent("tr").find("input[name='task_Num']").val())
+
 	let t_id = $(this).parent("tr").find("input[name='task_Num']").val()
 	let userID=$("#userID").val()
 	
@@ -138,11 +96,7 @@ function selectTask(){
 			dataType:"json",
 			data:{userID:$("#userID").val(),
 				 managerNum:$("#managerNum").val()},
-			beforeSend:function(){
-				console.log($("#userID").val()+"<"+$("#managerNum").val())
-			},
 			success:function(data){
-				console.log(data)
 				for(let i=0; i<data.length; i++){
 					let li = data[i]
 					let tb = "<tr>"

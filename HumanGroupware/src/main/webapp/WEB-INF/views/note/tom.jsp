@@ -47,6 +47,7 @@
 	</div>
 </div>
 </body>
+
 <script src="https://code.jquery.com/jquery-latest.js"></script>
 <script src="/js/bootstrap-js/bootstrap.bundle.min.js"></script>
 <script src="/js/note/tom.js"></script>

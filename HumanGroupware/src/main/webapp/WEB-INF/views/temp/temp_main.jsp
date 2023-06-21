@@ -86,7 +86,25 @@
   				<path d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1z"/>
 			</svg>
 			<div id="linkContainer4">
-				<a href="/?/task">(업무)아직 구현중..</a>
+			<%int position=0; %>
+			<%if(session.getAttribute("emp_id")!=null) {%>
+			
+			 <% position = (int)session.getAttribute("emp_position"); %>
+			<%} %>
+			<%if (position>1){ %>  
+				<a href="/MyWorkLog">작성한 일지</a>
+				<a href="/depWorkLog">부서일지</a>
+				<a href="/WorkLog">일지 작성</a>
+				<a href="/Taskhome">받은 업무보고</a>
+				<a href="/requestTask">작성한 업무</a>
+				<a href="/writeReport">업무 작성</a>
+			<%}else{%>
+				<a href="/MyWorkLog">작성한 일지</a>
+				<a href="/WorkLog">일지 작성</a>
+				<a href="/Taskhome">보고한 업무</a>
+				<a href="/requestTask">지시받은 업무</a>
+				<a href="/writeReport">업무보고서 작성</a>
+			<%} %> 
 			</div>
 		</div>
 		<div id="Category_box5">
@@ -250,6 +268,9 @@ $(document)
       }
     })
   })
+.on("click","#Category_box4",function(){
+	getUserInfo()
+})
   function MainList() {
 	  $.ajax({
 	    url: '/Mypage_list',
@@ -278,6 +299,10 @@ $(document)
 	      console.log('Error Detail:', errorThrown);
 	    }
 	  });
+	}
+	function getUserInfo(){
+		$.ajax({url:"/getUserInfo",
+				type:"get"})
 	}
 </script>
 </html>
