@@ -1,7 +1,7 @@
 
 /* 대표 제목 */
 .inquiry_main{
-	width:90vh;
+	width:100%;
 	height:4rem;
 	background-color: rgb(206, 206, 206);
 	border-radius: 0.5rem;
@@ -18,14 +18,13 @@
 	margin-top:1.1rem;
 	text-align:right;
 	display:block;
-	text-decoration:none;
 }
 *{
     box-sizing: border-box;
     font-family: 'Montserrat', sans-serif;
 }
 body{
-    width: 90vh;
+    width: 98.7%;
     height: auto;
     background-color: rgb(255, 255, 255);
 }
@@ -52,26 +51,26 @@ main{
 }
 .td_3px{
 	border-bottom:0.1px solid black;
-	width:6rem;
+	width:8rem;
 	text-align:center;
 }
 .td_3spx{
-	width:6rem;
+	width:8rem;
 	text-align:center;
 	border-bottom:0.1px solid rgb(192, 192, 192);
 }
 .td_5px{
 	border-bottom:0.1px solid black;
-	width:8rem;
+	width:11rem;
 	text-align:center;
 }
 .td_5spx{
 	border-bottom:0.1px solid rgb(192, 192, 192);
-	width:8rem;
+	width:11rem;
 	text-align:center;
 }
 .select_ch{
-	width:90vh;
+	width:100%;
 	height:50px;
 	margin-top:2rem;
 	display:flex;

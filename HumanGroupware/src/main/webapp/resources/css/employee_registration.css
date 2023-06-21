@@ -1,6 +1,6 @@
 /* 대표 제목 */
 .inquiry_main{
-	width:90vh;
+	width:100%;
 	height:4rem;
 	background-color: rgb(206, 206, 206);
 	border-radius: 0.5rem;
@@ -17,19 +17,18 @@
 	margin-top:1.1rem;
 	text-align:right;
 	display:block;
-	text-decoration:none;
 }
 *{
     box-sizing: border-box;
     font-family: 'Montserrat', sans-serif;
 }
 body{
-    width: 90vh;
+    width: 98.7%;
     height: auto;
     background-color: rgb(255, 255, 255);
 }
 main{
-    width: 90%;
+    width: 100%;
     margin: 0 auto;
 }
 /* 대표제목 */
@@ -42,7 +41,7 @@ main{
 	float: left;
     object-fit: cover;
     border:0.1px solid rgb(85, 85, 85);
-	margin-left:6rem;
+	margin-left:9rem;
 	margin-top:1.5rem;
 }
 
@@ -71,6 +70,7 @@ main{
 /* input 설정 */
 .input_box_name{
 	margin-bottom:1.5rem;
+	margin-left :3rem;
 }
 .a_box_name{
 	margin-right:3rem;
@@ -80,11 +80,13 @@ main{
 	margin-top:2rem;;
 	margin-left:5rem;
 	border:0.1px solid white;
-	width:700px;
+	align-items : center;
 	height:200px;
 	clear:right;
 	border-bottom:1px solid rgb(175, 175, 175);
 	color:black;
+	margin:0 auto;
+	width:800px;
 }
 .emp_depart_box{
 	margin-top:1.5rem;

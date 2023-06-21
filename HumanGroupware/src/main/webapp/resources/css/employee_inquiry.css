@@ -4,22 +4,25 @@
     font-family: 'Montserrat', sans-serif;
 }
 body{
-    width: 90vh;
+    width: 98.7%;
     height: auto;
     background-color: rgb(255, 255, 255);
 }
 main{
-    width: 90%;
+    width: 100%;
     margin: 0 auto;
 }
 .employee_box{
 	float: right;
 }
 .list{
+	width: 98.7%;
     margin-top: 1rem;
 }
 .line{
     margin-bottom:0.5rem;
+    margin-left:3rem;
+    width:120vh;
     display: flex;
     align-items: center;
     background-color: white ;
@@ -34,6 +37,7 @@ main{
 .name{
     font-size: 0.8rem;
     color:black;
+    
 }
 .username{
     font-size:0.7rem;
@@ -61,7 +65,7 @@ p{
     width:4.5rem;
 }
 .department{
-	margin-left:2rem;
+	margin-left:3rem;
 	width:100px;
 }
 .email{
@@ -69,6 +73,8 @@ p{
 .email p{
 	width: 200px;
 	text-align:center;
+	margin-right:2rem;
+	margin-left:2rem;
 }
 .gender p{
 	width:100px;
@@ -81,8 +87,9 @@ p{
     height: 3rem;
 }
 .phone{
-	margin-left:2rem;
+	margin-left:1rem;
 	width:100px;
+	margin-right:1rem;
 }
 .phone p{
 	width:100px;
@@ -155,7 +162,7 @@ a{
 }
 .select_btn{
     display: inline-block;
-    background-color: rgb(233, 233, 233);
+    background-color: rgb(192, 192, 192);
     color:rgb(0, 0, 0);
     padding: 0.2rem 0.4rem;
     font-size: 0.8rem;
@@ -168,20 +175,21 @@ a{
     box-shadow: 0 0 0.2rem;
 }
 .select_ch{
-	width:90vh;
+	width:100%;
 	height:50px;
 	margin-top:2rem;
 	display:flex;
 	border-bottom:1px solid rgb(175, 175, 175);
 }
 .select_ch_all{
-	width:72vh;
+	width:auto;
 	height:25px;
 	margin:0 auto;
+	align-items : center;
 }
 /* 대표 제목 */
 .inquiry_main{
-	width:90vh;
+	width:100%;
 	height:4rem;
 	background-color: rgb(206, 206, 206);
 	border-radius: 0.5rem;
