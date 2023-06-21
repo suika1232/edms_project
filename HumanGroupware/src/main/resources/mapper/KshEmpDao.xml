@@ -19,7 +19,7 @@
 		select emp_id from employee where emp_id=#{param1} and emp_password=#{param2}
 	</select>
 	<select id="emp_login_session" resultType="com.human.springboot.dto.KshEmpDto">
-		select emp_id,emp_no,emp_name from employee where emp_id=#{param1} and emp_password=#{param2}
+		select emp_id,emp_no,emp_name,emp_position from employee where emp_id=#{param1} and emp_password=#{param2}
 	</select>
 	<!-- 로그인 아이디 찾기 -->
 	<select id="FindID" resultType="com.human.springboot.dto.KshEmpDto">
@@ -38,7 +38,12 @@
 	
 	<!-- 마이페이지 구현 -->
 	<select id="emp_list"	resultType="com.human.springboot.dto.KshEmpDto">
-		select * from employee where emp_id= #{param1}
+		select a.*, b.position_name, c.dep_name
+		from employee a, position b, department c
+		where a.emp_position = b.position_id 
+			  and a.emp_depart = c.dep_id
+			  and a.emp_id = #{param1} 
+		order by a.emp_no
 	</select>
 	
 	<!-- 마이페이지 비밀번호 변경 -->

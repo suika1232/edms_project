@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <link rel="stylesheet" href="/css/bootstrap-css/bootstrap.min.css">
-<link rel="stylesheet" href="/css/note/SendMg.css">
+<link rel="stylesheet" href="/css/note/SendMg.css?after">
 <title>Insert title here</title>
 </head>
 <body>

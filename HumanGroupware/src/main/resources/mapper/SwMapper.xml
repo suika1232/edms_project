@@ -196,6 +196,15 @@
       from edms_leave
       where edms_id = #{param1}
     </select>
+    <select id="edmsLoaView" resultType="com.human.springboot.dto.SwEdmsDTO">
+      select *
+      from edms_loa
+      where edms_id = #{param1}
+    </select>
+    <insert id="edmsLoa">
+      insert into edms_loa
+      values(edms_loa_seq.nextval, edms_seq.currval, #{param1}, #{param2})
+    </insert>
     <update id="edmsApprovalReject">
       <selectKey resultType="int" keyProperty="approver" order="BEFORE">
         select count(*) as approver

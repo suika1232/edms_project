@@ -34,16 +34,29 @@ public class TaskController {
 	@Autowired
 	private NoteDAO ndao;
 	
-	
-	/*
-	 * @GetMapping("/") public String login() { return "Ts/login"; }
-	 */
 	@GetMapping("/Taskhome")
-	public String TaskHome(HttpServletRequest req,HttpSession session) {
+	public String TaskHome() {
+		return "task/task_home";
+	}
+	@GetMapping("/WorkLog")
+	public String workLog() {
+		return "task/task_write_worklog";
+	}
+
+	@GetMapping("/depWorkLog")
+	public String workLog2() {
+		return "task/task_depart_worklog";
+	}
+	@GetMapping("/MyWorkLog")
+	public String MyWorkLog() {
+		return "task/task_my_worklog";
+	}
+	@GetMapping("/getUserInfo")
+	public void getUserInfo(HttpServletRequest req,HttpSession session) {
 		HttpSession login = req.getSession();
 	  	
 		String empId = (String) login.getAttribute("emp_id");
-		System.out.println(empId);
+		
 		
 		int checkUser = tdao.checkUser(empId);
 		
@@ -69,36 +82,13 @@ public class TaskController {
 		    userInfoMap.put("managerNum", dto.getManagerNum());
 		 
 			session.setAttribute("userInfoMap", userInfoMap);
-		return "task/task_home";
 	}
-	@GetMapping("/WorkLog")
-	public String workLog() {
-		return "task/task_write_worklog";
-	}
-
-	@GetMapping("/depWorkLog")
-	public String workLog2() {
-		return "task/task_depart_worklog";
-	}
-	@GetMapping("/MyWorkLog")
-	public String MyWorkLog() {
-		return "task/task_my_worklog";
-	}
-	/*
-	 * @PostMapping("/login")
-	 * 
-	 * @ResponseBody public void loginID(HttpServletRequest req,HttpSession session)
-	 * {
-	 * 
-	 * }
-	 */
-
 	@PostMapping("/getReport")
 	@ResponseBody
 	public Map<String,Object> getReport(HttpServletRequest req) {
 		Map<String,Object> response = new HashMap<>();
 		int repNo=Integer.parseInt(req.getParameter("repNo"));
-		System.out.println("번호 잘 들어갔는지"+repNo);
+		
 		getReportDTO dto = tdao.getReport(repNo);
 		
 		String tag= dto.getReport_tag();
@@ -157,7 +147,7 @@ public class TaskController {
 		
 		Map<String , Object> response= new HashMap<>();
 		int reportNum=Integer.parseInt(req.getParameter("repNo"));
-		System.out.println("들어온번호: "+reportNum);
+		
 		getReportDTO dto = tdao.getReport(reportNum);
 		
 		String tag= dto.getReport_tag();
@@ -251,20 +241,19 @@ public class TaskController {
 	public void insertTask_report(HttpServletRequest req) {
 		
 		int uesrID = Integer.parseInt(req.getParameter("userID"));
-		System.out.println(uesrID);
+		
 		int taskNo = Integer.parseInt(req.getParameter("task"));
-		System.out.println(taskNo);
+		
 		int depart = Integer.parseInt(req.getParameter("depart"));
-		System.out.println(depart);
+		
 		int receiver = Integer.parseInt(req.getParameter("receiver"));
-		System.out.println(receiver);
+		
 		
 		String title = req.getParameter("title");
-		System.out.println(title);
+		
 		String content = req.getParameter("content");
-		System.out.println(content);
+		
 		String created = req.getParameter("created");
-		System.out.println(created);
 		
 		tdao.insertTask_report(taskNo,depart,uesrID,title,content,created,receiver);
 	}
@@ -285,14 +274,14 @@ public class TaskController {
 			
 			ja.put(jo);
 		}
-		System.out.println(ja);
+		
 		return ja.toString();
 	}
 	@PostMapping("/selectUser")
 	@ResponseBody
 	public String selectUser(HttpServletRequest req) {
 		int departNO = Integer.parseInt(req.getParameter("departNum"));
-		System.out.println("departNumber:"+ departNO);
+		
 		ArrayList<UserDTO>dto = ndao.selectUser(departNO);
 		
 		JSONArray ja = new JSONArray();
@@ -308,7 +297,6 @@ public class TaskController {
 			
 			
 		}
-		System.out.println(ja);
 		return ja.toString();
 	}
 	@PostMapping("insertTask")
@@ -321,7 +309,7 @@ public class TaskController {
 		String start =req.getParameter("start");
 		String limit =req.getParameter("limit");
 		String content = req.getParameter("content");
-		System.out.println(title+","+depart+","+drafter+","+performer+","+start+","+limit+","+content);
+		
 		tdao.insertTask(title,depart,drafter,performer,start,limit,content);
 		
 	}
@@ -366,7 +354,6 @@ public class TaskController {
 			
 			ja.put(jo);
 		}
-		System.out.println(ja);
 		return ja.toString();
 	}
 	@GetMapping("/requestTask")
@@ -381,12 +368,11 @@ public class TaskController {
 		int managerID= Integer.parseInt(req.getParameter("managerNum"));
 		
 		ArrayList<selectTaskDTO>dto=null;
-		System.out.println(userID);
-		System.out.println(managerID);
+		
 		if(userID==managerID) {
 			dto=tdao.selectSendTask(userID);
 		}else {
-			System.out.println(userID);
+			
 			dto=tdao.selectReceiveTask(userID);
 		}
 		
@@ -417,7 +403,7 @@ public class TaskController {
 			
 			ja.put(jo);
 		}
-		System.out.println(ja);
+		
 		return ja.toString();
 	}
 	@GetMapping("/detail")
@@ -430,8 +416,8 @@ public class TaskController {
 						 @PathVariable("userID")int userID,
 						 Model model) {
 		String human;
-		System.out.println(id);
-		System.out.println(type);
+		
+		
 		if(type.equals("S_Task")) {
 			
 			selectTaskDTO sto = tdao.detailTask(id);
@@ -478,11 +464,9 @@ public class TaskController {
 		}else if(type.equals("R_Task_Report")){
 			
 			taskReportDTO sto= tdao.detailTask_Report(id);
-			System.out.println(sto);
+		
 			UserDTO dto =ndao.select_User(sto.getTr_writer());
 			human = dto.getEmp_name();
-			
-			System.out.println("������ �̸�"+human);
 			
 			model.addAttribute("human",human);
 			

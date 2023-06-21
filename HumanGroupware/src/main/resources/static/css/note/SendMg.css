@@ -5,7 +5,8 @@
 .table tr:nth-child(1) input{position:relative; left:40px;}
 .table tr:nth-child(1) td{font-weight:bold;}
 .table tr input{position:relative; left:40px;}
-.table tr td{width:100px;dislplay:block;}
+/* .table tr td:not(:nth-child(2)){width:100px;dislplay:block;} */
+.table tr td:nth-child(2){width:85px}
 #deleteMgButton:hover{color:green;}
 .flexContainer{display:flex;}
 .nav-link{color:blue;}

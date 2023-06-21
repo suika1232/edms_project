@@ -30,51 +30,6 @@
 <input type="hidden" value = <%=userName %> id=userName>
 <input type="hidden" value = <%=managerNum %> id=managerNum>
 	<div class="flexcontainer">
-		<div class="flex-shrink-0 bg-white" style="width: 280px;">
-		    <a href="/" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom">
-		      <svg class="bi pe-none me-2" width="30" height="24"><use xlink:href="#bootstrap"></use></svg>
-		      <span class="fs-5 fw-semibold">Task</span>
-		    </a>
-		    <ul class="list-unstyled ps-0">
-		      <li class="mb-1">
-		        <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="true">
-		          Work__Log
-		        </button>
-		        <div class="collapse show" id="home-collapse">
-		          <ul id="btn1" class="btn-toggle-nav list-unstyled fw-normal pb-1 small">            
-		            <li><a href="/MyWorkLog" class="link-dark d-inline-flex text-decoration-none rounded">내 업무일지</a></li>
-		            <li><a href="/WorkLog" class="link-dark d-inline-flex text-decoration-none rounded">일지작성</a></li>
-		          </ul>
-		        </div>
-		      </li>
-		      <li class="mb-1">
-		        <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse" aria-expanded="false">
-		          Work__Report
-		        </button>
-		        <div class="collapse" id="dashboard-collapse">
-		          <ul id="btn2"class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-		            <li><a href="/Taskhome" class="link-dark d-inline-flex text-decoration-none rounded">작성한 업무보고</a></li>
-		            <li><a href="/requestTask" class="link-dark d-inline-flex text-decoration-none rounded">지시받은 업무</a></li>
-		            <li><a href="/writeReport" class="link-dark d-inline-flex text-decoration-none rounded">작성하기</a></li>
-		          </ul>
-		        </div>
-		      </li>
-		      <li class="border-top my-3"></li>
-		      <li class="mb-1">
-		        <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#account-collapse" aria-expanded="false">
-		          Account
-		        </button>
-		        <div class="collapse" id="account-collapse">
-		          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-		            <li><a href="/" class="link-dark d-inline-flex text-decoration-none rounded">New...</a></li>
-		            <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Profile</a></li>
-		            <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Settings</a></li>
-		            <li><a href="#" class="li2nk-dark d-inline-flex text-decoration-none rounded">Sign out</a></li>
-		          </ul>
-		        </div>
-		      </li>
-		    </ul>
-		</div>
 <%if(userid == managerNum) {%>
 		<div class="tableBox">
 			<table id="ReceiveReportList" class="table">
@@ -86,7 +41,7 @@
 					<td>기간</td>
 				</tr>
 			</table>
-			<div id="pageButtonBox"><1,2,3></div>
+			<div id="pageButtonBox"></div>
 		</div>
 <%} else{%>
 		<div class="tableBox">
@@ -99,7 +54,7 @@
 					<td>작성일</td>
 				</tr>
 			</table>
-			<div id="pageButtonBox"><1,2,3></div>
+			<div id="pageButtonBox"></div>
 		</div>
 <%} %>
 </div>
@@ -118,8 +73,8 @@ $(document)
 	
 	let type = "S_Task_Report"
 	
-	alert($(this).parent("tr").find("input[name=num]").val())
-	alert($(this).parent("tr").find("input[name=id]").val())
+	
+	
 	let tr_id =$(this).parent("tr").find("input[name=id]").val()
 	let userID =$(this).parent("tr").find("input[name=num]").val()
 	
@@ -130,8 +85,6 @@ $(document)
 	
 	let type = "R_Task_Report"
 	
-	alert($(this).parent("tr").find("input[name=num]").val())
-	alert($(this).parent("tr").find("input[name=id]").val())
 	let tr_id =$(this).parent("tr").find("input[name=id]").val()
 	let userID =$(this).parent("tr").find("input[name=num]").val()
 	
@@ -159,10 +112,6 @@ function selectReport(){
 			dataType:"json",
 			data:{userID:$("#userID").val(),
 				  managerNum:$("#managerNum").val()},
-			beforeSend:function(){
-				console.log($("#userID").val())
-				console.log($("#managerNum").val())
-			},
 			success:function(data){
 				for(let i=0; i<data.length; i++){
 					let li=data[i]

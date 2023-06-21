@@ -32,8 +32,8 @@
   				<% if(session.getAttribute("emp_id") != null && session.getAttribute("emp_id")!="") { %>
     					<img id="emp_img">
     					<div id="emp_name"></div>
-    					<div id="emp_position"></div>
-    					<div id="emp_depart"></div>
+    					<div id="position_name"></div>
+    					<div id="dep_name"></div>
     			<div id="My_box1">
       				<a href='/employee/mypage'>마이페이지</a>
       				<a href='/employee/logout'>로그아웃</a>
@@ -86,7 +86,25 @@
   				<path d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1z"/>
 			</svg>
 			<div id="linkContainer4">
-				<a href="/?/task">(업무)아직 구현중..</a>
+			<%int position=0; %>
+			<%if(session.getAttribute("emp_id")!=null) {%>
+			
+			 <% position = (int)session.getAttribute("emp_position"); %>
+			<%} %>
+			<%if (position>1){ %>  
+				<a href="/MyWorkLog">작성한 일지</a>
+				<a href="/depWorkLog">부서일지</a>
+				<a href="/WorkLog">일지 작성</a>
+				<a href="/Taskhome">받은 업무보고</a>
+				<a href="/requestTask">작성한 업무</a>
+				<a href="/writeReport">업무 작성</a>
+			<%}else{%>
+				<a href="/MyWorkLog">작성한 일지</a>
+				<a href="/WorkLog">일지 작성</a>
+				<a href="/Taskhome">보고한 업무</a>
+				<a href="/requestTask">지시받은 업무</a>
+				<a href="/writeReport">업무보고서 작성</a>
+			<%} %> 
 			</div>
 		</div>
 		<div id="Category_box5">
@@ -104,10 +122,10 @@
 			<svg xmlns="http://www.w3.org/2000/svg" width="50" height="100" fill="currentColor" class="bi bi-calendar-week-fill" viewBox="0 0 16 16">
   			<path d="M4 .5a.5.5 0 0 0-1 0V1H2a2 2 0 0 0-2 2v1h16V3a2 2 0 0 0-2-2h-1V.5a.5.5 0 0 0-1 0V1H4V.5zM16 14V5H0v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2zM9.5 7h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5zm3 0h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5zM2 10.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm3.5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5z"/>
 			</svg>
-			<!-- <div id="linkContainer6">
+			<div id="linkContainer6">
 				<a href="/?/?">(일정)아직 구현중..</a>
-			</div> -->
-		</div>
+			</div>
+		</div> -->
 	</div>
 	</div>
 	<div class="col float-md-end video-warp" style="height: 800px;">
@@ -121,342 +139,6 @@ $(document)
 .ready(function(){
 	MainList();
 })
-// //편지 새로 쓰기
-// .ready(function(){
-//   $('#newMsg').click(function(event){
-//     event.preventDefault(); // 기본 동작 방지
-
-//     let $this = $(this); // 클릭된 요소 저장
-//     let href = $this.attr('href');
-
-//     $.ajax({
-//       url: '/Main_Session',
-//       data: {emp_id: $('#emp_id').val()},
-//       dataType: 'text',
-//       type: 'post',
-//       success: function(data){
-//         if (data === 'ok') {
-//           let iframe = $('#View');
-//           iframe.attr('src', href); 
-//         } else {
-//           alert("로그인 후 이용해주세요!");
-//         }
-//       },
-//       error: function(jqXHR, textStatus, errorThrown) {
-//         console.log('Error: ' + textStatus);
-//         console.log('Error Detail:', errorThrown);
-//       }
-//     })
-//   })
-// })
-// //받은 편지함
-// .ready(function(){
-//   $('#receive').click(function(event){
-//     event.preventDefault(); // 기본 동작 방지
-
-//     let $this = $(this); // 클릭된 요소 저장
-//     let href = $this.attr('href');
-
-//     $.ajax({
-//       url: '/Main_Session',
-//       data: {emp_id: $('#emp_id').val()},
-//       dataType: 'text',
-//       type: 'post',
-//       success: function(data){
-//         if (data === 'ok') {
-//           let iframe = $('#View');
-//           iframe.attr('src', href); 
-//         } else {
-//           alert("로그인 후 이용해주세요!");
-//         }
-//       },
-//       error: function(jqXHR, textStatus, errorThrown) {
-//         console.log('Error: ' + textStatus);
-//         console.log('Error Detail:', errorThrown);
-//       }
-//     })
-//   })
-// })
-// //보낸 편지함
-// .ready(function(){
-//   $('#send').click(function(event){
-//     event.preventDefault(); // 기본 동작 방지
-
-//     let $this = $(this); // 클릭된 요소 저장
-//     let href = $this.attr('href');
-
-//     $.ajax({
-//       url: '/Main_Session',
-//       data: {emp_id: $('#emp_id').val()},
-//       dataType: 'text',
-//       type: 'post',
-//       success: function(data){
-//         if (data === 'ok') {
-//           let iframe = $('#View');
-//           iframe.attr('src', href); 
-//         } else {
-//           alert("로그인 후 이용해주세요!");
-//         }
-//       },
-//       error: function(jqXHR, textStatus, errorThrown) {
-//         console.log('Error: ' + textStatus);
-//         console.log('Error Detail:', errorThrown);
-//       }
-//     })
-//   })
-// })
-// // 휴지통
-// .ready(function(){
-//   $('#tom').click(function(event){
-//     event.preventDefault(); // 기본 동작 방지
-
-//     let $this = $(this); // 클릭된 요소 저장
-//     let href = $this.attr('href');
-
-//     $.ajax({
-//       url: '/Main_Session',
-//       data: {emp_id: $('#emp_id').val()},
-//       dataType: 'text',
-//       type: 'post',
-//       success: function(data){
-//         if (data === 'ok') {
-//           let iframe = $('#View');
-//           iframe.attr('src', href); 
-//         } else {
-//           alert("로그인 후 이용해주세요!");
-//         }
-//       },
-//       error: function(jqXHR, textStatus, errorThrown) {
-//         console.log('Error: ' + textStatus);
-//         console.log('Error Detail:', errorThrown);
-//       }
-//     })
-//   })
-// })
-// //자유게시판
-// .ready(function(){
-//   $('#free').click(function(event){
-//     event.preventDefault(); // 기본 동작 방지
-
-//     let $this = $(this); // 클릭된 요소 저장
-//     let href = $this.attr('href');
-
-//     $.ajax({
-//       url: '/Main_Session',
-//       data: {emp_id: $('#emp_id').val()},
-//       dataType: 'text',
-//       type: 'post',
-//       success: function(data){
-//         if (data === 'ok') {
-//           let iframe = $('#View');
-//           iframe.attr('src', href); 
-//         } else {
-//           alert("로그인 후 이용해주세요!");
-//         }
-//       },
-//       error: function(jqXHR, textStatus, errorThrown) {
-//         console.log('Error: ' + textStatus);
-//         console.log('Error Detail:', errorThrown);
-//       }
-//     })
-//   })
-// })
-// //공지사항
-// .ready(function(){
-//   $('#notice').click(function(event){
-//     event.preventDefault(); // 기본 동작 방지
-
-//     let $this = $(this); // 클릭된 요소 저장
-//     let href = $this.attr('href');
-
-//     $.ajax({
-//       url: '/Main_Session',
-//       data: {emp_id: $('#emp_id').val()},
-//       dataType: 'text',
-//       type: 'post',
-//       success: function(data){
-//         if (data === 'ok') {
-//           let iframe = $('#View');
-//           iframe.attr('src', href); 
-//         } else {
-//           alert("로그인 후 이용해주세요!");
-//         }
-//       },
-//       error: function(jqXHR, textStatus, errorThrown) {
-//         console.log('Error: ' + textStatus);
-//         console.log('Error Detail:', errorThrown);
-//       }
-//     })
-//   })
-// })
-// // 기안하기
-// .ready(function(){
-//   $('#draft').click(function(event){
-//     event.preventDefault(); // 기본 동작 방지
-
-//     let $this = $(this); // 클릭된 요소 저장
-//     let href = $this.attr('href');
-
-//     $.ajax({
-//       url: '/Main_Session',
-//       data: {emp_id: $('#emp_id').val()},
-//       dataType: 'text',
-//       type: 'post',
-//       success: function(data){
-//         if (data === 'ok') {
-//           let iframe = $('#View');
-//           iframe.attr('src', href); 
-//         } else {
-//           alert("로그인 후 이용해주세요!");
-//         }
-//       },
-//       error: function(jqXHR, textStatus, errorThrown) {
-//         console.log('Error: ' + textStatus);
-//         console.log('Error Detail:', errorThrown);
-//       }
-//     })
-//   })
-// })
-// // 결재 목록
-// .ready(function(){
-//   $('#list').click(function(event){
-//     event.preventDefault(); // 기본 동작 방지
-
-//     let $this = $(this); // 클릭된 요소 저장
-//     let href = $this.attr('href');
-
-//     $.ajax({
-//       url: '/Main_Session',
-//       data: {emp_id: $('#emp_id').val()},
-//       dataType: 'text',
-//       type: 'post',
-//       success: function(data){
-//         if (data === 'ok') {
-//           let iframe = $('#View');
-//           iframe.attr('src', href); 
-//         } else {
-//           alert("로그인 후 이용해주세요!");
-//         }
-//       },
-//       error: function(jqXHR, textStatus, errorThrown) {
-//         console.log('Error: ' + textStatus);
-//         console.log('Error Detail:', errorThrown);
-//       }
-//     })
-//   })
-// })
-// // 사원 조회
-// .ready(function(){
-//   $('#inquiry').click(function(event){
-//     event.preventDefault(); // 기본 동작 방지
-
-//     let $this = $(this); // 클릭된 요소 저장
-//     let href = $this.attr('href');
-
-//     $.ajax({
-//       url: '/Main_Session',
-//       data: {emp_id: $('#emp_id').val()},
-//       dataType: 'text',
-//       type: 'post',
-//       success: function(data){
-//         if (data === 'ok') {
-//           let iframe = $('#View');
-//           iframe.attr('src', href); 
-//         } else {
-//           alert("로그인 후 이용해주세요!");
-//         }
-//       },
-//       error: function(jqXHR, textStatus, errorThrown) {
-//         console.log('Error: ' + textStatus);
-//         console.log('Error Detail:', errorThrown);
-//       }
-//     })
-//   })
-// })
-// // 사원 부서 변경
-// .ready(function(){
-//   $('#registration').click(function(event){
-//     event.preventDefault(); // 기본 동작 방지
-
-//     let $this = $(this); // 클릭된 요소 저장
-//     let href = $this.attr('href');
-
-//     $.ajax({
-//       url: '/Main_Session',
-//       data: {emp_id: $('#emp_id').val()},
-//       dataType: 'text',
-//       type: 'post',
-//       success: function(data){
-//         if (data === 'ok') {
-//           let iframe = $('#View');
-//           iframe.attr('src', href); 
-//         } else {
-//           alert("로그인 후 이용해주세요!");
-//         }
-//       },
-//       error: function(jqXHR, textStatus, errorThrown) {
-//         console.log('Error: ' + textStatus);
-//         console.log('Error Detail:', errorThrown);
-//       }
-//     })
-//   })
-// })
-// // 조직도
-// .ready(function(){
-//   $('#organization').click(function(event){
-//     event.preventDefault(); // 기본 동작 방지
-
-//     let $this = $(this); // 클릭된 요소 저장
-//     let href = $this.attr('href');
-
-//     $.ajax({
-//       url: '/Main_Session',
-//       data: {emp_id: $('#emp_id').val()},
-//       dataType: 'text',
-//       type: 'post',
-//       success: function(data){
-//         if (data === 'ok') {
-//           let iframe = $('#View');
-//           iframe.attr('src', href); 
-//         } else {
-//           alert("로그인 후 이용해주세요!");
-//         }
-//       },
-//       error: function(jqXHR, textStatus, errorThrown) {
-//         console.log('Error: ' + textStatus);
-//         console.log('Error Detail:', errorThrown);
-//       }
-//     })
-//   })
-// })
-// // 사원 근태 현황
-// .ready(function(){
-//   $('#current').click(function(event){
-//     event.preventDefault(); // 기본 동작 방지
-
-//     let $this = $(this); // 클릭된 요소 저장
-//     let href = $this.attr('href');
-
-//     $.ajax({
-//       url: '/Main_Session',
-//       data: {emp_id: $('#emp_id').val()},
-//       dataType: 'text',
-//       type: 'post',
-//       success: function(data){
-//         if (data === 'ok') {
-//           let iframe = $('#View');
-//           iframe.attr('src', href); 
-//         } else {
-//           alert("로그인 후 이용해주세요!");
-//         }
-//       },
-//       error: function(jqXHR, textStatus, errorThrown) {
-//         console.log('Error: ' + textStatus);
-//         console.log('Error Detail:', errorThrown);
-//       }
-//     })
-//   })
-// })
 //해당 url 숨기기
 .ready(function() {
 	$('#linkContainer').hide();
@@ -586,6 +268,9 @@ $(document)
       }
     })
   })
+.on("click","#Category_box4",function(){
+	getUserInfo()
+})
   function MainList() {
 	  $.ajax({
 	    url: '/Mypage_list',
@@ -596,8 +281,8 @@ $(document)
 	      let empData = data[0];
 
 	      $('#emp_name').text('이름: ' + empData.emp_name);
-	      $('#emp_position').text('직급: ' + empData.emp_position);
-	      $('#emp_depart').text('부서: ' + empData.emp_depart);
+	      $('#position_name').text('직급: ' + empData.position_name);
+	      $('#dep_name').text('부서: ' + empData.dep_name);
 	      let imgName = "";
       		if (empData.emp_img) {
       	  		imgName = empData.emp_img.split('/').pop();
@@ -607,12 +292,17 @@ $(document)
 	    	} else {
 	    	  $('#emp_img').attr('src', '/img/' + imgName);
 	    	}
+	      console.log(imgName);
 	    },
 	    error: function(jqXHR, textStatus, errorThrown) {
 	      console.log('Error: ' + textStatus);
 	      console.log('Error Detail:', errorThrown);
 	    }
 	  });
+	}
+	function getUserInfo(){
+		$.ajax({url:"/getUserInfo",
+				type:"get"})
 	}
 </script>
 </html>
