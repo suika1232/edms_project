@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.human.springboot.dao.KshEmpDao;
+import com.human.springboot.dao.SwDAO;
 import com.human.springboot.dto.KshBoardDto;
 import com.human.springboot.dto.KshEmpDto;
 
@@ -26,6 +27,9 @@ import jakarta.servlet.http.HttpSession;
 public class kshController {
 	@Autowired
 	private KshEmpDao edao;
+	
+	@Autowired
+	private SwDAO sdao;
 	
 	/*페이지 이동*/
 	@GetMapping("/")
@@ -134,10 +138,12 @@ public class kshController {
 		List<KshEmpDto> login_session = edao.emp_login_session(id, pw);
 		String login_id_pw = edao.emp_login(id, pw);
 		
+		
 		try {
 			if(login_id_pw != (null)) {
 				for(int i=0; i<login_session.size(); i++) {
 					login.setAttribute("emp_no", login_session.get(i).getEmp_no());
+					login.setAttribute("userInfo", sdao.getUserInfo(id));
 					login.setAttribute("emp_id", login_session.get(i).getEmp_id());
 					login.setAttribute("emp_name", login_session.get(i).getEmp_name());
 					}
@@ -263,11 +269,11 @@ public class kshController {
 	            jo.put("emp_mobile", ked.getEmp_mobile());
 	            jo.put("emp_email", ked.getEmp_email());
 	            jo.put("emp_gender", ked.getEmp_gender());
-	            jo.put("emp_depart", ked.getEmp_depart());
-	            jo.put("emp_position", ked.getEmp_position());
+	            jo.put("dep_name", ked.getDep_name());
+	            jo.put("position_name", ked.getPosition_name());
 	            jo.put("emp_img", ked.getEmp_img());
 	            jo.put("emp_address", ked.getEmp_address());
-
+	            
 	            list.put(jo);
 	        }
 	    } catch (Exception e) {
@@ -343,6 +349,7 @@ public class kshController {
 			e.printStackTrace();
 			return "fail";
 		}
+		System.out.println(file);
 		return "ok";
 		
 	}

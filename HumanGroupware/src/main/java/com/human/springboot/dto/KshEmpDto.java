@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class KshEmpDto {
+	//employee
 	private int emp_no;
 	private String emp_name;
 	private String emp_id;
@@ -15,6 +16,17 @@ public class KshEmpDto {
 	private int emp_position;
 	private int emp_depart;
 	private String emp_img;
+	//position
+	private int position_id;
+	private String position_name;
+	private String job_type;
+	//department
+	private int dep_id;
+	private String dep_name;
+	private int dep_manager;
+	private int dep_parent;
+	
+	
 	public int getEmp_no() {
 		return emp_no;
 	}
