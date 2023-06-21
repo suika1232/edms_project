@@ -11,6 +11,10 @@ $(document)
 .on("click","#serchUserButton",()=>{
 	serchUserSelect()
 })
+.on("click","#okbutton",()=>{
+	  $('#userBox').modal('hide');
+})
+
 .on("change","#userSelect",function(){	
 	let str = $(this).children("option:selected").val();
 	let ar=str.split(".")

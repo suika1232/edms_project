@@ -87,6 +87,9 @@ $(document)
 .on("click","#sendButton2",function(){
 	insertTask_report()
 })
+.on("click","#cancelButton",function(){
+	document.location = "/requestTask"
+})
 function insertTask_report(){
 	$.ajax({url:"/insertTask_report",
 			type:"post",
@@ -120,7 +123,6 @@ function selectTask(){
 			}
 	})
 }
-//////////////////////////////////////////////////////////////////////////////////////
 function selectUser(){
 	$.ajax({url:"/selectUser",
 			type:"post",
@@ -166,5 +168,6 @@ function checkManager(){
 		$("#btn2").append(tag3)
 	}		
 }
+
 </script>
 </html>

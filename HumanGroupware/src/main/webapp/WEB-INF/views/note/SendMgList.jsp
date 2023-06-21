@@ -14,6 +14,7 @@
 <div class="flexContainer">
 	  <input type="hidden" id="userId" value=<%=userno %>>	
 	<div class="tableBox">	
+		<div style="margin-left:50px;"><strong>보낸편지함</strong></div>	
 		<table id="sendMessageList" class="table">
 			<tr><td><input type = checkbox id="kingCheckBox" onclick = "selectAll(this)"></td>
 				<td><button id="deleteMessageButton" class="btn btn-light">삭제</button></td>

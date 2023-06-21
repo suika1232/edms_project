@@ -39,8 +39,8 @@
       	<select id="userSelect"></select>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">이전</button>
+        <button type="button" class="btn btn-primary" id="okbutton">선택완료</button>
       </div>
     </div>
   </div>
