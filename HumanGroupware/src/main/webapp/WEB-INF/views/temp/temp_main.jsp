@@ -88,9 +88,8 @@
 			<div id="linkContainer4">
 			<%int position=0; %>
 			<%if(session.getAttribute("emp_id")!=null) {%>
-			
-			 <% position = (int)session.getAttribute("emp_position"); %>
-			<%} %>
+			<% position = session.getAttribute("emp_position") == null ? 0 : (int)session.getAttribute("emp_position");
+				} %>
 			<%if (position>1){ %>  
 				<a href="/MyWorkLog">작성한 일지</a>
 				<a href="/depWorkLog">부서일지</a>
