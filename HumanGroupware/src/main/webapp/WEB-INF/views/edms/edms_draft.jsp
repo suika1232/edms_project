@@ -36,7 +36,7 @@
         </table>
     </div>
     <div class="d-flex">
-        <iframe id="templateView" src="" frameborder="0" style="width: 100%; height: 800px;"></iframe>
+        <iframe id="templateView" src="" frameborder="0" style="width: 100%; height: 90vh;"></iframe>
     </div>
 </div>
 </body>

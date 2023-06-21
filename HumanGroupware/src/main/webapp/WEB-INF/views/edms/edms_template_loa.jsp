@@ -289,7 +289,10 @@ $(document)
     if($("#edmsTitle").val().trim()==""){
         alert("제목을 작성해야 합니다.");
         return false;
+    }else if($("#loaExpense").val() == undefined){
+        $("#loaExpense").val("0");
     }
+
     if(!confirm("상신 합니까?")) return false;
     let refList = [];
     $("#edmsRef a").each(function(i, el){

@@ -261,8 +261,17 @@
                         <td>사유</td>
                         <td><textarea id="edmsDetail" name="edmsDetail" readonly>${detail}</textarea></td>
                     </tr>
+                    <% if(edmsCategory.equals("품의")){ %>
+                    <tr>
+                        <td>예상비용</td>
+                        <td class="text-start">
+                            &nbsp;${loaExpense}&nbsp;원
+                        </td>
+                    </tr>
+                    <% } %>
                     <tr>
                         <td colspan="2" style="border-bottom: none;">
+                            <br>
                             <%if(edmsCategory.equals("휴가")){ %>
                             <p>위와 같이 휴가를 신청하오니 허락하여 주시기 바랍니다.</p>
                             <% }else{ %>
