@@ -12,8 +12,9 @@
 <% int userno = (int)session.getAttribute("emp_no");%>
 <div class="flexContainer container justify-content-center">
 	<input type="hidden" id="userId" value=<%=userno%>>
-	
+		
 	<div class="tableBox">
+	<div style="margin-left:50px;"><strong>휴지통</strong></div>
 		<div id=setableBox>
 			<div class="Aclub"><b>보낸 메시지</b>&nbsp<b id="se_recover"> 복구 </b>&nbsp<b id="se_hardDelete"> 삭제 </b></div>
 			<table class="table" id="setable">

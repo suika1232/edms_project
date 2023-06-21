@@ -57,8 +57,7 @@
       <div class="modal-body">
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">이전</button>
       </div>
     </div>
   </div>
@@ -152,8 +151,7 @@ function getUserData(workNo){
 			$("#writer").val(data[0]["writer"]),
 			$("#content").val(data[0]["content"]),
 			$("#area1").val(data[0]["notes"]),
-			$("#inputDate").val(data[0]["created"]),
-			
+			$("#inputDate").val(data[0]["created"])
 		}
 	})
 }
