@@ -31,8 +31,8 @@ public class SwEdmsDTO extends SwEmpDTO{
 
     // edms_loa
     private int loa_id;
-    private String loa_title;
     private String loa_detail;
+    private int loa_expense;
 
 
 }

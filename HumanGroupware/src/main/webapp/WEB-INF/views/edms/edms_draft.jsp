@@ -47,9 +47,7 @@ $(document)
 .on("change", "#selectTemplate", ()=>{
     let selected = $("#selectTemplate").find("option:selected").val();
     console.log(selected);
-    $("#templateView").attr("src", "/edms/template/leave");
-    
-    
+    $("#templateView").attr("src", "/edms/template/"+selected);
 })
 </script>
 </html>

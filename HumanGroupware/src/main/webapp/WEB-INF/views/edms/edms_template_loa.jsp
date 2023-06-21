@@ -33,7 +33,7 @@
     #templateLeaveBody > tbody > tr > td:first-child{
         width: 100px;
     }
-    #templateLeaveBody > tbody > tr:nth-child(6) > td:nth-child(2){
+    #templateLeaveBody > tbody > tr:nth-child(5) > td:nth-child(2){
         height: 200px;
     }
     #templateLeaveBody > tbody > tr:nth-child(7) > td{
@@ -75,9 +75,16 @@
     #leavePeriodDiv input[type=text]{
         outline: none; border: none; text-align: right; background-color: rgb(247, 245, 245);
     }
+    #loaExpense{
+        width: 460px; height: 50px; border: none; outline: none;
+    }
+    #loaExpense::-webkit-inner-spin-button,
+    #loaExpense::-webkit-outer-spin-button{
+        -webkit-appearance: none; margin: 0;
+    }
 </style>
 <body>
-<form id="approvalForm" method="post" action="/edmsSend/leave">
+<form id="approvalForm" method="post" action="/edmsSend/loa">
 <div class="table-responsive-md">
     <table class="table">
         <tbody>
@@ -111,9 +118,6 @@
                 <td scope="row" style="width: 155px;">참조</td>
                 <td>
                     <div class="">
-                        <!-- <input type="text" class="form-control form-control-sm d-inline-block align-middle" 
-                                    name="edmsRef" id="edmsRef"
-                                    style="width: 400px;" readonly> -->
                         <div id="edmsRef" class="d-inline-block align-middle fs-6" style="width: 465px; height: 62px; padding: 4px 8px; background-color: #fff; outline: 1px solid #ced4da; border-radius: 3px;"></div>
                         <button type="button" class="btn btn-primary btn-sm d-inline-block align-middle"
                             id="btnSelectRef">선택</button>
@@ -132,7 +136,7 @@
                     <tr>
                         <td rowspan="2">
                             <div style="padding: 0; margin: 0; width: 334px;">
-                                <p style="font-size: 30px;">휴가신청서</p>
+                                <p style="font-size: 30px;">품의서</p>
                             </div>
                         </td>
                         <td rowspan="2" style="vertical-align: middle">
@@ -176,59 +180,27 @@
                         <td>&emsp;${empName}</td>
                     </tr>
                     <tr>
-                        <td>구분</td>
+                        <td>작성일</td>
                         <td>
-                            <input type="hidden" id="selectedLeaveCategory" name="selectedLeaveCategory">
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" 
-                                    name="leaveCategory" id="leaveCategory1" value="연차">
-                                <label class="form-check-label" for="leaveCategory1">연차</label>
-                            </div>
-                              <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" 
-                                    name="leaveCategory" id="leaveCategory2" value="반차">
-                                <label class="form-check-label" for="leaveCategory2">반차</label>
-                            </div>
-                              <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" 
-                                    name="leaveCategory" id="leaveCategory3" value="병가">
-                                <label class="form-check-label" for="leaveCategory3">병가</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" 
-                                    name="leaveCategory" id="leaveCategory4" value="공가">
-                                <label class="form-check-label" for="leaveCategory4">공가</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" 
-                                    name="leaveCategory" id="leaveCategory5" value="기타">
-                                <label class="form-check-label" for="leaveCategory5">기타</label>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>일시</td>
-                        <td style="font-size: 12px; text-align: center;">
-                            <div id="leavePeriodDiv" class="text-start d-inline-block">
-                                <input type="text" id="startYear" name="startYear"> 년 
-                                <input type="text" id="startMonth" name="startMonth"> 월 
-                                <input type="text" id="startDay" name="startDay"> 일부터
-                                <br>~<br>
-                                <input type="text" id="endYear" name="endYear"> 년 
-                                <input type="text" id="endMonth" name="endMonth"> 월 
-                                <input type="text" id="endDay" name="endDay"> 일까지 
-                                &nbsp;<input type="number" id="leavePeriod" name="leavePeriod"
-                                        style="text-align: right;" readonly>일간
-                            </div>
+                            <input type="number" id="writeYear" name="writeYear" value="${year}" readonly> 년 
+                            <input type="number" id="writeMonth" name="wirteMonth" value="${month}" readonly> 월 
+                            <input type="number" id="writeDay" name="writeDay" value="${day}" readonly> 일
                         </td>
                     </tr>
                     <tr>
                         <td>사유</td>
-                        <td><textarea id="leaveDetail" name="leaveDetail"></textarea></td>
+                        <td><textarea id="loaDetail" name="loaDetail"></textarea></td>
+                    </tr>
+                    <tr>
+                        <td>예상비용</td>
+                        <td class="text-start">
+                            <input type="number" id="loaExpense" name="loaExpense">
+                            &nbsp;원
+                        </td>
                     </tr>
                     <tr>
                         <td colspan="2" style="border-bottom: none;">
-                            <p>위와 같이 휴가를 신청하오니 허락하여 주시기 바랍니다.</p>
+                            <p>위와 같은 사유로 품의서를 제출하오니 허락하여 주시기 바랍니다.</p>
                             <br>
                             <p>
                                 <input type="number" id="writeYear" name="writeYear" value="${year}" readonly> 년 
@@ -313,64 +285,6 @@ $(document)
         return;
     }
 })
-.on("change", "#leavePeriodDiv input[type=text]", function(){
-    let str = $(this).val();
-    let pattern = /^[0-9]+$/;
-    if(!pattern.test(str)){
-        alert("날짜는 숫자로 입력해주세요");
-        $(this).val("");
-    }
-})
-.on("blur", "#endDay", ()=>{
-    let startDate = getStartDate($("#startYear").val(), 
-                            $("#startMonth").val(), 
-                            $("#startDay").val());
-
-    let endDate = getEndDate($("#endYear").val(),
-                            $("#endMonth").val(),
-                            $("#endDay").val());
-                            
-    if(startDate == "Invalid Date" || endDate == "Invalid Date"){
-        console.log("invalid date");
-        return;
-    }
-    console.log("시작: "+startDate);
-    console.log("종료: "+endDate);
-
-    let leavePeriod = new Date(endDate.getTime()-startDate.getTime());
-    leavePeriod = Math.floor(leavePeriod / (1000*60*60*24)+1);
-    if(leavePeriod < 0) { 
-        alert("종료날짜는 시작날짜 이후여야 합니다.");
-        return;
-    }
-    console.log("기간: "+leavePeriod);
-    if($("#leaveCategory2").is(":checked")){
-        $("#leavePeriod").val(0.5);
-    }else{
-        $("#leavePeriod").val(leavePeriod);
-    }
-})
-.on("blur", "#leavePeriodDiv input[type=text]", function(){
-    let id = $(this).attr("id");
-    let value = $(this).val();
-    if(id.includes("Year")) return;
-    if(value.length == 1) $(this).val("0"+value);
-})
-.on("click", "input:radio[name=leaveCategory]", function(){
-    $("#leavePeriod").val("");
-    let checked = $(this).val();
-    $("#selectedLeaveCategory").val(checked);
-    if(checked == "반차"){
-        $("#leavePeriod").val(0.5);
-    }else{
-        $(this).each((i, obj)=>{
-            let value = $(obj).val().trim();
-            console.log(value)
-            if(value == "") return;
-        })
-        $("#endDay").trigger("blur");
-    }
-})
 .on("submit", "#approvalForm", ()=>{
     if($("#edmsTitle").val().trim()==""){
         alert("제목을 작성해야 합니다.");
@@ -426,15 +340,12 @@ function refSelect(ths){
     $("#edmsRef").find("a").each(function(i, el){
         count += 1;
         if($(el).data("value") == $(ths).data("id")){
-            // console.log("el value "+$(el).data("value"));
-            // console.log("ths value "+$(ths).data("id"));
             $(el).remove();
             count -= 1;
             flag = false;
             return;
         }
     })
-    // console.log(count)
     let a = $("<a>",{ href: "#"}).css("font-size", "12px")
     a.attr("id", "a"+$(ths).data("id"));
     a.attr("data-value",$(ths).data("id"));
@@ -447,13 +358,6 @@ function refSelect(ths){
             $("#edmsRef").append(a);
         }
     }
-
-}
-function getStartDate(y, m ,d){
-    return new Date(y+"-"+m+"-"+d);
-}
-function getEndDate(y, m, d){
-    return new Date(y+"-"+m+"-"+d);
 }
 </script>
 </html>

@@ -50,11 +50,11 @@
       	</div>
       	<div class="label">부서:</div>
       	<div class="input">
-        	<input type="text" id="depart">
+        	<input type="text" id="dep_name">
       	</div>
       	<div class="label">직급:</div>
       	<div class="input">
-        	<input type="text" id="position">
+        	<input type="text" id="position_name">
       	</div>
     	</div>
     	<div class="container_2">
@@ -113,7 +113,7 @@ $(document)
 })
 // 취소 버튼을 누르면 Yes 누르면 메인으로 돌아가고 No 누르면 마이페이지로 다시 정보수정 할 수 있게됩니다.
 .on('click','#x', function(){
-	let result = confirm("주의: 변경사항이 저장되지 않았습니다!");
+	let result = confirm("주의: 변경사항은 변경/저장 버튼을 따로 눌러야 저장됩니다. 메인으로 돌아가시겠습니까?");
 	if(result){
 		alert("메인으로 돌아갑니다");
 		window.location.href = '/temp/temp_main';
@@ -351,7 +351,7 @@ function Mypage_List() {
     dataType: 'json',
     data: { emp_id: $('#emp_id').val() },
     success: function(data) {
-    	
+    	console.log(data);
       if (data && data.length > 0) {
         let empData = data[0];
 
@@ -361,8 +361,8 @@ function Mypage_List() {
         $('#birth').prop('disabled', true).addClass('disabled');
         $('#email').prop('disabled', true).addClass('disabled');
         $('#gender').prop('disabled', true).addClass('disabled');
-        $('#depart').prop('disabled', true).addClass('disabled');
-        $('#position').prop('disabled', true).addClass('disabled');
+        $('#dep_name').prop('disabled', true).addClass('disabled');
+        $('#position_name').prop('disabled', true).addClass('disabled');
 
         $('#emp_name').val(empData.emp_name);
         $('#emp_id').val(empData.emp_id);
@@ -371,8 +371,8 @@ function Mypage_List() {
         $('#mobile').val(empData.emp_mobile);
         $('#email').val(empData.emp_email).prop('disabled', true);
         $('#gender').val(empData.emp_gender).prop('disabled', true);
-        $('#depart').val(empData.emp_depart).prop('disabled', true);
-        $('#position').val(empData.emp_position).prop('disabled', true);
+        $('#dep_name').val(empData.dep_name).prop('disabled', true);
+        $('#position_name').val(empData.position_name).prop('disabled', true);
 
         let imgName = empData.emp_img.split('/').pop();
         $('#getImg').text(imgName);

@@ -15,6 +15,7 @@
 <body>
 <h3 style="text-align: center;">결재목록</h3>
 <table id="edmsListTable" class="table table-sm table-hover text-center">
+    
     <thead>
         <tr>
             <th>번호</th><th>분류</th><th>제목</th>
@@ -31,7 +32,6 @@
 $(document)
 .ready(()=>{
     getEdmsList();
-    
 })
 function getEdmsList(){
     $.ajax({
