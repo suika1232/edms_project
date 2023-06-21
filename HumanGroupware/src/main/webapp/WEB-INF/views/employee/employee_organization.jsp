@@ -9,83 +9,43 @@
 </head>
 <body>
 
-<!-- 임시 링크용 -->
-<div class="option" style="border:0.1px solid black; width:150px;text-align:center;">
-	<a>[임시 링크용 div]</a>
-	<div>
-		<a href="/employee/organization">조직도</a><br>
-		<a href="/employee/inquiry">직원조회</a><br>
-		<a href="/employee/registration">부서변경</a><br>
-		<a href="/attendance/current">근태현황</a><br>
-		<a href="/attendance/management">근태관리</a><br>
-		<a href="/attendance/byEmployee">사원별 근태현황</a>
-		<input type=button value="출근" id="start_id">
-		<input type=button value="퇴근" id="end_id">
-	</div>
-	</div>
-<!-- 임시 링크용 -->
-<div class="Mysession_container">
-		<div id="Show-img_box"></div>
-		<div id="MY_box">
-			<% if(session.getAttribute("emp_name") != null && session.getAttribute("emp_id")!="") {%>
-				이름: ${ emp_name} 
-				<div id=emp_depart>부서: </div>
-				<div id="My_box1">
-				<a href='/employee/mypage'>마이페이지</a>
-				<a href='/employee/logout'>로그아웃</a>
-				</div>
-			<% } else {%>
-				로그인 후 이용해주세요
-				<div class="My_box2">
-				<a href='/employee/login'>로그인</a>
-				<a href="/employee/signin">회원가입</a><br>
-				</div>
-			<% } %>
-		</div>
-	</div>
 <div class="inquiry_main">
-	<a>조직도</a>
+	<a>부서/직급 등록</a>
 </div>
 
-	
-	<div class="organization">
+	<!-- 직급 추가 -->
+	<div class="add_position">
+		<div class="add_department_a">
+			<input type=text class="dep_parent" value="직 급 명"  id="position_input" disabled><br>
+			
+			<input type=text class="dep_parent" value="고 용 형 태" disabled><br>
+			<input type=text class="dep_manager" id="dep_manager" value="" disabled><br>
+			<input type=text class="dep_name"value="삭 제 직 급 명"  id="dep_name" disabled>
+			<input type=button value="삭제" id="P_delete_btn" class="delete_btn"><br>
+		</div>
+		<div class="add_department">
+			<input type= text class="depart_name" id="position_name" placeholder="[2~10자 이내]" ><br>
+			<select class="depart_parent" id=job_type>
+				<option value="계약직">계약직</option>
+				<option value="정규직">정규직</option>
+			</select>
+			<input type=text class="dep_manager" id="dep_manager" value="" disabled><br>
+			<select class="depart_parent" id=position_select>
+				<option value="없음">없음</option><br>
+			</select>
+			<input type=button value="추가" id=P_update_btn class="update_btn"><br>
+		</div>
 		
-		<ul class="tree">
-			<li>
-				<input type="checkbox" id="root">
-				<label for="root">그룹웨어</label>
-				<ul>
-					<li>
-						<input type="checkbox" id="node1">
-						<label for="node1">부서명</label>
-						<ul>
-							<li>
-								<input type="checkbox" id="node21">
-								<label for="node21" class="lastTree">부서명+1</label>
-							</li>
-						</ul>
-					</li>
-					<li>
-						<input type="checkbox" id="node2">
-						<label for="node2">부서명</label>
-						<ul>
-							<li>
-								<input type="checkbox" id="node21">
-								<label for="node21" class="lastTree">부서명+1</label>
-							</li>
-						</ul>
-					</li>
-				</ul>
-			</li>
-		</ul>
+	<input type=hidden id="position_id_num" value="없음">
 	</div>
+	
 	<!-- 부서 추가 -->
 	<div class="add">
 		<div class="add_department_a">
-			<input type=text class="dep_name" id="dep_name" value="부 서 명"  id="dep_name" disabled><br>
+			<input type=text class="dep_parent" id="dep_name" value="부 서 명"  id="dep_name" disabled><br>
 			
 			<input type=text class="dep_parent"  id="dep_parent" value="상위 부 서 명" disabled><br>
-			<input type=text class="dep_manager" id="dep_manager" value="담당 부 서 명" disabled><br>
+			<input type=text class="dep_manager" id="dep_manager" value="담당 부 서 장" disabled><br>
 			<input type=text class="dep_name" id="del_name" value="삭 제 부 서 명"  id="dep_name" disabled>
 			<input type=button value="삭제" id="delete_btn" class="delete_btn"><br>
 		</div>
@@ -110,11 +70,14 @@
 	
 	
 	
+	
 </body>
 <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script>
 $(document).ready(function(){
 	loadDep_name();
+	loadDep_boss_name();
+	loadpositon_select();
 })
 
 // click 상위, 담당부서명 hidden 저장 ( select )
@@ -128,7 +91,9 @@ $('#depart_manager').on('click',function(){
 $('#depart_id').on('click',function(){
 	$('#id_number').val($('#depart_id').val());
 })
-
+$('#position_select').on('click',function(){
+	$('#position_id_num').val($('#position_select').val());
+})
 // click 추가상태
 
 
@@ -142,14 +107,37 @@ $('#depart_id').on('click',function(){
 					 for(let i=0; i<data.length; i++){
 						 option = data[i];
 						 let parent = '<option value='+option['dep_id']+'>'+option['dep_name']+'</option>';
-						 let manager = '<option value='+option['dep_manager']+'>'+option['dep_name']+'</option>';
 						 let id ='<option value='+option['dep_id']+'>'+option['dep_name']+'</option>';
 						 $('#depart_parent').append(parent);
-						 $('#depart_manager').append(manager);
 						 $('#depart_id').append(id);
 					 }},
 	})}
-
+	// 삭제 직급 아이디 불러오기 ( select )
+	function loadpositon_select(){
+		$.ajax({url:'/position_name_select',
+				type:'post',
+				dataType:'json',
+				success:function(data){
+					for(let i=0; i<data.length; i++){
+						option = data[i];
+						let id = '<option value='+option['position_id']+'>'+option['position_name']+'['+option['job_type']+']</option>';
+						$('#position_select').append(id);
+					}
+				}})
+	}
+// 담당 부서장 명 불러오기 ( select )
+	function loadDep_boss_name(){
+		$.ajax({url:'/dep_boss_name_select',
+			type:'post',
+			 dataType:'json',
+			 success:function(data){
+					for(let i=0; i<data.length; i++){
+						option = data[i];
+						let manager = '<option value = '+option['emp_no']+'>'+option['emp_name']+' '+option['position_name']+'</option>';
+						$('#depart_manager').append(manager);
+					}
+				}})
+}
 // 새 부서명 ( insert )
 $('#update_btn').on('click',function(){
 	console.log('dk');
@@ -179,8 +167,58 @@ $('#update_btn').on('click',function(){
 			}
 	})
 })
+// 새 직급명 ( insert )
+$('#P_update_btn').on('click',function(){
+	console.log('dk');
+	let positionName = $('#position_name').val();
+	let jobType = $('#job_type').val();
+	$.ajax({url:'/position_insert',  
+			 type:'post', 
+			 dataType:'text',
+			 data:{position_name:$('#position_name').val(),
+					job_type:$('#job_type').val(),
+			},
+			beforeSend:function(){
+				if(positionName==''||positionName==null){
+					alert('직급명을 입력해주십시오.');
+					return false;
+				}
+			},
+			success:function(data){
+				if(data=='ok'){
+					alert(positionName+' 가(이) 추가 되었습니다.');
+					location.reload();
+				} else{
+					alert("직급등록에 실패하였습니다.");
+				}
+			}
+	})
+})
 	
 // 부서 삭제
+$("#P_delete_btn").on("click", function(){
+	$.ajax({url:'/position_delete', 
+			 type:'post', 
+			 data:{position_id:$('#position_id_num').val()}, 
+			 dataType:'text',
+	beforeSend:function(){
+		if($('#position_select').val()=='없음'){
+			alert('삭제할 직급을 선택해 주십시오.');
+			return false;
+	}},
+			success:function(data){
+				if(data=='ok'){
+					if(!confirm('선택한 직급을 삭제하시겠습니까?'));
+					alert('선택 직급이 영구제거되었습니다.');
+					location.reload();					
+						return false;
+			    } else {
+					alert("삭제 불가능.");
+				}
+	}})
+});
+
+//부서 삭제
 $("#delete_btn").on("click", function(){
 	$.ajax({url:'/department_delete', 
 			 type:'post', 

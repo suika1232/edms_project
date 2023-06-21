@@ -36,7 +36,7 @@ public class JeController {
 	public String employeeRegistration() {
 		return "employee/employee_registration";
 	}
-	// 조직도 ( 페이지 접속 )
+	// 직급/부서 등록 ( 페이지 접속 )
 	@GetMapping("/employee/organization")
 	public String employeeOrganization() {
 		return "employee/employee_organization";
@@ -111,7 +111,6 @@ public class JeController {
 		}
 		return ja.toString();
 	}
-	
 	// 사원 정보 추가 ( 직급명 불러오기, select )
 	@PostMapping("/position_select0")
 	@ResponseBody
@@ -164,7 +163,8 @@ public class JeController {
 		String emp_email = req.getParameter("emp_email");
 		String dep_name = req.getParameter("dep_name");
 		String position_name = req.getParameter("position_name");
-		ArrayList<EmpDepartPositionDTO> employee_search = JiDao.employee_search(emp_name, emp_mobile, emp_email,dep_name,position_name);
+		ArrayList<EmpDepartPositionDTO> employee_search =
+		JiDao.employee_search(emp_name, emp_mobile, emp_email,dep_name,position_name);
 		JSONArray ja = new JSONArray();
 		for(int i=0; i<employee_search.size(); i++) {
 			JSONObject jo = new JSONObject();
@@ -188,9 +188,8 @@ public class JeController {
 	public String doAttList(HttpServletRequest req) {
 		String dep_name = req.getParameter("dep_name");
 		String attend_date = req.getParameter("attend_date");
-		System.out.println("dep_name print : "+ dep_name);
-		System.out.println("attend_date print :"+ attend_date);
 		ArrayList<EmpDepartPositionDTO> attendance_list = JiDao.attendance_list(attend_date,dep_name);
+		
 		JSONArray ja = new JSONArray();
 		for(int i=0; i<attendance_list.size(); i++) {
 			JSONObject jo = new JSONObject();
@@ -260,7 +259,6 @@ public class JeController {
 			jo.put("emp_id", employeeData_select.get(i).getEmp_id());
 			jo.put("emp_img", employeeData_select.get(i).getEmp_img());
 			ja.put(jo);
-			
 		}
 		return ja.toString();
 	}
@@ -308,6 +306,7 @@ public class JeController {
 				}
 				return ja.toString();
 	}
+
 	// 부서 추가 insert
 		@PostMapping("/department_insert")
 		@ResponseBody
@@ -321,6 +320,22 @@ public class JeController {
 				System.out.println(dep_parent);
 				System.out.println(dep_manager);
 				JiDao.department_insert(dep_name,dep_parent, dep_manager);
+			} catch(Exception e) {
+				retval = e.getMessage();
+				e.printStackTrace();
+			}
+			return retval;
+		}
+		
+	// 직급 추가 ( insert )
+		@PostMapping("/position_insert")
+		@ResponseBody
+		public String doPositionInsert(HttpServletRequest req) {
+			String retval = "ok";
+			String position_name = req.getParameter("position_name");
+			String job_type = req.getParameter("job_type");
+			try {
+				JiDao.position_insert(position_name, job_type);
 			} catch(Exception e) {
 				retval = e.getMessage();
 				e.printStackTrace();
@@ -389,5 +404,50 @@ public class JeController {
 			} 
 			 return retval;
 		}
+	// 직급 삭제 ( delete )
+		 @PostMapping("/position_delete")
+		 @ResponseBody
+		 public String doposition_Delete(HttpServletRequest req) { 
+			 String retval="ok";
+			 int position_id = Integer.parseInt(req.getParameter("position_id"));
+			 
+			 try {
+					 JiDao.position_delete(position_id);
+			} catch(Exception e) {
+				retval="fail";
+			} 
+			 return retval;
+		}
+	// 직급 선택 ( select )
+		 @PostMapping("/position_name_select")
+		 @ResponseBody
+		 public String doPosition_Select() {
+			 ArrayList<PositionDTO>position_name_select = JiDao.position_name_select();
+			 JSONArray ja = new JSONArray();
+			 for(int i= 0; i<position_name_select.size(); i++) {
+				 JSONObject jo = new JSONObject();
+				 jo.put("position_id", position_name_select.get(i).getPosition_id());
+				 jo.put("position_name", position_name_select.get(i).getPosition_name());
+				 jo.put("job_type", position_name_select.get(i).getJob_type());
+				 ja.put(jo);
+			 }
+			 return ja.toString();
+		 }
+	// 부서장 선택 ( select )
+		 @PostMapping("/dep_boss_name_select")
+		 @ResponseBody
+		 public String doDepBoss_name() {
+				ArrayList<EmpDepartPositionDTO> dep_boss_name_select = JiDao.dep_boss_name_select();
+				JSONArray ja = new JSONArray();
+				for(int i=0; i<dep_boss_name_select.size(); i++) {
+					JSONObject jo = new JSONObject();
+					jo.put("emp_no", dep_boss_name_select.get(i).getEmp_no());
+					jo.put("emp_name", dep_boss_name_select.get(i).getEmp_name());
+					jo.put("position_id", dep_boss_name_select.get(i).getPosition_id());
+					jo.put("position_name", dep_boss_name_select.get(i).getPosition_name());
+					ja.put(jo);
+				}
+				return ja.toString();
+	}
 }
 

@@ -13,40 +13,6 @@
 <link type="text/css" rel="stylesheet" href="/resources/css/employee_inquiry.css">
 </head>
 <body>
-<!-- 임시 링크용 -->
-<div class="option" style="border:0.1px solid black; width:150px;text-align:center;">
-	<a>[임시 링크용 div]</a>
-	<div>
-		<a href="/employee/organization">조직도</a><br>
-		<a href="/employee/inquiry">직원조회</a><br>
-		<a href="/employee/registration">부서변경</a><br>
-		<a href="/attendance/current">근태현황</a><br>
-		<a href="/attendance/management">근태관리</a><br>
-		<a href="/attendance/byEmployee">직원별 근태현황</a>
-		<input type=button value="출근">
-		<input type=button value="퇴근">
-	</div>
-</div>
-<!-- 임시 링크용 -->
-<div class="Mysession_container">
-		<div id="Show-img_box"></div>
-		<div id="MY_box">
-			<% if(session.getAttribute("emp_name") != null && session.getAttribute("emp_id")!="") {%>
-				이름: ${ emp_name} 
-				<div id=emp_depart>부서: </div>
-				<div id="My_box1">
-				<a href='/employee/mypage'>마이페이지</a>
-				<a href='/employee/logout'>로그아웃</a>
-				</div>
-			<% } else {%>
-				로그인 후 이용해주세요
-				<div class="My_box2">
-				<a href='/employee/login'>로그인</a>
-				<a href="/employee/signin">회원가입</a><br>
-				</div>
-			<% } %>
-		</div>
-	</div>
 <!-- 사원관리 / 상세 -->
 <div>
 	
@@ -76,6 +42,7 @@
 		<div class="list" id="list">
 
 		</div>
+		
 	</div>
 
 </div>
@@ -97,7 +64,7 @@ $('#button').on('click', function(){
 				   emp_mobile:$('#number_input').val(), 
 				   emp_email:$('#mail_input').val(), 
 				   dep_name:$('#employee_team2').val(),
-				   position_name:$('#employee_position2').val()
+				   position_name:$('#employee_position2').val(),
 			},
 			success:function(data){
 				for(let i=0; i<data.length; i++){
@@ -109,7 +76,7 @@ $('#button').on('click', function(){
 										+'<div class = "email"><p>'+empData['emp_email']+'</p></div>'
 										+'<div class="phone"><p>0'+empData['emp_mobile']+'</p></div>'
 				            			+'<div class="job_type"><p>'+empData['job_type']+'</p></div>'
-			            				+'<div class="message"><a href="#" class="btn"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-envelope-fill" viewBox="0 0 16 16"><path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414.05 3.555ZM0 4.697v7.104l5.803-3.558L0 4.697ZM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586l-1.239-.757Zm3.436-.586L16 11.801V4.697l-5.803 3.546Z"/></svg></a></div></div>';
+			            				+'<div class="message"><a href="/New" class="btn"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-envelope-fill" viewBox="0 0 16 16"><path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414.05 3.555ZM0 4.697v7.104l5.803-3.558L0 4.697ZM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586l-1.239-.757Zm3.436-.586L16 11.801V4.697l-5.803 3.546Z"/></svg></a></div></div>';
 			            				
 			            				$('#list').append(divResult);
 					$('#name_input').val('');
@@ -179,44 +146,5 @@ $('#button').on('click', function(){
 						 $('#select_position').append(option);
 					 }},
 	})}
-	
-	// 고용형태 불러오기 ( select )
-/* 	function loadJob_type(){
-		$.ajax({url:'/form_select0',
-				 type:'post',
-				 dataType:'json',
-				 success:function(data){
-					 for(let i=0; i<data.length; i++){
-						 form0 = data[i];
-						 let option='<option value='+form0['job_type']+'>'+form0['job_type']+'</option>';
-						 $('#select_form').append(option);
-					 }},
-	})} */
-
-	// 직급, 고용형태 position_id 확인 ( hidden ) emp_depart1
-/*  	function loadExemployee(){
-		$.ajax({url:'/exemploye_select1',
-			 type:'post',
-			 dataType:'json',
-			 data:{position_name:$('#employee_position2').val(), job_type:$('#employee_form2').val()},
-			 success:function(data){
-				 for(let i=0; i<data.length; i++){
-					 ex0 = data[i];
-					 let ex= ex0['position_id']
-					 $('#emp_position1').val(ex);
-				 }},
-})}
-	function loadExemployeeDep(){
-		$.ajax({url:'/exemployee_select2',
-			 type:'post',
-			 dataType:'json',
-			 data:{dep_name:$('#employee_team2').val()},
-			 success:function(data){
-				 for(let i=0; i<data.length; i++){
-					 ex0 = data[i];
-					 let ex= ex0['dep_id']
-					 $('#emp_depart1').val(ex);
-				 }},
-})} */
 </script>
 </html>
