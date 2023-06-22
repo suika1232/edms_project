@@ -44,12 +44,12 @@ a{
     align-items: center;
     justify-content: center;
     margin-top: 5%;
-    font-size : 18px;
+    font-size : 17px;
     font-weight: bold;
 }
 
 .gap {
-    margin-right: -20%;
+    margin-right: -30%;
 }
 
 input[type="text"] {
@@ -59,7 +59,7 @@ input[type="text"] {
 }
 
 #Search_EmpBtn {
-    padding: 2.5% 5%;
+    padding: 3% 5%;
     background-color: #007bff;
     border: none;
     color: #fff;
@@ -68,6 +68,7 @@ input[type="text"] {
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-left: 0%
 }
 
 svg.bi-search {
@@ -225,6 +226,7 @@ svg.bi-search {
       font-family: Arial, sans-serif;
       font-size: 16px;
 }
+/* 공지사항 tr,td,a 디자인 */
 #board_notice a {
 	color: #0066cc;
 	text-decoration: none;
@@ -233,14 +235,15 @@ svg.bi-search {
       text-decoration: underline;
 }
 #board_notice td {
-	padding : 5px;
+	padding : 3%;
+	width : 5%;
 }
 
 #board_notice tr {
 	text-align : center;
     border-bottom: 1px solid #ccc;
 }
-
+/* 자유게시판 tr,td,a 디자인 */
 #board_free a {
     color: #0066cc;
 	text-decoration: none;
@@ -250,7 +253,8 @@ svg.bi-search {
       text-decoration: underline;
 }
 #board_free td {
-	padding : 5px;
+	padding : 3%;
+	width : 10%;
 }
 
 #board_free tr {
@@ -278,6 +282,79 @@ svg.bi-search {
     float: left;
     box-sizing: border-box;       
 }
+
+/* 업무 tr,td,a 디자인 */
+#Work a {
+    color: #0066cc;
+	text-decoration: none;
+}
+
+#Work a:hover {
+      text-decoration: underline;
+}
+#Work td {
+	padding : 3%;
+	width : 5%;
+}
+
+#Work tr {
+	text-align : center;
+    border-bottom: 1px solid #ccc;
+}
+/* 출퇴근 디자인*/
+.container_right4{
+	width: 50%;
+    float: right;
+    box-sizing: border-box;  
+}
+.commute_box{
+  	background-color: #f2f2f2;
+  	padding: 1%;
+  	border-radius: 5px;
+}
+.commute_title {
+  	font-weight: bold;
+ 	margin-bottom: 15%;
+ 	text-align: center;
+}
+.commute {
+  	background-color: #f2f2f2;
+  	display: flex;
+  	justify-content: center;
+  	align-items: center;
+}
+button {
+  padding: 5% 10%;
+  font-size: 16px;
+  font-weight: bold;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 0 5%;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+#start_id {
+  background-color: #2196f3;
+}
+
+#start_id:hover {
+  background-color: #1e87dc;
+}
+
+#end_id {
+  background-color: #f44336;
+}
+
+#end_id:hover {
+  background-color: #d6372e;
+}
+/* temp_main 디자인 */
 #View {
   width: 85%;
   float: left;

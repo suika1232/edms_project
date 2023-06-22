@@ -73,7 +73,12 @@
 	
 	<!-- 메인페이지 회원 검색 -->
 	<select id= "Main_Search" resultType="com.human.springboot.dto.KshEmpDto">
-		select * from employee where emp_name = #{param1}
+		select a.*, b.position_name, c.dep_name
+		from employee a, position b, department c
+		where a.emp_position = b.position_id 
+			  and a.emp_depart = c.dep_id
+			  and a.emp_name = #{param1} 
+		order by a.emp_no
 	</select>
 	
 	<!-- 메인페이지 자유게시판 불러오기 -->
@@ -90,6 +95,16 @@
 		from board a, employee b
 		where a.board_writer = b.emp_no and a.board_category = 1
 		order by board_id desc
+	</select>
+	
+	<!-- 메인페이지에서 업무 불러오기 -->
+	<select id="Task_list" resultType="com.human.springboot.dto.KshEmpDto">
+		select a.task_name,c.emp_name, b.emp_no, a.task_content, a.task_started, a.task_limit, a.task_id
+		from task a , employee b , employee  c 
+		where b.emp_no = a.task_performer
+			and c.emp_no = a.task_drafter
+			and b.emp_id = #{param1}
+		order by b.emp_no
 	</select>
 	
 	<!-- 메인페이지에서 이미지와 부서 불러오기 -->

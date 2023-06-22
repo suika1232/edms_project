@@ -25,7 +25,17 @@ public class KshEmpDto {
 	private String dep_name;
 	private int dep_manager;
 	private int dep_parent;
-	
+	//Task
+	private int task_id;
+	private String task_name;
+	private int task_depart;
+	private int task_drafter;
+	private int task_performer;
+	private String task_started;
+	private String task_limit;
+	private String task_ended;
+	private String task_content;
+	private String task_status;
 	
 	public int getEmp_no() {
 		return emp_no;

@@ -57,6 +57,8 @@ public interface KshEmpDao {
 	//Board_Notice == 메인에서 공지사항 갖고오기
 	ArrayList<KshBoardDto> Notice_list(String emp_id);
 	
+	//Task_list == 메인에서 업무 갖고오기
+	ArrayList<KshEmpDto> Task_list(String emp_id); 
 	//Main_Get == 메인에서 depart,img 갖고오기
 	ArrayList<KshEmpDto> Main_Get(String emp_id);
 }

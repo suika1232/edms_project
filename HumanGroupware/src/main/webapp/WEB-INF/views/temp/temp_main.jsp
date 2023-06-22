@@ -251,8 +251,8 @@ $(document)
             let mobileElement = $('<p>').text('전화번호: ' + empData.emp_mobile);
             let emailElement = $('<p>').text('이메일: ' + empData.emp_email);
             let genderElement = $('<p>').text('성별: ' + empData.emp_gender);
-            let departElement = $('<p>').text('부서: ' + empData.emp_depart);
-            let positionElement = $('<p>').text('직급: ' + empData.emp_position);
+            let departElement = $('<p>').text('부서: ' + empData.dep_name);
+            let positionElement = $('<p>').text('직급: ' + empData.position_name);
 
             infoText.append(nameElement, birthElement, mobileElement, emailElement, genderElement, departElement, positionElement);
             empDiv.append(infoText);
@@ -291,7 +291,6 @@ $(document)
 	    	} else {
 	    	  $('#emp_img').attr('src', '/img/' + imgName);
 	    	}
-	      console.log(imgName);
 	    },
 	    error: function(jqXHR, textStatus, errorThrown) {
 	      console.log('Error: ' + textStatus);

@@ -31,6 +31,7 @@ public class kshController {
 	@Autowired
 	private SwDAO sdao;
 	
+	
 	/*페이지 이동*/
 	@GetMapping("/")
 	public String doRoot() {
@@ -422,8 +423,8 @@ public class kshController {
 	            jo.put("emp_mobile", ked.getEmp_mobile());
 	            jo.put("emp_email", ked.getEmp_email());
 	            jo.put("emp_gender", ked.getEmp_gender());
-	            jo.put("emp_depart", ked.getEmp_depart());
-	            jo.put("emp_position", ked.getEmp_position());
+	            jo.put("dep_name", ked.getDep_name());
+	            jo.put("position_name", ked.getPosition_name());
 
 	            ja.put(jo);
 	        }
@@ -548,5 +549,40 @@ public class kshController {
 	    }
 	    return checkVal;
 	}
-	
+	/* 메소드명 : Main_Task 
+	 * 작성일 : 2023-06-21
+	 * 작성자 : 김상호
+	 * 기능 : 메인페이지에서 세션정보를 받아서 개인 별 해당 ID 마다 지시받은 업무가 보여지게 하는 코드입니다.
+	 */
+	@PostMapping("/Main_Task")
+	@ResponseBody
+	public String doMain_Task(HttpServletRequest req) {
+		HttpSession login = req.getSession();
+		login.getAttribute("emp_id");
+		
+		if(login.getAttribute("emp_id") == null ) {
+			return "login";
+		}
+		JSONArray ja = new JSONArray();
+		try {
+			ArrayList<KshEmpDto> edto = edao.Task_list((String) login.getAttribute("emp_id"));
+			for(int i=0; i<edto.size(); i++) {
+				JSONObject jo = new JSONObject();
+				KshEmpDto ked = edto.get(i);
+				
+				jo.put("emp_no", ked.getEmp_no());
+				jo.put("task_name", ked.getTask_name());
+				jo.put("emp_name", ked.getEmp_name());
+				jo.put("task_id", ked.getTask_id());
+				jo.put("task_content", ked.getTask_content());
+				jo.put("task_started", ked.getTask_started());
+				jo.put("task_limit", ked.getTask_limit());
+				
+				ja.put(jo);				
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return ja.toString();
+	}
 }
