@@ -8,7 +8,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/bootstrap-css/bootstrap.min.css">
-    <title>임시 로그인</title>
+    <title>Login</title>
 </head>
 <style>
     #form-div{
@@ -23,8 +23,11 @@
 
 </style>
 <body>
-    <form method="post" action="/testlogin">
+    <form method="post" action="/edmslogin">
     <div class="container justify-content-center" id="form-div">
+        <div id="formTitle" class="text-center">
+            <p class="fs-4 fw-bold">EDMS 로그인</p>
+        </div>
         <div class="form-floating mb-3">
         <input type="text" class="form-control" 
                name="loginId" id="loginId" required autocomplete="off">
@@ -39,6 +42,9 @@
             <button type="submit" class="btn btn-primary" id="btnSubmit">로그인</button>
             <button type="reset" class="btn btn-primary" id="btnReset">취소</button>
         </div>
+        <div id="userHelpText" class="form-text text-end">
+            회원등록은 관리자에게 문의해주세요
+        </div>
     </div>
     </form>
 </body>
@@ -47,7 +53,7 @@
 <script>
 $(document)
 .on("click", "#btnReset", ()=>{
-    document.location="/temp/home";
+    document.location="/edms/home";
 })
 </script>
 </html>

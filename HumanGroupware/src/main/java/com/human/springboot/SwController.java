@@ -529,13 +529,13 @@ public class SwController {
     }
 
     // 임시 로그인 화면
-    @GetMapping("/temp/login")
-    public String tempLoginPage(){
-        return "temp/temp_login";
+    @GetMapping("/edms/login")
+    public String edmsLoginPage(){
+        return "temp/edms_login";
     } 
     // 임시 로그인
-    @PostMapping("/testlogin")
-    public String testLogin(HttpServletRequest req){
+    @PostMapping("/edmslogin")
+    public String edmsLogin(HttpServletRequest req){
         
         String userId = req.getParameter("loginId");
         String userPw = req.getParameter("loginPw");
@@ -553,19 +553,19 @@ public class SwController {
             userSession.setAttribute("authority", userInfo.getBoard_authority());
             System.out.println(userInfo.getBoard_authority());
         }
-        return "redirect:/temp/home";
+        return "redirect:/edms/home";
     }
     // 임시 로그아웃
-    @PostMapping("/testlogout")
+    @PostMapping("/edmslogout")
     public String testLogout(HttpServletRequest req){
         HttpSession userSession = req.getSession();
         userSession.invalidate();
-        return "redirect:/temp/home";
+        return "redirect:/edms/home";
     }
     // 임시 메인
-    @GetMapping("/temp/home")
+    @GetMapping("/edms/home")
     public String tempHome(){
-        return "temp/temp_layout";
+        return "temp/edms_layout";
     }
     // 파일 테스트 페이지
     @GetMapping("/test/download")

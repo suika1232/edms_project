@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/bootstrap-css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
-    <title>Test Home</title>
+    <title>EDMS</title>
 </head>
 <style>
     .sidebar{
@@ -31,13 +31,13 @@
     <div class="row d-flex flex-nowrap fixed-top">
         <div class="col-md-2 sidebar bg-light float-md-start ms-2">
             <div class="d-flex flex-column align-items-center">
-                <a href="#" class="navbar-brand text-center d-block">HumanGroupWare</a>
+                <a href="#" class="navbar-brand text-center d-block">EDMS</a>
             </div>
             <div class="card">
               <div class="card-body text-center">
                 <% String id = (String)session.getAttribute("emp_id");%>
                 <% if(id == null){ %>
-                <a class="nav-link text-white login-btn" href="/temp/login">Login</a>
+                <a class="nav-link text-white login-btn" href="/edms/login">Login</a>
                 <% } %>
                 <% if(id != null){ %>
                     환영합니다<br>
@@ -94,6 +94,11 @@ function changeView(menu){
     if(menu == "notice" || menu == "free"){
         $("#sectionView").attr("src", "/board/"+menu);
     }else if(menu == "draft" || menu == "list" || menu == "reject"){
+        let loginSession = '<%=(String)session.getAttribute("emp_id")%>'
+        if(loginSession == "null"){
+            alert("로그인이 필요합니다.");
+            return false;
+        }
         $("#sectionView").attr("src", "/edms/"+menu);
     }
     $(".list-group-item").removeClass("active");
@@ -103,11 +108,11 @@ function changeView(menu){
 function logout(){
     if(!confirm("로그아웃 합니까?")) return;
     $.ajax({
-        url: "/testlogout",
+        url: "/edmslogout",
         type: "post",
         success: ()=>{
             alert("로그아웃 되었습니다.");
-            window.location.reload();
+            document.location="/edms/login";
         },
         error: (err)=>{
             console.log(err);
