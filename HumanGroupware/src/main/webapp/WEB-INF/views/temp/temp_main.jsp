@@ -113,8 +113,8 @@
 			<div id="linkContainer5">
 				<a href="/employee/inquiry" id='inquiry'>사원 조회</a>
 				<a href="/employee/registration" id='registration'>사원 부서 변경</a>
-				<a href="/employee/organization" id='organization'>조직도</a>
-				<a href="/attendance/current" id='current'>사원 근태 현황</a>
+				<a href="/employee/organization" id='organization'>부서/직급 등록</a>
+				<a href="/attendance/byEmployee" id='byEmp'>사원 근태 현황</a>
 			</div>
 		</div>
 		<!-- <div id="Category_box6">
