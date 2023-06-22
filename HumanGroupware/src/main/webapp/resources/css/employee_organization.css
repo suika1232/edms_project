@@ -1,6 +1,6 @@
 /* 대표 제목 */
 .inquiry_main{
-	width:90vh;
+	width:100%;
 	height:4rem;
 	background-color: rgb(206, 206, 206);
 	border-radius: 0.5rem;
@@ -17,14 +17,13 @@
 	margin-top:1.1rem;
 	text-align:right;
 	display:block;
-	text-decoration:none;
 }
 *{
     box-sizing: border-box;
     font-family: 'Montserrat', sans-serif;
 }
 body{
-    width: 90vh;
+    width: 98.7%;
     height: auto;
     background-color: rgb(255, 255, 255);
 }

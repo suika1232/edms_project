@@ -100,7 +100,6 @@ $(document).ready(function(){
 	$('#select_btn').on('click',function(){
 		$('#employee_tbody').empty();
 		loadLeave_list();
-		console.log('asdf');
 		$.ajax({url:'/attendance_list',
 				 type:'post',
 				 dataType:'json',
@@ -151,12 +150,13 @@ $(document).ready(function(){
 }
 		
 	/* 출근 */
-	$('#start_id').on('click',function(){
+	
+	/* $('#start_id').on('click',function(){
 		loadattdance_chack();
-	})
+	}) */
 	
 	/* 퇴근 */
-	$('#end_id').on('click', function(){
+	/* $('#end_id').on('click', function(){
 		// 현재 시간 ( 퇴근 )
 		let now = new Date();
 		let year = now.getFullYear();
@@ -185,11 +185,11 @@ $(document).ready(function(){
 			timeEnd = 0;
 			loadEnd_time();
 		}
-	})	
+	})	 */
 	
 	
 	// 정상 퇴근
-	function loadEnd_time(){
+	/* function loadEnd_time(){
 		$.ajax({url:'/attendance_end_id',
 			 type:'post',
 			 dataType:'text',
@@ -210,10 +210,10 @@ $(document).ready(function(){
 					 alert("오류");
 				 }}
 })
-}
+} */
 
 	//출근 1회 제한
-	function loadattdance_chack(){
+	/* function loadattdance_chack(){
 	$.ajax({url:'/attendance_chack',
 			 type:'post',
 			 dataType:'json',
@@ -229,9 +229,9 @@ $(document).ready(function(){
 		}
 	}
 	})
-	}
+	} */
 	//출근 등록
-	function loadChack(){
+	/* function loadChack(){
 		$.ajax({url:'/attendance_start_id',  
 			type:'post', 
 			dataType:'text',
@@ -245,7 +245,7 @@ $(document).ready(function(){
 				}
 			}
 	})
-	}
+	} */
 
 
 </script>

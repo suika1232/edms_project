@@ -254,7 +254,7 @@ $(document).ready(function(){
 						 let id = data['emp_id'];
 						 let test = data['emp_img'];
 						 $('#employee_kname').val(name);
-						 $('#employee_phone').val(mobile);
+						 $('#employee_phone').val('0'+mobile);
 						 $('#employee_email').val(email);
 						 $('#employee_id').val(id);
 						 $('#emp_imgimg').val(test);
