@@ -93,7 +93,7 @@ $(document)
 			type:"post",
 			data:{workNo:workNo},
 			success:function(data){
-				document.location="/WorkLog"
+				document.location="/MyWorkLog"
 			}
 	})
 })

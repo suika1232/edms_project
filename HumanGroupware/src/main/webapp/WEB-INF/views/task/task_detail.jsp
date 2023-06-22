@@ -66,7 +66,7 @@ input{border:none; margin-left: 50px;}
 					<td>업무기한<input type="date" id="startDate"value="${sto.task_started}">~<input type="date" id="endDate"value="${sto.task_limit}"></td>
 				</tr>
 				<tr>
-					<td>내용<textarea id="content">${sto.task_content}</textarea></td>
+					<td>내용<textarea id="content" readonly>${sto.task_content}</textarea></td>
 				</tr>
 				<tr>
 					<td><button id="returnBtn" value="Task">이전</button></td>

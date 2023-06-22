@@ -99,8 +99,7 @@ function getUserData(workNo){
 			$("#writer").val(data[0]["writer"]),
 			$("#content").val(data[0]["content"]),
 			$("#area1").val(data[0]["notes"]),
-			$("#inputDate").val(data[0]["created"]),
-			
+			$("#inputDate").val(data[0]["created"])
 		}
 	})
 }

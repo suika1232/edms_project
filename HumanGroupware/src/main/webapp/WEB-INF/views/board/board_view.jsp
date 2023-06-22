@@ -89,7 +89,7 @@
             <div class="container flex-column mb-3 commentDiv">
                 <div class="row">
                     <div class="col comment-header" style="font-weight: bold;">${comment.emp_name}</div>
-                    <c:if test="${userNo==comment.writer}">
+                    <c:if test="${emp_no==comment.writer}">
                         <div class="col-1 justify-content-end">
                             <i class="bi bi-x" id="comment${comment.comment_no}" onclick="delComment(this)"></i>
                         </div>
@@ -146,7 +146,7 @@ $(document)
     
 })
 .on("click", "#btnComment", ()=>{
-    let loginUser = '<%=session.getAttribute("userNo")%>';
+    let loginUser = '<%=session.getAttribute("emp_no")%>';
     $.ajax({
         url: "/addComment",
         type: "post",

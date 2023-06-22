@@ -60,6 +60,7 @@ div.editable {
 		<table class="table">
 			<tr><td><div>제목<input type="text" id="title"></div></td></tr>
 			<tr><td><div>종류<select class=reportAttr>
+							<option selected hidden>종류선택</option>
 							<option data-value="2">일일업무</option>
 							<option>주간업무</option>
 							<option>월간업무</option>
@@ -101,7 +102,7 @@ $(document)
 					$("#templateBox").append(data.tag)
 					$("style").append(data.style)
 					$("#inputDepart").val($("#departName").val())		
-					$("#content").val("일일 업무 내용 작성")
+					$("#content").attr("placeholder", "일일 업무 내용 작성");
 					$("#writer").val($("#userName").val())
 				}
 		})
@@ -136,7 +137,7 @@ function insertDailyWork(value){
 				  reportNo:value
 				  },
 			success:function(data){
-				document.location="/Taskhome"
+				document.location="/MyWorkLog";
 			}
 	})
 }
